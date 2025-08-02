@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write a Review</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f5f5f5;
+    }
+    .review-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 4px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    .stars span {
+      font-size: 2rem;
+      cursor: pointer;
+      color: #ccc;
+    }
+    .stars .selected {
+      color: gold;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 0.75rem 2rem;
+      background-color: #ff9900;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .book-thumbnail {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .book-thumbnail img {
+      width: 60px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="review-container">
+    <div class="book-thumbnail">
+      <img id="bookImage" src="" alt="Book cover">
+      <h2 id="bookTitle">Loading...</h2>
+    </div>
+
+    <div class="form-group">
+      <label>Rating</label>
+      <div id="stars" class="stars">
+        <span data-value="1">☆</span>
+        <span data-value="2">☆</span>
+        <span data-value="3">☆</span>
+        <span data-value="4">☆</span>
+        <span data-value="5">☆</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="reviewTitle">Title <span style="color: red">*</span></label>
+      <input type="text" id="reviewTitle" required>
+    </div>
+
+    <div class="form-group">
+      <label for="reviewText">Your review</label>
+      <textarea id="reviewText" rows="5"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="reviewImage">Upload photo (optional)</label>
+      <input type="file" id="reviewImage" accept="image/*">
+    </div>
+
+    <button onclick="submitReview()">Submit</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBuUHOPcSjO71G0fftwhvqQV3UMqjpJJZU",
+      authDomain: "escritora-yael.firebaseapp.com",
+      projectId: "escritora-yael",
+      storageBucket: "escritora-yael.appspot.com",
+      messagingSenderId: "403131540905",
+      appId: "1:403131540905:web:687084531c4e1ad74590b8",
+      measurementId: "G-2QYFEYN0BG"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    const slug = new URLSearchParams(location.search).get("producto");
+    const bookRef = doc(db, "books", slug);
+    const bookSnap = await getDoc(bookRef);
+
+    if (bookSnap.exists()) {
+      const book = bookSnap.data();
+      document.getElementById("bookTitle").textContent = book.title;
+      document.getElementById("bookImage").src = book.image;
+      window.currentBook = book;
+    }
+
+    let selectedRating = 0;
+    document.querySelectorAll("#stars span").forEach(star => {
+      star.addEventListener("mouseover", () => {
+        const val = +star.dataset.value;
+        highlightStars(val);
+      });
+      star.addEventListener("mouseout", () => {
+        highlightStars(selectedRating);
+      });
+      star.addEventListener("click", () => {
+        selectedRating = +star.dataset.value;
+        highlightStars(selectedRating);
+      });
+    });
+
+    function highlightStars(value) {
+      document.querySelectorAll("#stars span").forEach(star => {
+        star.classList.toggle("selected", +star.dataset.value <= value);
+        star.textContent = +star.dataset.value <= value ? '★' : '☆';
+      });
+    }
+
+    window.submitReview = async () => {
+      const title = document.getElementById("reviewTitle").value.trim();
+      const text = document.getElementById("reviewText").value.trim();
+      const file = document.getElementById("reviewImage").files[0];
+
+      if (!selectedRating || !title) {
+        alert("Rating and title are required.");
+        return;
+      }
+
+      onAuthStateChanged(auth, async user => {
+        if (!user) {
+          alert("You must be logged in.");
+          location.href = "login.html";
+          return;
+        }
+
+        let imageUrl = "";
+        if (file) {
+          const storageRef = ref(storage, `review-images/${slug}/${user.uid}`);
+          await uploadBytes(storageRef, file);
+          imageUrl = await getDownloadURL(storageRef);
+        }
+
+        const reviewData = {
+          title,
+          text,
+          stars: selectedRating,
+          image: imageUrl,
+          user: user.displayName || user.email.split('@')[0],
+          date: new Date().toISOString()
+        };
+
+        const reviewRef = doc(db, `reviews/${slug}/entries/${user.uid}`);
+        await setDoc(reviewRef, reviewData);
+
+        const notifRef = doc(db, `notifications/${user.uid}/reviews/${slug}`);
+        await setDoc(notifRef, {
+          bookSlug: slug,
+          bookTitle: window.currentBook.title,
+          ...reviewData
+        });
+
+        const allReviews = await getDocs(collection(db, `reviews/${slug}/entries`));
+        let total = 0;
+        allReviews.forEach(doc => total += doc.data().stars);
+        const avg = total / allReviews.size;
+
+        await setDoc(bookRef, {
+          rating: {
+            value: avg,
+            count: allReviews.size
+          }
+        }, { merge: true });
+
+        alert("Review submitted!");
+        location.href = `product-page.html?producto=${slug}`;
+      });
+    }
+  </script>
+</body>
+</html>

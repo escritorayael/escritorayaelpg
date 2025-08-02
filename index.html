@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yael Goldmann - Escritora</title>
+    <link rel="icon" href="IMAGES/Imagen de WhatsApp 2025-07-05 a las 16.04.10_4774b179.jpg" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<style>
+
+    #loaderOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 6px solid #ccc;
+  border-top: 6px solid #482922;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+    .language-selector {
+  position: relative;
+  display: inline-block;
+  margin-left: 1rem;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.selected-lang {
+  display: flex;
+  align-items: center;
+  margin-left: 2rem !important;
+  margin-right: -8rem !important;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 1px;
+  background-color: transparent;
+  color: #482922;
+}
+
+.selected-lang:hover + .language-dropdown,
+.language-dropdown:hover {
+  display: block;
+}
+
+.flag-icon {
+  width: 18px;
+  height: auto;
+}
+
+.language-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  color: black;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 10px;
+  z-index: 999;
+  white-space: nowrap;
+  min-width: 160px;
+}
+
+.language-dropdown label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.language-dropdown input {
+  margin: 0;
+}
+
+.selected-lang:hover + .language-dropdown {
+  display: block;
+  animation: fadeInLang 0.0s ease 0.1s forwards; /* 400ms delay */
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes fadeInLang {
+  to {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+#languageOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  z-index: 100;
+  display: none;
+}
+
+.navbar,
+.language-selector {
+  position: relative;
+  z-index: 101;
+}
+
+#loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 6px solid #ccc;
+  border-top: 6px solid #482922;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+</style>
+<body>
+<div id="languageOverlay"></div>
+<div id="loaderOverlay">
+  <div class="loader-wrapper">
+    <div class="loader"></div>
+  </div>
+</div>
+
+    <div class="container">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-content">
+                <div class="logo">Yael Goldmann</div>
+                <div class="amazon-searchbar">
+    <form id="searchForm">
+        <select class="search-category">
+  <option value="all" data-i18n="searchAll">All</option>
+</select>
+<input type="text" id="searchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" />
+
+        <button type="submit">
+            <i data-lucide="search"></i>
+        </button>
+    </form>
+</div>
+                
+<div class="language-selector">
+  <div class="selected-lang">
+    <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon" />
+    <span>EN</span>
+    <i data-lucide="chevron-down"></i>
+  </div>
+  <div class="language-dropdown">
+    <label>
+      <input type="radio" name="lang" value="en" checked />
+      English - EN
+    </label>
+    <label>
+      <input type="radio" name="lang" value="es" />
+      Español - ES
+    </label>
+  </div>
+</div>
+
+
+                <div class="nav-links">
+                    <a href="pagina-libros.html" data-i18n="navBooks">Books</a>
+  <a href="#about" data-i18n="navAbout">About</a>
+  <a href="#contact" data-i18n="navContact">Contact</a>
+                    <a id="accountLink" href="login.html" class="nav-icon-button" title="My Account / Login">
+  <i data-lucide="user"></i>
+</a>
+                    <button class="cart-toggle" onclick="toggleCart()">
+                        <i data-lucide="shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="searchOverlay"></div>
+
+    <!-- Cart Modal -->
+        <div id="cartModal" class="cart-modal">
+            <div class="cart-modal-content">
+                <div class="cart-header">
+                    <h2>Shopping Cart</h2>
+                    <button class="close-cart" onclick="toggleCart()">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <div class="cart-body" id="cartItems">
+                    <!-- Cart items will be populated by JavaScript -->
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="cartSubtotal">$0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Tax (8.5%):</span>
+                            <span id="cartTax">$0.00</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Total:</span>
+                            <span id="cartTotal">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="cart-actions">
+                        <button class="btn btn-primero" onclick="clearCart()">Clear Cart</button>
+                        <button class="btn btn-primero" onclick="checkout()" id="checkoutBtn">
+                            <i data-lucide="credit-card"></i>
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Page (Alternative view) -->
+        <div id="cartPage" class="cart-page" style="display: none;">
+            <div class="cart-page-container">
+                <div class="cart-page-header">
+                    <h1>Your Shopping Cart</h1>
+                    <button class="btn btn-outline" onclick="showMainPage()">
+                        <i data-lucide="arrow-left"></i>
+                        Continue Shopping
+                    </button>
+                </div>
+                
+                <div class="cart-page-content">
+                    <div class="cart-items-section">
+                        <div id="cartPageItems">
+                            <!-- Cart items will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="cart-summary-section">
+                        <div class="cart-summary">
+                            <h3>Order Summary</h3>
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="pageSubtotal">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (8.5%):</span>
+                                <span id="pageTax">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping:</span>
+                                <span>FREE</span>
+                            </div>
+                            <hr>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="pageTotal">$0.00</span>
+                            </div>
+                            
+                            <div class="checkout-section">
+                                <button class="btn btn-primero btn-full" onclick="checkout()">
+                                    <i data-lucide="credit-card"></i>
+                                    Proceed to Checkout
+                                </button>
+                                <button class="btn btn-primero btn-full" onclick="clearCart()">
+                                    Clear Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Yael Goldmann</h1>
+<p class="hero-subtitle" data-i18n="awardwin">Award-winning author crafting compelling stories that captivate readers worldwide</p>
+<div class="hero-buttons">
+  <button class="btn btn-primary" onclick="window.location.href='pagina-libros.html'" data-i18n="browseBooks">
+    <i data-lucide="book-open"></i> Browse Books
+  </button>
+  <button class="btn btn-outline" onclick="scrollToSection('contact')" data-i18n="getInTouch">
+    <i data-lucide="mail"></i> Get in Touch
+  </button>
+</div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Books Section -->
+    <section id="books" class="books-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title" data-i18n="publishedWorks">Published Works</h2>
+<p class="section-subtitle" data-i18n="publishedSubtitle">
+  Discover stories that transport you to different worlds and touch your heart
+</p>
+
+            <div class="books-grid">
+                <!-- Book 1 -->
+                <div class="book-card">
+                    <div class="book-header">
+                        <div class="book-cover book-cover-1">
+                        <img src="IMAGES\cuando todo calla book.png" alt="Cuando Todo Calla" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+
+                        <h3 class="book-title">Cuando Todo Calla</h3>
+                        <p class="book-description">Una historia de amor, pérdidas, resiliencia y segundas oportunidades...</p>
+                    </div>
+                    <div class="book-content">
+                        <div class="book-rating">
+                            <div class="stars">
+                                <i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i>
+                            </div>
+                            <span class="reviews">(5.0 rating)</span>
+                        </div>
+                        <div class="book-footer">
+                            <span class="book-price">$18.90</span>
+                            <a href="product-page.html?producto=cuando-todo-calla" class="btn btn-primero btn-small" data-i18n="viewDetails">
+  <i data-lucide="shopping-cart"></i> View Details
+</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 2 -->
+                <div class="book-card">
+                    <div class="book-header">
+                        <div class="book-cover book-cover-2">
+                        <img src="IMAGES/en el nombre de ella book.png" alt="En el Nombre de Ella" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <h3 class="book-title">En el Nombre de Ella</h3>
+                        <p class="book-description">Un juego virtual, un amor real, una amenaza mortal. (Spanish Edition)</p>
+                    </div>
+                    <div class="book-content">
+                        <div class="book-rating">
+                            <div class="stars">
+                                <i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star"></i>
+                            </div>
+                            <span class="reviews">(4.0 rating)</span>
+                        </div>
+                        <div class="book-footer">
+                            <span class="book-price">$17.99</span>
+                            <a href="product-page.html?producto=nombre-de-ella" class="btn btn-primero btn-small" data-i18n="viewDetails">
+  <i data-lucide="shopping-cart"></i> View Details
+</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book 3 -->
+<div class="book-card">
+    <div class="book-header">
+        <div class="book-cover book-cover-3">
+            <img src="IMAGES/amina book.png" alt="Amina: La Princesa Rebelde" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <h3 class="book-title">Amina - La Princesa Rebelde</h3>
+        <p class="book-description">Un juego virtual, un amor real, una amenaza mortal. (Spanish Edition)</p>
+    </div>
+    <div class="book-content">
+        <div class="book-rating">
+            <div class="stars">
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star filled"></i>
+            </div>
+            <span class="reviews">(5.0 rating)</span>
+        </div>
+        <div class="book-footer">
+            <span class="book-price">$26.99</span>
+            <a href="product-page.html?producto=amina-defiance" class="btn btn-primero btn-small" data-i18n="viewDetails">
+  <i data-lucide="shopping-cart"></i> View Details
+</a>
+        </div>
+    </div>
+</div>
+
+
+            </div>
+        </div>
+    </section>
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="section-container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h2 class="section-title" data-i18n="aboutTitle">About Yael Goldmann</h2>
+<p class="about-paragraph" data-i18n="aboutP1"> Yael Goldmann was born in Argentina and currently resides in Caracas, Venezuela. She began her career as a journalist,
+                            ventured into airplane marketing, took on roles as a financial advisor, and is now recognized as an executive and life coach.
+                            She maintains constant contact with her numerous followers through her Instagram account Coach_Yael_Goldmann.
+</p>
+<p class="about-paragraph" data-i18n="aboutP2"> When she's not writing, Yael enjoys traveling, discovering new cultures, and finding inspiration
+                            in the everyday moments that make life extraordinary.
+</p>
+
+<div class="stats-grid">
+<div class="stat-card">
+  <i data-lucide="award"></i>
+  <div class="stat-number">12</div>
+  <div class="stat-label" data-i18n="awards">Awards</div>
+</div>
+<div class="stat-card">
+  <i data-lucide="book-open"></i>
+  <div class="stat-number">5+</div>
+  <div class="stat-label" data-i18n="books">Books</div>
+</div>
+<div class="stat-card">
+  <i data-lucide="users"></i>
+  <div class="stat-number">80K+</div>
+  <div class="stat-label" data-i18n="followers">Instagram Followers</div>
+</div>
+
+                        </div>
+                    </div>
+
+                    <div class="author-image">
+    <div class="author-photo-container">
+        <img src="IMAGES\Imagen de WhatsApp 2025-07-05 a las 16.04.10_4774b179.jpg" 
+             alt="Yael Goldmann - Author Photo" 
+             class="author-photo">
+        <div class="photo-overlay">
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+  <div class="contact-container">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="contactTitle">Get in Touch</h2>
+      <p class="section-subtitle" data-i18n="contactSubtitle">
+        Whether you're a reader, publisher, or fellow writer, I'd love to hear from you
+      </p>
+    </div>
+
+    <div class="contact-card">
+      <form class="contact-form" onsubmit="handleFormSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName" data-i18n="labelFirstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Your first name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName" data-i18n="labelLastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Your last name" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email" data-i18n="labelEmail">Email</label>
+          <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="subject" data-i18n="labelSubject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="What's this about?" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message" data-i18n="labelMessage">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me what's on your mind..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-send btn-full" data-i18n="sendMessage">
+          <i data-lucide="mail"></i>
+          Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+            <!-- Footer -->
+       <footer class="footer">
+  <div class="footer-container">
+    <div class="footer-content">
+      <h3 class="footer-title">Yael Goldmann</h3>
+      <p class="footer-tagline" data-i18n="footerTagline">
+        Crafting stories that inspire, entertain, and transform
+      </p>
+      <div class="footer-links">
+        <a href="#" data-i18n="footerTwitter">Twitter</a>
+        <a href="#" data-i18n="footerInstagram">Instagram</a>
+        <a href="#" data-i18n="footerFacebook">Facebook</a>
+        <a href="#" data-i18n="footerGoodreads">Goodreads</a>
+      </div>
+      <p class="footer-copyright" data-i18n="footerCopyright">
+        © 2025 Yael Goldmann. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+<script>
+  let lastScrollTop = 0;
+  const navbar = document.querySelector('.navbar');
+
+  window.addEventListener('scroll', function () {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      // Scroll hacia abajo - ocultar navbar
+      navbar.style.top = '-80px'; // Ajusta si tu navbar es más alto
+    } else {
+      // Scroll hacia arriba - mostrar navbar
+      navbar.style.top = '0';
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Previene valores negativos
+  });
+</script>
+
+<script type="module">
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBuUHOPcSjO71G0fftwhvqQV3UMqjpJJZU",
+  authDomain: "escritora-yael.firebaseapp.com",
+  projectId: "escritora-yael",
+  storageBucket: "escritora-yael.firebasestorage.app",
+  messagingSenderId: "403131540905",
+  appId: "1:403131540905:web:687084531c4e1ad74590b8",
+  measurementId: "G-2QYFEYN0BG"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const accountLink = document.getElementById("accountLink");
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    accountLink.href = "account.html";
+    localStorage.setItem("userLoggedIn", "true");
+  } else {
+    accountLink.href = "login.html";
+    localStorage.removeItem("userLoggedIn");
+  }
+});
+</script>
+
+<script>
+  // Ocultar el loader cuando la página esté completamente cargada
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loader-overlay");
+    if (loader) {
+      loader.style.display = "none";
+    }
+  });
+</script>
+
+
+<script>
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("searchInput").value.trim();
+    if (query !== "") {
+      window.location.href = `pagina-libros.html?query=${encodeURIComponent(query)}`;
+    }
+  });
+</script>
+
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const searchOverlay = document.getElementById("searchOverlay");
+  const languageOverlay = document.getElementById("languageOverlay");
+
+  const langButton = document.querySelector('.selected-lang');
+  const langDropdown = document.querySelector('.language-dropdown');
+
+  let searchOverlayVisible = false;
+  let langHoverTimeout;
+
+  // ---------- BUSCADOR ----------
+  searchInput.addEventListener("focus", () => {
+    searchOverlay.style.display = "block";
+    searchOverlayVisible = true;
+  });
+
+  searchInput.addEventListener("blur", () => {
+    setTimeout(() => {
+      searchOverlay.style.display = "none";
+      searchOverlayVisible = false;
+    }, 150);
+  });
+
+  window.addEventListener("wheel", () => {
+    if (searchOverlayVisible) {
+      searchOverlay.style.display = "none";
+      searchOverlayVisible = false;
+      searchInput.blur();
+    }
+  });
+
+  // ---------- SELECTOR DE IDIOMA ----------
+  function showLangOverlay() {
+    languageOverlay.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // opcional para bloquear scroll
+  }
+
+  function hideLangOverlay() {
+    languageOverlay.style.display = 'none';
+    document.body.style.overflow = ''; // restaurar scroll
+  }
+
+  langButton.addEventListener('mouseenter', () => {
+    langHoverTimeout = setTimeout(() => {
+      showLangOverlay();
+    }, 100); // delay de aparición
+  });
+
+  langButton.addEventListener('mouseleave', () => {
+    clearTimeout(langHoverTimeout);
+    setTimeout(() => {
+      if (!langDropdown.matches(':hover') && !langButton.matches(':hover')) {
+        hideLangOverlay();
+      }
+    }, 300);
+  });
+
+  langDropdown.addEventListener('mouseleave', () => {
+    setTimeout(() => {
+      if (!langDropdown.matches(':hover') && !langButton.matches(':hover')) {
+        hideLangOverlay();
+      }
+    }, 300);
+  });
+
+  langDropdown.addEventListener('mouseenter', () => {
+    clearTimeout(langHoverTimeout);
+  });
+</script>
+
+<!-- LOADER (Mismo de pagina-libros.html) -->
+<div id="loader-overlay" style="display: none;">
+  <div class="loader-wrapper">
+    <div class="loader"></div>
+  </div>
+</div>
+
+
+<script>
+  const loadLanguage = async (lang) => {
+    const response = await fetch('lang.json');
+    const translations = await response.json();
+
+    // Traducción de elementos con data-i18n
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (translations[lang] && translations[lang][key]) {
+        if (el.querySelector("i")) {
+          const iconHTML = el.querySelector("i").outerHTML;
+          el.innerHTML = `${iconHTML} ${translations[lang][key]}`;
+        } else {
+          el.innerText = translations[lang][key];
+        }
+      }
+    });
+
+    // Traducción de placeholders (inputs con ID conocidos)
+    const placeholderKeys = ["firstName", "lastName", "email", "subject", "message"];
+    placeholderKeys.forEach(id => {
+      const input = document.getElementById(id);
+      if (input && translations[lang][id]) {
+        input.placeholder = translations[lang][id];
+      }
+    });
+
+    // Traducción de inputs con atributo data-i18n-placeholder
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(input => {
+      const key = input.getAttribute("data-i18n-placeholder");
+      if (translations[lang] && translations[lang][key]) {
+        input.placeholder = translations[lang][key];
+      }
+    });
+
+    // Traducción de opciones de <select> con data-i18n
+    document.querySelectorAll("option[data-i18n]").forEach(option => {
+      const key = option.getAttribute("data-i18n");
+      if (translations[lang] && translations[lang][key]) {
+        option.textContent = translations[lang][key];
+      }
+    });
+
+    // Traducción del botón de idioma (flag + sigla)
+    const langSpan = document.querySelector(".selected-lang span");
+    const langFlag = document.querySelector(".selected-lang img");
+    if (lang === "es") {
+      langSpan.textContent = "ES";
+      langFlag.src = "https://flagcdn.com/es.svg";
+    } else {
+      langSpan.textContent = "EN";
+      langFlag.src = "https://flagcdn.com/us.svg";
+    }
+
+    localStorage.setItem("lang", lang);
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedLang = localStorage.getItem("lang") || "en";
+    loadLanguage(savedLang);
+
+    const inputToCheck = document.querySelector(`input[name="lang"][value="${savedLang}"]`);
+    if (inputToCheck) inputToCheck.checked = true;
+
+    document.querySelectorAll('.language-dropdown input[name="lang"]').forEach(input => {
+      input.addEventListener("change", e => {
+        const selectedLang = e.target.value;
+        document.getElementById('loader-overlay').style.display = 'flex';
+        localStorage.setItem("lang", selectedLang);
+        setTimeout(() => {
+          location.reload();
+        }, 800);
+      });
+    });
+  });
+</script>
+
+<script>
+  document.body.classList.add("loading");
+
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loaderOverlay");
+
+    // Fase 1: A los 1s, cambiar el fondo blanco a translúcido sin transición
+    setTimeout(() => {
+      loader.style.transition = "none";
+      loader.style.background = "rgba(255, 255, 255, 0.7)";
+      loader.offsetHeight; // Forzar reflow
+      loader.style.transition = "opacity 0.6s ease";
+    }, 1000);
+
+    // Fase 2: A los 3s, ocultar el loader
+    setTimeout(() => {
+      loader.style.opacity = "0";
+      document.body.classList.remove("loading");
+    }, 3000);
+
+    // Fase 3: A los 3.2s, eliminar el loader del DOM
+    setTimeout(() => {
+      loader.remove();
+    }, 3200);
+  });
+</script>
+
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("ABJqx_FyXkXU3Pa53"); // reemplaza con tu public key de EmailJS
+  })();
+</script>
+
+<script>
+  function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const form = event.target;
+
+    const data = {
+      firstName: form.firstName.value,
+      lastName: form.lastName.value,
+      email: form.email.value,
+      subject: form.subject.value,
+      message: form.message.value,
+    };
+
+emailjs.send("service_4emdcim", "template_2wu59le", data)
+  .then(() => {
+    console.log("Enviado con:", data);
+    alert("Mensaje enviado correctamente. Te responderé pronto.");
+    form.reset();
+  })
+  .catch((error) => {
+    console.error("Error al enviar:", error);
+    alert("Hubo un error al enviar tu mensaje. Intenta nuevamente.");
+  });
+
+  }
+</script>
+
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="script.js"></script>
+      <script src="product-page.js"></script>
+</body>
+</html>

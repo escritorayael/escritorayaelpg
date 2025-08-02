@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Notificaciones - Yael Goldmann</title>
+  <link rel="icon" href="IMAGES/Imagen de WhatsApp 2025-07-05 a las 16.04.10_4774b179.jpg" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore.js"></script>
+  <style>
+      
+         #loaderOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 6px solid #ccc;
+  border-top: 6px solid #482922;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+      
+      .navbar {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+     z-index: 999;
+  transition: top 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.nav-content {
+    margin-right: -56rem !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+}
+
+  .logo-yael {
+      margin-left: -55rem !important;
+    text-decoration: none;
+  color: #482922;
+  font-weight: bold; /* Opcional: estilo de texto */
+  font-size: 1.2rem; /* Ajusta según tu diseño */
+}
+
+.nav-links {
+    display: none;
+    gap: 1.8rem;
+}
+
+.nav-links a {
+    color: #482922;
+    text-decoration: none;
+    font-weight: normal;
+     text-decoration: none;
+  transition: text-decoration 0.2s ease;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.nav-icon-button{
+    margin-right: -1rem !important;
+    }
+
+@media (min-width: 768px) {
+    .nav-links {
+        display: flex;
+    }
+    
+    .nav-container {
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .nav-container {
+        padding: 0 2rem;
+    }
+}
+
+            .language-selector {
+  position: relative;
+  display: inline-block;
+  margin-left: 1rem;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.selected-lang {
+  display: flex;
+  align-items: center;
+  margin-left: 2rem !important;
+  margin-right: -8rem !important;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 1px;
+  background-color: transparent;
+  color: #482922;
+}
+
+.selected-lang:hover + .language-dropdown,
+.language-dropdown:hover {
+  display: block;
+}
+
+.flag-icon {
+  width: 18px;
+  height: auto;
+}
+
+.language-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  color: black;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 10px;
+  z-index: 999;
+  white-space: nowrap;
+  min-width: 160px;
+}
+
+.language-dropdown label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.language-dropdown input {
+  margin: 0;
+}
+
+.selected-lang:hover + .language-dropdown {
+  display: block;
+  animation: fadeInLang 0.0s ease 0.1s forwards; /* 400ms delay */
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes fadeInLang {
+  to {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+#languageOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  z-index: 100;
+  display: none;
+}
+
+.navbar,
+.language-selector {
+  position: relative;
+  z-index: 101;
+}
+
+#loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 6px solid #ccc;
+  border-top: 6px solid #482922;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+    
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+
+
+    h1 {
+      margin-top: 3rem !important;
+        font-size: 1.8rem;
+        font-weight: bold !important;
+      color: #482922;
+      margin-bottom: 1.5rem;
+    }
+
+    .review-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #fffefc;
+    }
+
+    .review-card strong {
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .review-card .stars {
+      color: gold;
+      font-size: 1.1rem;
+      margin: 0.25rem 0;
+    }
+
+    .review-card p {
+      margin: 0.5rem 0 0;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+      <div id="loaderOverlay">
+  <div class="loader-wrapper">
+    <div class="loader"></div>
+  </div>
+</div>
+
+    
+    <!-- Navigation -->
+<div id="languageOverlay"></div>
+<!-- Loader -->
+<div id="loader-overlay">
+  <div class="loader-wrapper">
+    <div class="loader"></div>
+  </div>
+</div>
+
+
+
+ <!-- Navigation -->
+ <nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-content">
+      <a href="index.html" class="logo-yael" data-i18n="navBrand">Yael Goldmann</a>
+
+      <div class="amazon-searchbar">
+        <form id="searchForm">
+          <select class="search-category">
+  <option value="all" data-i18n="searchAll">All</option>
+</select>
+<input type="text" id="searchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" />
+
+          <button type="submit">
+            <i data-lucide="search"></i>
+          </button>
+        </form>
+      </div>
+
+      <div class="language-selector" id="langSelector">
+        <div class="selected-lang">
+          <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon" />
+          <span data-i18n="langEN">EN</span>
+          <i data-lucide="chevron-down"></i>
+        </div>
+        <div class="language-dropdown">
+          <label>
+            <input type="radio" name="lang" value="en" checked />
+            <span data-i18n="langFullEN">English - EN</span>
+          </label>
+          <label>
+            <input type="radio" name="lang" value="es" />
+            <span data-i18n="langFullES">Español - ES</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="pagina-libros.html" data-i18n="navBooks">Books</a>
+        <a href="index.html#about" data-i18n="navAbout">About</a>
+        <a href="index.html#contact" data-i18n="navContact">Contact</a>
+        <a id="accountLink" href="login.html" class="nav-icon-button" title="My Account / Login" data-i18n-title="navAccountTitle">
+          <i data-lucide="user"></i>
+        </a>
+        <button class="cart-toggle" onclick="toggleCart()" data-i18n-title="navCartTitle">
+          <i data-lucide="shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <div id="searchOverlay"></div>
+
+    <!-- Cart Modal -->
+        <div id="cartModal" class="cart-modal">
+            <div class="cart-modal-content">
+                <div class="cart-header">
+                    <h2>Shopping Cart</h2>
+                    <button class="close-cart" onclick="toggleCart()">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+                <div class="cart-body" id="cartItems">
+                    <!-- Cart items will be populated by JavaScript -->
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="cartSubtotal">$0.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Tax (8.5%):</span>
+                            <span id="cartTax">$0.00</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Total:</span>
+                            <span id="cartTotal">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="cart-actions">
+                        <button class="btn btn-primero" onclick="clearCart()">Clear Cart</button>
+                        <button class="btn btn-primero" onclick="checkout()" id="checkoutBtn">
+                            <i data-lucide="credit-card"></i>
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Page (Alternative view) -->
+        <div id="cartPage" class="cart-page" style="display: none;">
+            <div class="cart-page-container">
+                <div class="cart-page-header">
+                    <h1>Your Shopping Cart</h1>
+                    <button class="btn btn-outline" onclick="showMainPage()">
+                        <i data-lucide="arrow-left"></i>
+                        Continue Shopping
+                    </button>
+                </div>
+                
+                <div class="cart-page-content">
+                    <div class="cart-items-section">
+                        <div id="cartPageItems">
+                            <!-- Cart items will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="cart-summary-section">
+                        <div class="cart-summary">
+                            <h3>Order Summary</h3>
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="pageSubtotal">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (8.5%):</span>
+                                <span id="pageTax">$0.00</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Shipping:</span>
+                                <span>FREE</span>
+                            </div>
+                            <hr>
+                            <div class="summary-row total">
+                                <span>Total:</span>
+                                <span id="pageTotal">$0.00</span>
+                            </div>
+                            
+                            <div class="checkout-section">
+                                <button class="btn btn-primero btn-full" onclick="checkout()">
+                                    <i data-lucide="credit-card"></i>
+                                    Proceed to Checkout
+                                </button>
+                                <button class="btn btn-primero btn-full" onclick="clearCart()">
+                                    Clear Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+<div class="container">
+  <h1 data-i18n="my_reviews">My Reviews</h1>
+  <div id="reviewNotifications" data-i18n="charging_reviews">Charging reviews...</div>
+</div>
+
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBuUHOPcSjO71G0fftwhvqQV3UMqjpJJZU",
+    authDomain: "escritora-yael.firebaseapp.com",
+    projectId: "escritora-yael",
+    storageBucket: "escritora-yael.appspot.com",
+    messagingSenderId: "403131540905",
+    appId: "1:403131540905:web:687084531c4e1ad74590b8",
+    measurementId: "G-2QYFEYN0BG"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  const container = document.getElementById("reviewNotifications");
+
+  function setI18nText(element, key) {
+    element.setAttribute("data-i18n", key);
+    element.innerText = translations[currentLang][key] || key;
+  }
+
+  // Obtiene idioma actual
+  const currentLang = localStorage.getItem("lang") || "es";
+
+  // Carga traducciones del lang.json
+  let translations = {};
+  fetch("lang.json")
+    .then(res => res.json())
+    .then(data => {
+      translations = data;
+      updateReviews(); // Ejecuta después de cargar traducciones
+    });
+
+  function updateReviews() {
+    onAuthStateChanged(auth, async (user) => {
+      container.innerHTML = "";
+
+      if (!user) {
+        const msg = document.createElement("p");
+        setI18nText(msg, "must_sign_in_to_see_reviews");
+        container.appendChild(msg);
+        return;
+      }
+
+      const ref = collection(db, `notifications/${user.uid}/reviews`);
+      const snap = await getDocs(ref);
+
+      if (snap.empty) {
+        const msg = document.createElement("p");
+        setI18nText(msg, "no_reviews_written_yet");
+        container.appendChild(msg);
+        return;
+      }
+
+      snap.forEach(docSnap => {
+  const r = docSnap.data();
+  const slug = r.bookSlug;
+  const div = createReviewCard(r, slug, user.uid);
+  container.appendChild(div);
+});
+    });
+  }
+
+      // Redirigir el botón de cuenta a account.html ya que el usuario está autenticado
+    const accountLink = document.getElementById("accountLink");
+    if (accountLink) {
+      accountLink.href = "account.html";
+    }
+import {
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+function createReviewCard(r, slug, uid) {
+  const div = document.createElement("div");
+  div.className = "review-card";
+  div.innerHTML = `
+    <strong>${r.bookTitle}</strong> – ${new Date(r.date).toLocaleDateString()}<br/>
+    <div class="stars">${"★".repeat(r.stars)}${"☆".repeat(5 - r.stars)}</div>
+    <p><strong>${r.title}</strong></p>
+    <p>${r.text}</p>
+    ${r.image ? `<img src="${r.image}" style="max-width: 100px; border-radius: 4px; margin-top: 0.5rem;">` : ""}
+    <br/>
+    <button class="btn btn-sm btn-danger mt-2" onclick="deleteReview('${slug}', '${uid}')">Eliminar reseña</button>
+  `;
+  return div;
+}
+
+window.deleteReview = async (slug, uid) => {
+  const confirmDelete = confirm("¿Estás seguro de que quieres eliminar esta reseña?");
+  if (!confirmDelete) return;
+
+  try {
+    await deleteDoc(doc(db, `reviews/${slug}/entries/${uid}`));
+    await deleteDoc(doc(db, `notifications/${uid}/reviews/${slug}`));
+    alert("Reseña eliminada correctamente.");
+    location.reload();
+  } catch (err) {
+    console.error("Error al eliminar reseña:", err);
+    alert("Hubo un error al eliminar la reseña.");
+  }
+};
+
+</script>
+
+
+<script>
+function addToCart(id, name, price, slug, quantity) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existingItem = cart.find(item => item.id === id);
+
+  const image = libros[slug]?.image || "IMAGES/placeholder.png";
+
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    cart.push({
+      id,
+      name,
+      price,
+      slug,
+      quantity,
+      image
+    });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function updateCartUI() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartItemsContainer = document.getElementById("cartItems");
+  const cartCount = document.getElementById("cartCount");
+  const subtotalEl = document.getElementById("cartSubtotal");
+  const taxEl = document.getElementById("cartTax");
+  const totalEl = document.getElementById("cartTotal");
+
+  cartItemsContainer.innerHTML = "";
+  let subtotal = 0;
+
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.quantity;
+    subtotal += itemTotal;
+
+    const div = document.createElement("div");
+    div.className = "cart-item";
+    div.innerHTML = `
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <img src="${item.image}" alt="cover" style="width: 40px; height: auto; border-radius: 4px;">
+        <div style="flex: 1;">
+          <strong style="font-size: 0.9rem;">${item.name}</strong>
+          <p style="font-size: 0.8rem; color: #6b7280;">$${item.price.toFixed(2)} each</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <button onclick="updateQuantity(${index}, -1)" style="padding: 0 8px;">−</button>
+          <span>${item.quantity}</span>
+          <button onclick="updateQuantity(${index}, 1)" style="padding: 0 8px;">+</button>
+          <button onclick="removeItem(${index})" style="background: none; border: none; cursor: pointer;">
+            <i data-lucide="trash-2"></i>
+          </button>
+        </div>
+      </div>
+      <hr style="margin: 0.75rem 0;">
+    `;
+    cartItemsContainer.appendChild(div);
+  });
+
+  const tax = subtotal * 0.085;
+  const total = subtotal + tax;
+
+  subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+  taxEl.textContent = `$${tax.toFixed(2)}`;
+  totalEl.textContent = `$${total.toFixed(2)}`;
+  cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  lucide.createIcons();
+}
+
+function updateQuantity(index, change) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart[index].quantity += change;
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartUI();
+}
+
+function removeItem(index) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartUI();
+}
+</script>
+
+<script>
+  const langSelector = document.getElementById("langSelector");
+  const languageOverlay = document.getElementById("languageOverlay");
+
+  langSelector.addEventListener("mouseenter", () => {
+  languageOverlay.classList.add("show");
+  languageOverlay.style.display = "block";
+});
+
+langSelector.addEventListener("mouseleave", () => {
+  setTimeout(() => {
+    if (!langSelector.matches(':hover')) {
+      languageOverlay.classList.remove("show");
+      languageOverlay.style.display = "none";
+    }
+  }, 200);
+});
+
+languageOverlay.addEventListener("mouseenter", () => {
+  languageOverlay.classList.add("show");
+  languageOverlay.style.display = "block";
+});
+
+languageOverlay.addEventListener("mouseleave", () => {
+  languageOverlay.classList.remove("show");
+  languageOverlay.style.display = "none";
+});
+
+</script>
+
+<script>
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("searchInput").value.trim();
+    if (query !== "") {
+      window.location.href = `pagina-libros.html?query=${encodeURIComponent(query)}`;
+    }
+  });
+</script>
+
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const overlay = document.getElementById("searchOverlay");
+  let overlayVisible = false;
+
+  // Mostrar overlay al enfocar el buscador
+  searchInput.addEventListener("focus", () => {
+    overlay.style.display = "block";
+    overlayVisible = true;
+  });
+
+  // Ocultar overlay al desenfocar el buscador (con delay)
+  searchInput.addEventListener("blur", () => {
+    setTimeout(() => {
+      overlay.style.display = "none";
+      overlayVisible = false;
+    }, 150);
+  });
+
+  // Ocultar overlay al hacer scroll con la rueda del ratón
+  window.addEventListener("wheel", () => {
+    if (overlayVisible) {
+      overlay.style.display = "none";
+      overlayVisible = false;
+      searchInput.blur(); // También quita el foco
+    }
+  });
+</script>
+
+<script>
+  const loadLanguage = async (lang) => {
+    const response = await fetch('lang.json');
+    const translations = await response.json();
+
+    // Traduce textos con data-i18n
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      if (translations[lang] && translations[lang][key]) {
+        if (el.querySelector("i")) {
+          const iconHTML = el.querySelector("i").outerHTML;
+          el.innerHTML = `${iconHTML} ${translations[lang][key]}`;
+        } else {
+          el.textContent = translations[lang][key];
+        }
+      }
+    });
+
+    // Traduce placeholders
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (translations[lang] && translations[lang][key]) {
+        el.placeholder = translations[lang][key];
+      }
+    });
+
+    // Actualiza botón visual
+    const langSpan = document.querySelector(".selected-lang span");
+    const langFlag = document.querySelector(".selected-lang img");
+
+    if (lang === "es") {
+      langSpan.textContent = "ES";
+      langFlag.src = "https://flagcdn.com/es.svg";
+    } else {
+      langSpan.textContent = "EN";
+      langFlag.src = "https://flagcdn.com/us.svg";
+    }
+
+    // Refleja idioma seleccionado en radios
+    document.querySelectorAll('input[name="lang"]').forEach(input => {
+      input.checked = input.value === lang;
+    });
+
+    localStorage.setItem("lang", lang);
+  };
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const savedLang = localStorage.getItem("lang") || "en";
+
+    // Esperar que todo el DOM esté visible antes de traducir
+    await new Promise(resolve => setTimeout(resolve, 0));
+    await loadLanguage(savedLang);
+
+    // Manejar cambio de idioma
+    document.querySelectorAll('input[name="lang"]').forEach(input => {
+      input.addEventListener("change", (e) => {
+        const selectedLang = e.target.value;
+        localStorage.setItem("lang", selectedLang);
+        document.getElementById('loader-overlay').style.display = 'flex';
+        setTimeout(() => {
+          location.reload();
+        }, 600);
+      });
+    });
+  });
+</script>
+
+<script>
+  document.body.classList.add("loading");
+
+  window.addEventListener("load", () => {
+    const loader = document.getElementById("loaderOverlay");
+
+    // Fase 1: A los 1s, cambiar el fondo blanco a translúcido sin transición
+    setTimeout(() => {
+      loader.style.transition = "none";
+      loader.style.background = "rgba(255, 255, 255, 0.7)";
+      loader.offsetHeight; // Forzar reflow
+      loader.style.transition = "opacity 0.6s ease";
+    }, 1000);
+
+    // Fase 2: A los 3s, ocultar el loader
+    setTimeout(() => {
+      loader.style.opacity = "0";
+      document.body.classList.remove("loading");
+    }, 3000);
+
+    // Fase 3: A los 3.2s, eliminar el loader del DOM
+    setTimeout(() => {
+      loader.remove();
+    }, 3200);
+  });
+</script>
+
+      <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="script.js"></script>
+      <script src="product-page.js"></script>
+</body>
+</html>
