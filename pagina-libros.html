@@ -196,6 +196,7 @@ main {
   margin-bottom: 0;
   margin-left: -4.5rem;
   border: none;
+  border-radius: 1px;
 }
 
 
@@ -365,6 +366,180 @@ main {
   opacity: 1;
 }
 
+@media (max-width: 768px) {
+  .nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 !important;
+  }
+
+  .logo-yael {
+    margin-left: 0 !important;
+    font-size: 1rem;
+  }
+
+  .amazon-searchbar {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  aside {
+    display: none;
+  }
+
+  .container {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  main {
+    padding: 1rem 0;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+  }
+
+ .book-card {
+    max-width: 100%;
+    width: 100%;
+    padding: 0.3rem;
+    box-sizing: border-box;
+  }
+
+  .book-cover {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+    margin-left: 0;
+    border-radius: 1px;
+  }
+
+  .book-title, .stars, .book-price {
+    width: 100%;
+    text-align: left;
+    padding: 0 0.5rem;
+  }
+
+  .language-selector {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  #searchOverlay {
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 4rem);
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    z-index: 98;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .book-title {
+    font-size: 14px;
+  }
+
+  .stars {
+    font-size: 16px;
+  }
+
+  .book-price {
+    font-size: 1rem;
+  }
+}
+
+.mobile-filters {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: #fff;
+  padding: 0 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-filters.show {
+  max-height: 800px; /* Suficiente para mostrar todos los filtros */
+  opacity: 1;
+  padding: 1rem;
+}
+
+.mobile-filter-toggle {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #fff;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #111;
+  cursor: pointer;
+}
+
+.mobile-filter-toggle i {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 768px) {
+  .mobile-filter-toggle {
+    display: flex;
+  }
+
+  .container aside {
+    display: none !important;
+  }
+
+  .mobile-filters .filters label {
+    margin-bottom: 8px;
+    display: block;
+  }
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); /* asegura ajuste automático */
+  gap: 1.2rem;
+  padding: 1.5rem 0;
+  margin: 0;
+  justify-content: start;
+}
+@media (min-width: 769px) {
+  .book-card {
+    max-width: 190px;
+  }
+
+  .book-cover {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+    border-radius: 1px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  .book-title, .stars, .book-price {
+    padding: 0;
+    text-align: left;
+  }
+}
 
   </style>
 </head>
@@ -430,6 +605,39 @@ main {
 
 
     <div id="searchOverlay"></div>
+
+<!-- Solo visible en móvil -->
+<div class="mobile-filter-toggle" onclick="toggleMobileFilters()">
+  <span>Filtrar Por</span>
+  <i data-lucide="sliders-horizontal"></i>
+</div>
+<div id="mobileFilters" class="mobile-filters">
+  <!-- Aquí se insertan los filtros existentes -->
+  <div class="filters">
+    <strong data-i18n="genre">Genre</strong>
+    <label><input type="checkbox" value="romance"> <span data-i18n="romance">Romance</span></label>
+    <label><input type="checkbox" value="historia"> <span data-i18n="historical">Historical</span></label>
+    <label><input type="checkbox" value="suspenso"> <span data-i18n="thriller">Thriller</span></label>
+
+    <strong data-i18n="format">Format</strong>
+    <label><input type="checkbox" value="ebook"> <span data-i18n="ebook">eBook</span></label>
+    <label><input type="checkbox" value="fisico"> <span data-i18n="physical">Physical</span></label>
+    <label><input type="checkbox" value="audio"> <span data-i18n="audiobook">Audiobook</span></label>
+
+    <strong data-i18n="language">Language</strong>
+    <label><input type="checkbox" value="es" class="filter-idioma"> <span data-i18n="spanish">Spanish</span></label>
+    <label><input type="checkbox" value="en" class="filter-idioma"> <span data-i18n="english">English</span></label>
+
+    <strong data-i18n="reviews">Reviews</strong>
+    <label><input type="radio" name="rating" value="4"> <span data-i18n="four_stars">★★★★ and up</span></label>
+    <label><input type="radio" name="rating" value="3"> <span data-i18n="three_stars">★★★ and up</span></label>
+
+    <strong data-i18n="price">Price</strong>
+    <input type="range" min="0" max="30" value="30" id="priceRange">
+    <span id="priceValue" data-i18n="price_range">$0 - $30</span>
+  </div>
+</div>
+
 
     <!-- Cart Modal -->
         <div id="cartModal" class="cart-modal">
@@ -987,6 +1195,12 @@ languageOverlay.addEventListener("mouseleave", () => {
   });
 </script>
 
+<script>
+function toggleMobileFilters() {
+  const filters = document.getElementById("mobileFilters");
+  filters.classList.toggle("show");
+}
+</script>
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="script.js"></script>
