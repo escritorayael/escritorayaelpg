@@ -182,7 +182,16 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-content">
-                <div class="logo">Yael Goldmann</div>
+<!-- Ícono toggle menu ≣ a la izquierda del logo -->
+<button id="menuToggle" class="menu-toggle">
+  <span class="toggle-icon">
+    <span class="bar bar1"></span>
+    <span class="bar bar2"></span>
+    <span class="bar bar3"></span>
+  </span>
+</button>
+
+              <div class="logo">Yael Goldmann</div>
                 <div class="amazon-searchbar">
     <form id="searchForm">
         <select class="search-category">
@@ -214,6 +223,11 @@
   </div>
 </div>
 
+<!-- Ícono de búsqueda móvil -->
+<button id="mobileSearchBtn" class="mobile-search-button">
+  <i data-lucide="search"></i>
+</button>
+
 
                 <div class="nav-links">
                     <a href="pagina-libros.html" data-i18n="navBooks">Books</a>
@@ -232,6 +246,59 @@
     </nav>
 
     <div id="searchOverlay"></div>
+
+    <div id="searchOverlayMobile"></div>
+<!-- Buscador desplegable móvil -->
+<div id="mobileSearchContainer" class="mobile-search-container">
+  <form id="mobileSearchForm">
+    <select class="search-category">
+      <option value="all" data-i18n="searchAll">All</option>
+    </select>
+    <input type="text" id="mobileSearchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" />
+    <button type="submit">
+      <i data-lucide="search"></i>
+    </button>
+  </form>
+</div>
+
+
+<!-- Overlay del menú -->
+<div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+
+<!-- Menú desplegable lateral -->
+<div id="mobileMenu" class="mobile-menu">
+  <div class="menu-header">
+    <span class="menu-title"data-i18n="menu_toggle">Menú</span>
+  </div>
+  <hr style="margin: 1rem 0; border: none; border-top: 1px solid #482922; margin-top: -1rem !important;">
+  <ul class="menu-links">
+    <li><a href="pagina-libros.html" data-i18n="navBooks">Books</a></li>
+    <li><a href="index.html#about" data-i18n="navAbout">About</a></li>
+    <li><a href="index.html#contact" data-i18n="navContact">Contact</a></li>
+  </ul>
+<!-- Language Selector (solo en móvil, dentro del menú) -->
+<div class="mobile-language-selector">
+  <div class="selected-lang">
+    <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon" />
+    <span>EN</span>
+    <i data-lucide="chevron-down"></i>
+  </div>
+  <div class="language-dropdown">
+    <label>
+      <input type="radio" name="lang" value="en" checked />
+      English - EN
+    </label>
+    <label>
+      <input type="radio" name="lang" value="es" />
+      Español - ES
+    </label>
+  </div>
+</div>
+
+
+
+</div>
+
 
     <!-- Cart Modal -->
         <div id="cartModal" class="cart-modal">
@@ -840,6 +907,101 @@ emailjs.send("service_4emdcim", "template_2wu59le", data)
   });
 
   }
+</script>
+
+<script>
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+const menuOverlay = document.getElementById('menuOverlay');
+
+let menuOpen = false;
+
+menuToggle.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+
+  mobileMenu.classList.toggle('open', menuOpen);
+  menuOverlay.style.display = menuOpen ? 'block' : 'none';
+  document.body.style.overflow = menuOpen ? 'hidden' : '';
+  menuToggle.classList.toggle('open', menuOpen);
+});
+
+function closeMenu() {
+  menuOpen = false;
+  mobileMenu.classList.remove('open');
+  menuOverlay.style.display = 'none';
+  document.body.style.overflow = '';
+  menuToggle.classList.remove('open');
+}
+
+</script>
+
+<script>
+  // Detectar clics en los enlaces del menú móvil
+  document.querySelectorAll('#mobileMenu a[href*="#"]').forEach(link => {
+    link.addEventListener('click', function (e) {
+      // Cierra el menú primero
+      closeMenu();
+
+      // Espera a que se cierre visualmente, luego hace scroll
+      const href = this.getAttribute('href');
+      const id = href.split('#')[1];
+      const targetSection = document.getElementById(id);
+
+      if (targetSection) {
+        e.preventDefault(); // Previene salto instantáneo
+        setTimeout(() => {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }, 100); // Pequeña espera para que el menú termine de cerrarse
+      }
+    });
+  });
+</script>
+
+<script>
+  const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+  const mobileSearchContainer = document.getElementById('mobileSearchContainer');
+  const mobileOverlay = document.getElementById('searchOverlayMobile');
+
+  let mobileSearchOpen = false;
+
+  mobileSearchBtn.addEventListener('click', () => {
+    mobileSearchOpen = !mobileSearchOpen;
+    mobileSearchContainer.style.display = mobileSearchOpen ? 'block' : 'none';
+    mobileOverlay.style.display = mobileSearchOpen ? 'block' : 'none';
+    document.body.style.overflow = mobileSearchOpen ? 'hidden' : '';
+  });
+
+  mobileOverlay.addEventListener('click', () => {
+    mobileSearchOpen = false;
+    mobileSearchContainer.style.display = 'none';
+    mobileOverlay.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+
+  document.getElementById("mobileSearchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("mobileSearchInput").value.trim();
+    if (query !== "") {
+      window.location.href = `pagina-libros.html?query=${encodeURIComponent(query)}`;
+    }
+  });
+</script>
+
+<script>
+  function changeLanguage(lang) {
+    localStorage.setItem("selectedLanguage", lang);
+    location.reload(); // O llamar a tu función de traducción dinámica
+  }
+
+  // Al cargar, aplicamos el idioma guardado
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedLang = localStorage.getItem("selectedLanguage");
+    if (savedLang) {
+      document.getElementById("languageSelect").value = savedLang;
+      // Aplica tu sistema dinámico si usas lang.json
+      // applyLanguage(savedLang); 
+    }
+  });
 </script>
 
 
