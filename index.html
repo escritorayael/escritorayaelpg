@@ -231,7 +231,7 @@
 
                 <div class="nav-links">
                     <a href="pagina-libros.html" data-i18n="navBooks">Books</a>
-  <a href="#about" data-i18n="navAbout">About</a>
+  <a href="about.html" data-i18n="navAbout">About</a>
   <a href="#contact" data-i18n="navContact">Contact</a>
                     <a id="accountLink" href="login.html" class="nav-icon-button" title="My Account / Login">
   <i data-lucide="user"></i>
@@ -273,7 +273,7 @@
   <hr style="margin: 1rem 0; border: none; border-top: 1px solid #482922; margin-top: -1rem !important;">
   <ul class="menu-links">
     <li><a href="pagina-libros.html" data-i18n="navBooks">Books</a></li>
-    <li><a href="index.html#about" data-i18n="navAbout">About</a></li>
+    <li><a href="about.html" data-i18n="navAbout">About</a></li>
     <li><a href="index.html#contact" data-i18n="navContact">Contact</a></li>
   </ul>
 <!-- Language Selector (solo en móvil, dentro del menú) -->
@@ -391,210 +391,159 @@
                 </div>
             </div>
         </div>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title">Yael Goldmann</h1>
-<p class="hero-subtitle" data-i18n="awardwin">Award-winning author crafting compelling stories that captivate readers worldwide</p>
-<div class="hero-buttons">
-  <button class="btn btn-primary" onclick="window.location.href='pagina-libros.html'" data-i18n="browseBooks">
-    <i data-lucide="book-open"></i> Browse Books
-  </button>
-  <button class="btn btn-outline" onclick="scrollToSection('contact')" data-i18n="getInTouch">
-    <i data-lucide="mail"></i> Get in Touch
-  </button>
+<!-- Carousel Section (Replaces Hero) -->
+<section class="carousel-fade-section">
+  <div class="carousel-fade-container">
+<div class="carousel-fade-slide active">
+  <a href="#about">
+    <img src="IMAGES/banner yael.png" alt="Slide 1">
+  </a>
+  <div class="carousel-fade-caption">
+    <h1>Yael Goldmann</h1>
+    <h3>Escritora - Coach de Vida - Comunicadora</h3>
+    <a href="#about" class="btn-more" data-i18n="morebtn">More</a>
+  </div>
 </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!-- Books Section -->
-    <section id="books" class="books-section">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title" data-i18n="publishedWorks">Published Works</h2>
-<p class="section-subtitle" data-i18n="publishedSubtitle">
-  Discover stories that transport you to different worlds and touch your heart
-</p>
-
-            <div class="books-grid">
-                <!-- Book 1 -->
-                <div class="book-card">
-                    <div class="book-header">
-                        <div class="book-cover book-cover-1">
-                        <img src="IMAGES\cuando todo calla book.png" alt="Cuando Todo Calla" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-
-                        <h3 class="book-title">Cuando Todo Calla</h3>
-                        <p class="book-description">Una historia de amor, pérdidas, resiliencia y segundas oportunidades...</p>
-                    </div>
-                    <div class="book-content">
-                        <div class="book-rating">
-                            <div class="stars">
-                                <i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i>
-                            </div>
-                            <span class="reviews">(5.0 rating)</span>
-                        </div>
-                        <div class="book-footer">
-                            <span class="book-price">$18.90</span>
-                            <a href="product-page.html?producto=cuando-todo-calla" class="btn btn-primero btn-small" data-i18n="viewDetails">
-  <i data-lucide="shopping-cart"></i> View Details
-</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Book 2 -->
-                <div class="book-card">
-                    <div class="book-header">
-                        <div class="book-cover book-cover-2">
-                        <img src="IMAGES/en el nombre de ella book.png" alt="En el Nombre de Ella" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <h3 class="book-title">En el Nombre de Ella</h3>
-                        <p class="book-description">Un juego virtual, un amor real, una amenaza mortal. (Spanish Edition)</p>
-                    </div>
-                    <div class="book-content">
-                        <div class="book-rating">
-                            <div class="stars">
-                                <i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star filled"></i><i data-lucide="star" class="star"></i>
-                            </div>
-                            <span class="reviews">(4.0 rating)</span>
-                        </div>
-                        <div class="book-footer">
-                            <span class="book-price">$17.99</span>
-                            <a href="product-page.html?producto=nombre-de-ella" class="btn btn-primero btn-small" data-i18n="viewDetails">
-  <i data-lucide="shopping-cart"></i> View Details
-</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Book 3 -->
-<div class="book-card">
-    <div class="book-header">
-        <div class="book-cover book-cover-3">
-            <img src="IMAGES/amina book.png" alt="Amina: La Princesa Rebelde" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        <h3 class="book-title">Amina - La Princesa Rebelde</h3>
-        <p class="book-description">Un juego virtual, un amor real, una amenaza mortal. (Spanish Edition)</p>
-    </div>
-    <div class="book-content">
-        <div class="book-rating">
-            <div class="stars">
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star filled"></i>
-            </div>
-            <span class="reviews">(5.0 rating)</span>
-        </div>
-        <div class="book-footer">
-            <span class="book-price">$26.99</span>
-            <a href="product-page.html?producto=amina-defiance" class="btn btn-primero btn-small" data-i18n="viewDetails">
-  <i data-lucide="shopping-cart"></i> View Details
-</a>
-        </div>
-    </div>
+    <div class="carousel-fade-slide">
+  <a href="product-page.html?producto=encuentros-casuales">
+    <img src="IMAGES/banner yael (1).png" alt="Slide 2">
+  </a>
+  <div class="carousel-fade-caption">
+    <h2>Encuentros Casuales</h2>
+    <p>La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
+    <a href="product-page.html?producto=encuentros-casuales" class="btn btn-primary" data-i18n="seemore">See More</a>
+  </div>
 </div>
 
-
-            </div>
-        </div>
-    </section>
-        <!-- About Section -->
-        <section id="about" class="about-section">
-            <div class="section-container">
-                <div class="about-grid">
-                    <div class="about-text">
-                        <h2 class="section-title" data-i18n="aboutTitle">About Yael Goldmann</h2>
-<p class="about-paragraph" data-i18n="aboutP1"> Yael Goldmann was born in Argentina and currently resides in Caracas, Venezuela. She began her career as a journalist,
-                            ventured into airplane marketing, took on roles as a financial advisor, and is now recognized as an executive and life coach.
-                            She maintains constant contact with her numerous followers through her Instagram account Coach_Yael_Goldmann.
-</p>
-<p class="about-paragraph" data-i18n="aboutP2"> When she's not writing, Yael enjoys traveling, discovering new cultures, and finding inspiration
-                            in the everyday moments that make life extraordinary.
-</p>
-
-<div class="stats-grid">
-<div class="stat-card">
-  <i data-lucide="award"></i>
-  <div class="stat-number">12</div>
-  <div class="stat-label" data-i18n="awards">Awards</div>
-</div>
-<div class="stat-card">
-  <i data-lucide="book-open"></i>
-  <div class="stat-number">5+</div>
-  <div class="stat-label" data-i18n="books">Books</div>
-</div>
-<div class="stat-card">
-  <i data-lucide="users"></i>
-  <div class="stat-number">80K+</div>
-  <div class="stat-label" data-i18n="followers">Instagram Followers</div>
+    <div class="carousel-fade-slide">
+  <a href="product-page.html?producto=cuando-todo-calla">
+    <img src="IMAGES/banner yael (2).png" alt="Slide 3">
+  </a>
+  <div class="carousel-fade-caption">
+    <h2>Cuando Todo Calla</h2>
+    <p>Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
+    <a href="product-page.html?producto=cuando-todo-calla" class="btn btn-primary" data-i18n="seemore">See More</a>
+  </div>
 </div>
 
-                        </div>
-                    </div>
-
-                    <div class="author-image">
-    <div class="author-photo-container">
-        <img src="IMAGES\Imagen de WhatsApp 2025-07-05 a las 16.04.10_4774b179.jpg" 
-             alt="Yael Goldmann - Author Photo" 
-             class="author-photo">
-        <div class="photo-overlay">
-        </div>
-    </div>
+   <div class="carousel-fade-slide">
+  <a href="product-page.html?producto=nombre-de-ella">
+    <img src="IMAGES/banner yael (3).png" alt="Slide 4">
+  </a>
+  <div class="carousel-fade-caption">
+    <h2>En el Nombre de Ella</h2>
+    <p>Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
+    <a href="product-page.html?producto=nombre-de-ella" class="btn btn-primary" data-i18n="seemore">See More</a>
+  </div>
 </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-  <div class="contact-container">
-    <div class="section-header">
-      <h2 class="section-title" data-i18n="contactTitle">Get in Touch</h2>
-      <p class="section-subtitle" data-i18n="contactSubtitle">
-        Whether you're a reader, publisher, or fellow writer, I'd love to hear from you
-      </p>
-    </div>
+    <!-- FLECHAS DEL CARRUSEL -->
+<div class="carousel-arrow left-arrow" onclick="prevSlide()">&#10094;</div>
+<div class="carousel-arrow right-arrow" onclick="nextSlide()">&#10095;</div>
 
-    <div class="contact-card">
-      <form class="contact-form" onsubmit="handleFormSubmit(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="firstName" data-i18n="labelFirstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" placeholder="Your first name" required>
-          </div>
-          <div class="form-group">
-            <label for="lastName" data-i18n="labelLastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Your last name" required>
-          </div>
-        </div>
+  </div>
+</section>
 
-        <div class="form-group">
-          <label for="email" data-i18n="labelEmail">Email</label>
-          <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
-        </div>
+<section style="background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 2rem; margin: 2rem auto; width: 100%; height: 15rem; text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: Arial, sans-serif; margin-bottom: 0 !important;">
+  <h2 style="font-size: 2rem; margin-bottom: 1rem;">🚧 Página Todavía en Construcción!!!</h2>
+  <p style="font-size: 1.1rem;">Estamos trabajando para ofrecerte la mejor experiencia. ¡Muy pronto estará disponible!</p>
+</section>
 
-        <div class="form-group">
-          <label for="subject" data-i18n="labelSubject">Subject</label>
-          <input type="text" id="subject" name="subject" placeholder="What's this about?" required>
-        </div>
 
-        <div class="form-group">
-          <label for="message" data-i18n="labelMessage">Message</label>
-          <textarea id="message" name="message" placeholder="Tell me what's on your mind..." required></textarea>
-        </div>
+<!-- Books Section -->
+<section id="books" class="books-section" style="text-align: center; padding: 60px 0;">
+<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 40px;">
+  <div style="flex: 1; height: 1px; background-color: #ccc; margin-right: 20px;"></div>
+  <h2 class="section-title" style="font-size: 24px; margin: 0;" data-i18n="currentTitles">Current Titles</h2>
+  <div style="flex: 1; height: 1px; background-color: #ccc; margin-left: 20px;"></div>
+</div>
 
-        <button type="submit" class="btn btn-send btn-full" data-i18n="sendMessage">
-          <i data-lucide="mail"></i>
-          Send Message
-        </button>
-      </form>
-    </div>
+  
+  <div class="books-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
+    <!-- Libro 1 -->
+    <a href="product-page.html?producto=cuando-todo-calla" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/cuando todo calla book.png" alt="Cuando Todo Calla" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">Cuando Todo Calla</h3>
+    </a>
+
+    <!-- Libro 2 -->
+    <a href="product-page.html?producto=nombre-de-ella" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/en el nombre de ella book.png" alt="En el Nombre de Ella" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">En el Nombre de Ella</h3>
+    </a>
+
+    <!-- Libro 3 -->
+    <a href="product-page.html?producto=amina-defiance" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/amina book.png" alt="Amina: La Princesa Rebelde" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">Amina - La Princesa Rebelde</h3>
+    </a>
+
+    <!-- Libro 4 -->
+    <a href="product-page.html?producto=destinos-entrelazados" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/destinos entrelazados.png" alt="Destinos EntreLazados" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">Destinos EntreLazados</h3>
+    </a>
+
+    <!-- Libro 5 -->
+    <a href="product-page.html?producto=jaque-a-la-reina" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/jaque reina book.png" alt="Jaque a la Reina" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">Jaque a la Reina</h3>
+    </a>
+
+    <!-- Libro 6 -->
+    <a href="product-page.html?producto=identidades-ocultas" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/identidades ocultas book.png" alt="Identidades Ocultas" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">Identidades Ocultas</h3>
+    </a>
+
+    <!-- Libro 7 -->
+    <a href="product-page.html?producto=encuentros-casuales" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/encuentros casuales book.png" alt="Encuentros Casuales" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">Encuentros Casuales</h3>
+    </a>
+
+    <!-- Libro 8 -->
+    <a href="product-page.html?producto=sobrevivir-a-la-vida" style="text-decoration: none; color: inherit;">
+      <img src="IMAGES/sobrevivir vida book.png" alt="Sobrevivir a la Vida" style="width: 160px; height: auto;">
+      <h3 style="margin-top: 10px;">Sobrevivir a la Vida</h3>
+    </a>
+  </div>
+
+  <!-- Botón "See More Titles" -->
+  <div style="margin-top: 50px;">
+    <a href="pagina-libros.html" class="btn btn-segundo" style="padding: 10px 20px; border: 1px solid #000; display: inline-block;">
+      SEE MORE TITLES
+    </a>
+  </div>
+</section>
+
+<!-- DISTRIBUCIÓN -->
+<section id="available" style="text-align: center; padding: 60px 0;">
+  <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 40px;">
+    <div style="flex: 1; height: 1px; background-color: #ccc; margin-right: 20px;"></div>
+    <h2 class="section-title" style="font-size: 24px; margin: 0;" data-i18n="availableOn">Available At</h2>
+    <div style="flex: 1; height: 1px; background-color: #ccc; margin-left: 20px;"></div>
+  </div>
+
+  <div class="distributors-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 0 20px;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="height: 40px;">
+    <img src="IMAGES/Google-Play-Logo.png" alt="Google Play" style="height: 100px; margin-top: -2rem !important;">
+    <img src="IMAGES/barnes-and-noble-logo.png" alt="Barnes & Noble" style="height: 40px;">
+    <img src="IMAGES/rakuten-kobo-logo.png" alt="Rakuten Kobo" style="height: 140px; margin-top: -3rem !important;">
+    <img src="IMAGES/Apple-Books-Logo.png" alt="Apple Books" style="height: 100px; margin-top: -2rem !important;">
+    <img src="IMAGES/logo-everand-2x.png" alt="Everand" style="height: 40px;">
+    <img src="IMAGES/tolino-logo.png" alt="Tolino" style="height: 70px; margin-top: -2rem !important;">
+    <img src="IMAGES/overdrive-logo.png" alt="OverDrive" style="height: 40px;">
+    <img src="IMAGES/CloudLibrary-Logo-v2.png" alt="CloudLibrary" style="height: 70px; margin-top: -2rem !important;">
+    <img src="IMAGES/bakertaylor-logo.png" alt="Baker & Taylor" style="height: 40px;">
+    <img src="IMAGES/Hoopla-Logo.png" alt="Hoopla" style="height: 40px;">
+    <img src="IMAGES/odilo-logo.png" alt="Odilo" style="height: 100px; margin-top: -2rem !important;">
+    <img src="IMAGES/Logo_Vivlio.png" alt="Vivlio" style="height: 40px;">
+    <img src="IMAGES/Borrowbox2.png" alt="BorrowBox" style="height: 40px;">
+    <img src="IMAGES/Smashwords-logo.png" alt="Smashwords" style="height: 100px; margin-top: -2rem !important;">
+    <img src="IMAGES/Palace-Marketplace-1.png" alt="Palace Marketplace" style="height: 40px;">
+    <img src="IMAGES/fable_Logo.png" alt="Fable" style="height: 100px; margin-top: -2rem !important;">
   </div>
 </section>
 
@@ -1004,11 +953,37 @@ function closeMenu() {
   });
 </script>
 
+<script>
+  const slides = document.querySelectorAll('.carousel-fade-slide');
+  let currentIndex = 0;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+    });
+    slides[index].classList.add('active');
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    showSlide(currentIndex);
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    showSlide(currentIndex);
+  }
+
+  // Mostrar primer slide
+  showSlide(currentIndex);
+
+  // Avance automático
+  setInterval(nextSlide, 10000); // cada 10 segundos
+</script>
+
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="script.js"></script>
       <script src="product-page.js"></script>
 </body>
 </html>
-
-
