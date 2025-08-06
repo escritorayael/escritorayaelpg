@@ -8,6 +8,8 @@
     "aboutTitle": "About Yael Goldmann",
     "aboutP1": "Yael Goldmann was born in Argentina and currently resides in Caracas, Venezuela. She began her career as a journalist, ventured into airplane marketing, took on roles as a financial advisor, and is now recognized as an executive and life coach. She maintains constant contact with her numerous followers through her Instagram account Coach_Yael_Goldmann.",
     "aboutP2": "When she's not writing, Yael enjoys traveling, discovering new cultures, and finding inspiration in the everyday moments that make life extraordinary.",
+    "aboutP3": "She currently lives in Venezuela with her family and continues to write new stories that explore the dilemmas of the soul, resilience, and the search for meaning.",
+    "aboutp4": "Among her books are Identidades Ocultas, En el Nombre de Ella, Cuando Todo Calla, Encuentros Casuales, Destinos Entrelazados, Sobrevivir a la Vida, and Jaque a la Reina. Her works are available on Amazon, Google Play, and other global platforms.",
     "awards": "Awards",
     "books": "Books",
     "followers": "Instagram Followers",
@@ -144,7 +146,12 @@
     "product_customer_reviews": "Customer Reviews:",
     "format.paperback": "Paperback",
     "format.kindle": "eBook",
-    "format.audiobook": "Audiobook"
+    "format.audiobook": "Audiobook",
+    "menu_toggle": "Menu",
+    "morebtn": "More",
+    "seemore": "See More",
+    "availableOn": "Available At",
+    "currentTitles": "Current Titles"
     
   },
   "es": {
@@ -156,6 +163,8 @@
     "aboutTitle": "Sobre Yael Goldmann",
     "aboutP1": "Yael Goldmann nació en Argentina y actualmente reside en Caracas, Venezuela. Comenzó su carrera como periodista, incursionó en el marketing aeronáutico, fue asesora financiera y hoy es reconocida como coach ejecutiva y de vida. Mantiene contacto constante con sus numerosos seguidores a través de su cuenta de Instagram Coach_Yael_Goldmann.",
     "aboutP2": "Cuando no está escribiendo, Yael disfruta viajar, descubrir nuevas culturas y encontrar inspiración en los momentos cotidianos que hacen extraordinaria la vida.",
+    "aboutP3": "Actualmente reside en Venezuela con su familia y continúa escribiendo nuevas historias que exploran los dilemas del alma, la resiliencia y la búsqueda de sentido.",
+     "aboutp4": "Entre sus libros se encuentran *Identidades Ocultas*, *En el Nombre de Ella*, *Cuando Todo Calla*, *Encuentros Casuales*, *Destinos Entrelazados*, *Sobrevivir a la Vida* y *Jaque a la Reina*. Sus obras están disponibles en Amazon, Google Play y otras plataformas globales.",
     "awards": "Premios",
     "books": "Libros",
     "followers": "Seguidores en Instagram",
@@ -302,8 +311,12 @@
   "mp3-label": "MP3",
   "format-physical": "Tapa blanda",
   "format-digital": "Digital",
-  "format-audio": "Audiolibro"
-      
+  "format-audio": "Audiolibro",
+  "menu_toggle": "Menú",
+  "morebtn": "Más",
+  "seemore": "Ver Más",
+  "availableOn": "Disponible en",
+  "currentTitles": "Títulos actuales"
     
   }
 }
