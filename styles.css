@@ -1406,18 +1406,28 @@ body {
 }
 
 .footer-links a {
-    color: #94a3b8;
+    color: #fff;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.footer-links a:hover {
-    color: white;
-}
 
 .footer-copyright {
     color: #94a3b8;
     font-size: 0.875rem;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.icon-threads {
+  margin-right: -0.3rem !important;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
 }
 
 @media (min-width: 768px) {
