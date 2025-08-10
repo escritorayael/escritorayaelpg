@@ -2063,3 +2063,176 @@ margin-right: 1rem !important;
 }
 
 
+/* Ajustes del carrusel solo en celulares */
+@media (max-width: 768px) {
+  .carousel-fade-section {
+    width: 100%;      /* ancho máximo relativo a la pantalla */
+    margin: 0 auto;      /* centrado horizontal */
+    margin-bottom: -30rem !important;
+  }
+
+.carousel-fade-slide img {
+  width: auto;         /* Usa el ancho real de la imagen */
+  height: auto;        /* Mantiene la proporción original */
+  max-width: 100%;     /* Evita que sobrepase el contenedor */
+  display: block;      /* Elimina espacios blancos extra */
+  margin: 0 auto;      /* Centra la imagen horizontalmente */
+  object-fit: contain; /* Asegura que no se deforme */
+}
+
+
+}
+
+/* Ocultar textos, botones y flechas del carrusel en móviles */
+@media (max-width: 768px) {
+  .carousel-fade-caption,
+  .carousel-fade-caption *,
+  .carousel-fade-slide .btn,
+  .carousel-fade-slide .btn-primary,
+  .carousel-fade-slide .btn-more,
+  .carousel-arrow {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
+
+/* ====== NAVBAR (deslizante) ====== */
+.navbar{
+  position: sticky;
+  top:0; left:0; right:0;
+  z-index: 1000;
+  transition: top .25s ease;
+  background: #fff; /* ajusta a tu diseño */
+}
+
+/* ====== BÚSQUEDA MOBILE ====== */
+.mobile-search-container{
+  display:none;
+  position:fixed;
+  top: 56px; /* debajo del navbar */
+  left:0; right:0;
+  z-index: 999;
+  background:#fff;
+  padding: .75rem;
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+}
+@media (max-width: 1024px){
+  .amazon-searchbar{ max-width: 52vw; }
+}
+@media (max-width: 768px){
+  .amazon-searchbar{ display:none; }     /* ocultar barra Amazon en cel */
+  #mobileSearchBtn{ display:inline-flex; }
+}
+
+/* ====== LIBROS (grid) ====== */
+.books-grid{
+  gap: 28px !important;
+}
+.books-grid a img{
+  width: min(42vw, 160px) !important;
+  height: auto !important;
+}
+@media (max-width: 768px){
+  .books-grid{
+    display:grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px !important;
+    padding: 0 14px;
+  }
+  .books-grid a h3{
+    font-size: .95rem;
+  }
+}
+
+/* ===== Distribución: versión móvil ===== */
+@media (max-width: 768px) {
+  #available {
+    padding: 24px 0 !important;
+  }
+
+  /* Título + líneas */
+  #available .section-title {
+    font-size: 18px !important;
+  }
+
+  /* Grid 2 columnas, huecos iguales a la referencia */
+  .distributors-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 0 12px !important;
+    justify-content: initial !important;
+  }
+
+  /* Tarjeta */
+  .dist-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .dist-card {
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 6px rgba(0,0,0,.06);
+    padding: 16px 10px;
+    min-height: 92px;           /* alto visual como la referencia */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Logos: forzar consistencia pese a estilos inline */
+  .dist-card img {
+    width: 100% !important;
+    max-width: 200px !important;
+    max-height: 44px !important;   /* controla la altura del logo */
+    height: auto !important;
+    object-fit: contain !important;
+    margin: 0 !important;
+  }
+
+  /* Fecha bajo cada logo */
+  .dist-date {
+    font-size: 11px;
+    letter-spacing: .2px;
+    color: #333;
+  }
+
+  /* Badge (opcional) como en Hoopla */
+  .dist-badge {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    line-height: 1;
+    padding: 6px 8px;
+    border-radius: 4px;
+    background: #ffefb0;
+    color: #6b4c00;
+    border: 1px solid #e8d27a;
+  }
+
+  /* Oculta márgenes grandes que estaban puestos inline */
+  .distributors-grid a[style], .distributors-grid img[style] {
+    margin-top: 0 !important;
+  }
+}
+
+/* Desktop/Tablet ≥769px: no tocar tu layout actual */
+
+
+/* ====== SELECTOR DE IDIOMA (posiciones y solapamientos limpios) ====== */
+.language-selector{ z-index: 1200; }
+
+/* ====== LOADER (normalizado) ====== */
+#loaderOverlay{
+  position:fixed; inset:0;
+  background:#fff;
+  display:flex; justify-content:center; align-items:center;
+  z-index: 2000;
+  transition: opacity .6s ease;
+}
