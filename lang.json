@@ -152,7 +152,26 @@
     "morebtn": "More",
     "seemore": "See More",
     "availableOn": "Available At",
-    "currentTitles": "Current Titles"
+    "currentTitles": "Current Titles",
+    "blogWriteTitle": "Write your opinion",
+    "blogVisibleName": "Display Name",
+    "blogPostTitle": "Title",
+    "blogPostContent": "Content",
+    "blogAcceptRules": "I accept the rules (no insults, spam, or suspicious links).",
+    "blogPreview": "Preview",
+    "blogPublish": "Publish",
+    "blogPublicFeed": "Recent opinions",
+    "blogEmpty": "No posts yet. Be the first to comment!",
+    "blogLoadMore": "Load more",
+    "msgPreviewRequired": "Fill in title and content to preview.",
+    "preview": "Preview:",
+    "guest": "Guest",
+    "msgTitleContentRequired": "Title and content are required.",
+    "msgTooShort": "Your opinion is too short. Please write at least 30 characters.",
+    "msgNotAllowed": "Your text seems to contain prohibited content (suspicious links, insults, or excessive CAPS).",
+    "msgWait": "Please wait {s}s before posting again.",
+    "msgPublished": "Published! Thank you for participating.",
+    "msgError": "There was an error publishing. Please try again."
     
   },
   "es": {
@@ -318,7 +337,26 @@
   "morebtn": "Más",
   "seemore": "Ver Más",
   "availableOn": "Disponible en",
-  "currentTitles": "Títulos actuales"
+  "currentTitles": "Títulos actuales",
+  "blogWriteTitle": "Escribe tu opinión",
+    "blogVisibleName": "Nombre a mostrar",
+    "blogPostTitle": "Título",
+    "blogPostContent": "Contenido",
+    "blogAcceptRules": "Acepto las normas de convivencia (sin insultos, spam ni enlaces sospechosos).",
+    "blogPreview": "Vista previa",
+    "blogPublish": "Publicar",
+    "blogPublicFeed": "Opiniones recientes",
+    "blogEmpty": "Aún no hay publicaciones. ¡Sé la primera persona en opinar!",
+    "blogLoadMore": "Cargar más",
+    "msgPreviewRequired": "Completa título y contenido para ver la vista previa.",
+    "preview": "Vista previa:",
+    "guest": "Invitado/a",
+    "msgTitleContentRequired": "Título y contenido son obligatorios.",
+    "msgTooShort": "Tu opinión es muy corta. Amplía un poco más (mín. 30 caracteres).",
+    "msgNotAllowed": "Tu texto parece incluir contenido no permitido (enlaces sospechosos, insultos o abuso de MAYÚSCULAS).",
+    "msgWait": "Espera {s}s para volver a publicar.",
+    "msgPublished": "¡Publicado! Gracias por participar.",
+    "msgError": "Hubo un error al publicar. Intenta de nuevo."
     
   }
 }
