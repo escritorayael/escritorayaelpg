@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog — Yael Goldmann</title>
+  <link rel="icon" href="IMAGES/Imagen de WhatsApp 2025-07-05 a las 16.04.10_4774b179.jpg" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    .container-narrow{max-width:980px;margin:0 auto;padding:24px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+    .card-header{padding:16px 20px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:8px}
+    .card-body{padding:20px}
+    .input, textarea{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:12px;font-size:14px}
+    textarea{min-height:140px;resize:vertical}
+    .btn-primary{background:#482922;color:#fff;border:none;border-radius:10px;padding:10px 16px;cursor:pointer}
+    .btn-outline{background:#fff;border:1px solid #482922;color:#482922;border-radius:10px;padding:8px 12px;cursor:pointer}
+    .post{padding:18px 20px;border-bottom:1px solid #f0f0f0}
+    .post:last-child{border-bottom:none}
+    .post-title{font-size:18px;font-weight:700;margin:0 0 6px}
+    .post-meta{font-size:12px;color:#6b7280;margin-bottom:8px}
+    .post-content{white-space:pre-wrap;line-height:1.6}
+    .muted{color:#6b7280;font-size:13px}
+    .toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .chip{font-size:12px;padding:4px 8px;border:1px solid #ddd;border-radius:999px}
+    .danger{color:#b00020}
+    .list-empty{padding:16px;text-align:center}
+
+    /* Language selector */
+    .language-selector { position: relative; display: inline-block; margin-left: 1rem; font-size: 14px; cursor: pointer; }
+    .selected-lang { display: flex; align-items: center; margin-left: 2rem !important; margin-right: -8rem !important; gap: 6px; padding: 5px 10px; border-radius: 1px; background-color: transparent; color: #482922; }
+    .selected-lang:hover + .language-dropdown, .language-dropdown:hover { display: block; }
+    .flag-icon { width: 18px; height: auto; }
+    .language-dropdown { display: none; position: absolute; top: 100%; left: 0; background-color: #fff; color: black; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 10px; z-index: 999; white-space: nowrap; min-width: 160px; }
+    .language-dropdown label { display: flex; align-items: center; gap: 6px; padding: 5px; cursor: pointer; }
+    .language-dropdown input { margin: 0; }
+    .selected-lang:hover + .language-dropdown { display: block; animation: fadeInLang 0.0s ease 0.1s forwards; opacity: 0; pointer-events: none; }
+    @keyframes fadeInLang { to { opacity: 1; pointer-events: auto; } }
+
+    #languageOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); z-index: 100; display: none; }
+    .navbar, .language-selector { position: relative; z-index: 101; }
+
+    #loader-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; justify-content: center; align-items: center; z-index: 9999; }
+    .loader-wrapper { display: flex; justify-content: center; align-items: center; }
+    .loader { border: 6px solid #ccc; border-top: 6px solid #482922; border-radius: 50%; width: 48px; height: 48px; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Minimal overlay for search focus */
+    #searchOverlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); display: none; z-index: 90; }
+ 
+   .logo-yael {
+      margin-left: -18rem !important;
+    text-decoration: none;
+  color: inherit; /* Opcional: hereda el color del contenedor/padre */
+  font-weight: bold; /* Opcional: estilo de texto */
+  font-size: 1.2rem; /* Ajusta según tu diseño */
+}
+ 
+ </style>
+</head>
+<body>
+
+<div id="loaderOverlay">
+  <div class="loader-wrapper">
+    <div class="loader"></div>
+  </div>
+</div>
+
+<!-- Language & global loaders -->
+<div id="languageOverlay"></div>
+<div id="loader-overlay">
+  <div class="loader-wrapper">
+    <div class="loader"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-content">
+      <button id="menuToggle" class="menu-toggle">
+        <span class="toggle-icon"><span class="bar bar1"></span><span class="bar bar2"></span><span class="bar bar3"></span></span>
+      </button>
+      <a href="index.html" class="logo-yael" data-i18n="navBrand">Yael Goldmann</a>
+
+      <div class="amazon-searchbar">
+        <form id="searchForm">
+          <select class="search-category">
+            <option value="all" data-i18n="searchAll">All</option>
+          </select>
+          <input type="text" id="searchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder"/>
+          <button type="submit"><i data-lucide="search"></i></button>
+        </form>
+      </div>
+
+      <div class="language-selector" id="langSelector">
+        <div class="selected-lang">
+          <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon"/>
+          <span>EN</span>
+          <i data-lucide="chevron-down"></i>
+        </div>
+        <div class="language-dropdown">
+          <label><input type="radio" name="lang" value="en" checked/> English - EN</label>
+          <label><input type="radio" name="lang" value="es"/> Español - ES</label>
+        </div>
+      </div>
+
+      <button id="mobileSearchBtn" class="mobile-search-button"><i data-lucide="search"></i></button>
+
+      <div class="nav-links">
+        <a href="pagina-libros.html" data-i18n="navBooks">Books</a>
+        <a href="about.html" data-i18n="navAbout">About</a>
+        <a href="blog.html" data-i18n="navBlog">Blog</a>
+        <a id="accountLink" href="login.html" class="nav-icon-button" title="My Account / Login"><i data-lucide="user"></i></a>
+        <button class="cart-toggle" id="cartToggleBtn">
+          <i data-lucide="shopping-cart"></i><span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div id="searchOverlay"></div>
+
+<!-- Cart Modal -->
+<div id="cartModal" class="cart-modal" aria-hidden="true">
+  <div class="cart-modal-content">
+    <div class="cart-header">
+      <h2 data-i18n="cartTitle">Shopping Cart</h2>
+      <button class="close-cart" id="closeCartBtn"><i data-lucide="x"></i></button>
+    </div>
+    <div class="cart-body" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <div class="total-row"><span data-i18n="cartSubtotal">Subtotal:</span> <span id="cartSubtotal">$0.00</span></div>
+        <div class="total-row"><span data-i18n="cartTax">Tax (8.5%):</span> <span id="cartTax">$0.00</span></div>
+        <div class="total-row total-final"><span data-i18n="cartTotal">Total:</span> <span id="cartTotal">$0.00</span></div>
+      </div>
+      <div class="cart-actions">
+        <button class="btn btn-primero" id="clearCartBtn" data-i18n="cartClear">Clear Cart</button>
+        <button class="btn btn-primero" id="checkoutBtn">
+          <i data-lucide="credit-card"></i>
+          <span data-i18n="cartCheckout">Checkout</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- (Optional) Cart Page skeleton -->
+<div id="cartPage" class="cart-page" style="display: none;">
+  <div class="cart-page-container">
+    <div class="cart-page-header">
+      <h1 data-i18n="cartYourCart">Your Shopping Cart</h1>
+      <button class="btn btn-outline" id="continueShoppingBtn"><i data-lucide="arrow-left"></i> <span data-i18n="cartContinue">Continue Shopping</span></button>
+    </div>
+    <div class="cart-page-content">
+      <div class="cart-items-section"><div id="cartPageItems"></div></div>
+      <div class="cart-summary-section">
+        <div class="cart-summary">
+          <h3 data-i18n="cartOrderSummary">Order Summary</h3>
+          <div class="summary-row"><span data-i18n="cartSubtotal">Subtotal:</span><span id="pageSubtotal">$0.00</span></div>
+          <div class="summary-row"><span data-i18n="cartTax">Tax (8.5%):</span><span id="pageTax">$0.00</span></div>
+          <div class="summary-row"><span data-i18n="cartShipping">Shipping:</span><span data-i18n="cartShippingFree">FREE</span></div>
+          <hr>
+          <div class="summary-row total"><span data-i18n="cartTotal">Total:</span><span id="pageTotal">$0.00</span></div>
+          <div class="checkout-section">
+            <button class="btn btn-primero btn-full" id="proceedCheckoutBtn"><i data-lucide="credit-card"></i> <span data-i18n="cartProceed">Proceed to Checkout</span></button>
+            <button class="btn btn-primero btn-full" id="pageClearCartBtn" data-i18n="cartClear">Clear Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="container-narrow" style="margin-top:96px">
+  <div class="card">
+    <div class="card-header">
+      <i data-lucide="pen-square"></i>
+      <h2 style="margin:0" data-i18n="blogWriteTitle">Escribe tu opinión</h2>
+    </div>
+    <div class="card-body">
+      <form id="postForm">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <label class="muted" data-i18n="blogVisibleName">Nombre a mostrar</label>
+            <input class="input" id="displayName" maxlength="60" placeholder="Tu nombre o seudónimo"/>
+          </div>
+          <div>
+            <label class="muted" data-i18n="blogPostTitle">Título</label>
+            <input class="input" id="title" maxlength="120" placeholder="Título de tu opinión" required/>
+          </div>
+        </div>
+        <label class="muted" data-i18n="blogPostContent">Contenido</label>
+        <textarea id="content" class="input" maxlength="5000" placeholder="Escribe aquí (máx. 5.000 caracteres)" required></textarea>
+        <div class="toolbar" style="margin-top:12px">
+          <label class="muted">
+            <input type="checkbox" id="acceptRules" required/>
+            <span data-i18n="blogAcceptRules">Acepto las normas de convivencia (sin insultos, spam ni enlaces sospechosos).</span>
+          </label>
+          <div style="display:flex;gap:8px">
+            <button type="button" class="btn-outline" id="previewBtn" data-i18n="blogPreview">Vista previa</button>
+            <button type="submit" class="btn-primary" id="publishBtn" data-i18n="blogPublish">Publicar</button>
+          </div>
+        </div>
+        <p id="formMsg" class="muted" style="margin-top:8px"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="card-header">
+      <i data-lucide="message-square"></i>
+      <h2 style="margin:0" data-i18n="blogPublicFeed">Opiniones recientes</h2>
+      <span class="chip" id="postCountChip">0</span>
+    </div>
+    <div class="card-body" id="postsList">
+      <div class="list-empty muted" data-i18n="blogEmpty">Aún no hay publicaciones. ¡Sé la primera persona en opinar!</div>
+    </div>
+    <div class="card-body" style="border-top:1px solid #eee">
+      <button class="btn-outline" id="loadMoreBtn" style="width:100%" data-i18n="blogLoadMore">Cargar más</button>
+    </div>
+  </div>
+</main>
+
+<script>
+  // ======= CART: core API (localStorage) =======
+  function getCart(){ try{ return JSON.parse(localStorage.getItem('cart'))||[] }catch{ return [] } }
+  function setCart(c){ localStorage.setItem('cart', JSON.stringify(c)); updateCartUI(); }
+
+  function addToCart(id, name, price, slug, quantity){
+    const cart = getCart();
+    const existing = cart.find(i=>i.id===id);
+    const image = (window.libros && window.libros[slug]?.image) || 'IMAGES/placeholder.png';
+    if(existing){ existing.quantity += quantity; } else { cart.push({id,name,price,slug,quantity,image}); }
+    setCart(cart);
+  }
+
+  function updateQuantity(index, change){
+    const cart = getCart();
+    if(!cart[index]) return;
+    cart[index].quantity += change;
+    if(cart[index].quantity <= 0){ cart.splice(index,1); }
+    setCart(cart);
+  }
+
+  function removeItem(index){ const cart = getCart(); cart.splice(index,1); setCart(cart); }
+  function clearCart(){ setCart([]); }
+
+  function updateCartUI(){
+    const cart = getCart();
+    const cartItems = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const subtotalEl = document.getElementById('cartSubtotal');
+    const taxEl = document.getElementById('cartTax');
+    const totalEl = document.getElementById('cartTotal');
+
+    if(cartItems){ cartItems.innerHTML=''; }
+    let subtotal = 0;
+    cart.forEach((item, idx)=>{
+      const itemTotal = item.price * item.quantity; subtotal += itemTotal;
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <div style="display:flex; align-items:center; gap:1rem;">
+          <img src="${item.image}" alt="cover" style="width:40px; height:auto; border-radius:4px;">
+          <div style="flex:1;">
+            <strong style="font-size:.9rem;">${item.name}</strong>
+            <p style="font-size:.8rem; color:#6b7280;">$${Number(item.price).toFixed(2)} <span data-i18n="cartEach">each</span></p>
+          </div>
+          <div style="display:flex; align-items:center; gap:.5rem;">
+            <button onclick="updateQuantity(${idx},-1)" style="padding:0 8px;" aria-label="-">−</button>
+            <span>${item.quantity}</span>
+            <button onclick="updateQuantity(${idx},1)" style="padding:0 8px;" aria-label="+">+</button>
+            <button onclick="removeItem(${idx})" style="background:none; border:none; cursor:pointer;" aria-label="Remove">
+              <i data-lucide="trash-2"></i>
+            </button>
+          </div>
+        </div>
+        <hr style="margin:.75rem 0;">
+      `;
+      if(cartItems){ cartItems.appendChild(div); }
+    });
+
+    const tax = subtotal * 0.085; const total = subtotal + tax;
+    if(subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+    if(taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
+    if(totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+    if(cartCount) cartCount.textContent = cart.reduce((s,i)=>s+i.quantity,0);
+
+    if(window.lucide){ lucide.createIcons(); }
+  }
+
+  function toggleCart(show){
+    const modal = document.getElementById('cartModal');
+    if(!modal) return;
+    const willShow = (typeof show === 'boolean') ? show : modal.getAttribute('aria-hidden') === 'true';
+    modal.style.display = willShow ? 'block' : 'none';
+    modal.setAttribute('aria-hidden', willShow ? 'false' : 'true');
+    if(willShow) updateCartUI();
+  }
+
+  function checkout(){ window.location.href = 'checkout.html'; }
+  function showMainPage(){ document.getElementById('cartPage').style.display='none'; }
+</script>
+
+<!-- Firebase Blog -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, limit, startAfter, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBuUHOPcSjO71G0fftwhvqQV3UMqjpJJZU",
+    authDomain: "escritora-yael.firebaseapp.com",
+    projectId: "escritora-yael",
+    storageBucket: "escritora-yael.firebasestorage.app",
+    messagingSenderId: "403131540905",
+    appId: "1:403131540905:web:687084531c4e1ad74590b8",
+    measurementId: "G-2QYFEYN0BG"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const accountLink = document.getElementById('accountLink');
+  onAuthStateChanged(auth, (user)=>{ if(user){ accountLink.href='account.html'; localStorage.setItem('userLoggedIn','true'); } else { accountLink.href='login.html'; localStorage.removeItem('userLoggedIn'); } });
+  async function ensureAuth(){ if(!auth.currentUser){ try{ await signInAnonymously(auth); }catch(e){ console.warn('Anon auth error', e); } } }
+  await ensureAuth();
+
+  const banned = ["http://","https://","viagra","xxx","porn","bitcoin","casino"];
+  const badwords = ["idiota","imbécil","estúpido","p***","m****","hpta","hdp"];
+  const RATE_MS = 2*60*1000;
+
+  const form = document.getElementById('postForm');
+  const displayNameEl = document.getElementById('displayName');
+  const titleEl = document.getElementById('title');
+  const contentEl = document.getElementById('content');
+  const formMsg = document.getElementById('formMsg');
+  const previewBtn = document.getElementById('previewBtn');
+  const publishBtn = document.getElementById('publishBtn');
+
+  function sanitize(s=""){ return s.replace(/[<>]/g, ""); }
+  function hasBanned(text){ const t = text.toLowerCase(); return banned.some(b=>t.includes(b)) || badwords.some(b=>t.includes(b)); }
+  function tooManyCaps(text){ const caps=(text.match(/[A-ZÁÉÍÓÚÑ]{3,}/g)||[]).length; return caps>10; }
+
+  previewBtn.addEventListener('click', ()=>{
+    const title = sanitize(titleEl.value.trim());
+    const content = sanitize(contentEl.value.trim());
+    if(!title || !content){ formMsg.textContent = window.t?.msgPreviewRequired || 'Completa título y contenido para ver la vista previa.'; return; }
+    alert(`${window.t?.preview || 'Vista previa:'}\n\n${title}\n\n${content.substring(0,800)}${content.length>800?'…':''}`);
+  });
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault(); formMsg.textContent='';
+    const name = sanitize(displayNameEl.value.trim() || (window.t?.guest || 'Invitado/a'));
+    const title = sanitize(titleEl.value.trim());
+    const content = sanitize(contentEl.value.trim());
+
+    if(!title || !content){ formMsg.textContent = window.t?.msgTitleContentRequired || 'Título y contenido son obligatorios.'; return; }
+    if(content.length < 30){ formMsg.textContent = window.t?.msgTooShort || 'Tu opinión es muy corta. Amplía un poco más (mín. 30 caracteres).'; return; }
+    if(hasBanned(`${title} ${content}`) || tooManyCaps(content)){
+      formMsg.innerHTML = `<span class='danger'>${window.t?.msgNotAllowed || 'Tu texto parece incluir contenido no permitido (enlaces sospechosos, insultos o abuso de MAYÚSCULAS).'}</span>`; return;
+    }
+
+    const last = Number(localStorage.getItem('lastPostTs')||'0');
+    if(Date.now()-last < RATE_MS){ const wait=Math.ceil((RATE_MS-(Date.now()-last))/1000); formMsg.textContent = (window.t?.msgWait||'Espera {s}s para volver a publicar.').replace('{s}', wait); return; }
+
+    await ensureAuth(); publishBtn.disabled = true;
+    try{
+      await addDoc(collection(db,'blogPosts'), { uid: auth.currentUser? auth.currentUser.uid:null, displayName: name, title, content, createdAt: serverTimestamp(), lang: (localStorage.getItem('lang')||'en'), status:'approved' });
+      form.reset(); localStorage.setItem('lastPostTs', String(Date.now())); formMsg.textContent = window.t?.msgPublished || '¡Publicado! Gracias por participar.';
+    }catch(err){ console.error(err); formMsg.textContent = window.t?.msgError || 'Hubo un error al publicar. Intenta de nuevo.'; }
+    finally{ publishBtn.disabled=false; }
+  });
+
+  const postsList = document.getElementById('postsList');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  const postCountChip = document.getElementById('postCountChip');
+  let pageSize=10; let lastVisible=null; let initialLoaded=false;
+
+  function appendPost(id, data){
+    if(data.status && data.status!=='approved') return;
+    const wrap=document.createElement('div'); wrap.className='post';
+    const dateStr = data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString() : '…';
+    wrap.innerHTML = `
+      <h3 class="post-title">${sanitize(data.title||'')}</h3>
+      <div class="post-meta">${sanitize(data.displayName|| (window.t?.guest||'Invitado/a'))} · ${dateStr}</div>
+      <div class="post-content">${sanitize(data.content||'')}</div>
+      <div class="toolbar" style="margin-top:10px">
+        <span class="muted">ID: ${id}</span>
+        <div id="postActions-${id}"></div>
+      </div>`;
+    postsList.appendChild(wrap);
+    postCountChip.textContent = String(Number(postCountChip.textContent)+1);
+  }
+
+  function updateEmptyState(){
+    if(postsList.children.length===0){ postsList.innerHTML = `<div class="list-empty muted" data-i18n="blogEmpty">${(window.t&&window.t.blogEmpty)||'Aún no hay publicaciones. ¡Sé la primera persona en opinar!'}</div>`; }
+    else { const empty=postsList.querySelector('.list-empty'); if(empty) empty.remove(); }
+  }
+
+  async function loadPage(){
+    let qy = query(collection(db,'blogPosts'), orderBy('createdAt','desc'), limit(pageSize));
+    if(lastVisible){ qy = query(collection(db,'blogPosts'), orderBy('createdAt','desc'), startAfter(lastVisible), limit(pageSize)); }
+    const snap = await getDocs(qy);
+    if(!snap.empty){ lastVisible = snap.docs[snap.docs.length-1]; for(const d of snap.docs){ appendPost(d.id, d.data()); } updateEmptyState(); }
+    else { loadMoreBtn.disabled = true; }
+  }
+
+  if(!initialLoaded){ initialLoaded=true; await loadPage(); }
+  loadMoreBtn.addEventListener('click', loadPage);
+</script>
+
+<!-- i18n: single source of truth -->
+<script>
+  window.t = {}; // runtime translations cache for quick access (messages)
+
+  async function loadLanguage(lang){
+    try{
+      const res = await fetch('lang.json');
+      const tr = await res.json();
+
+      // Save dictionary for messages we use in JS
+      window.t = Object.assign({}, tr[lang]||{});
+
+      // Translate inner texts
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(tr[lang] && tr[lang][key]){
+          // preserve icon if exists
+          const icon = el.querySelector('i');
+          if(icon){ el.innerHTML = icon.outerHTML + ' ' + tr[lang][key]; }
+          else { el.textContent = tr[lang][key]; }
+        }
+      });
+
+      // Translate placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+        const key = el.getAttribute('data-i18n-placeholder');
+        if(tr[lang] && tr[lang][key]){ el.placeholder = tr[lang][key]; }
+      });
+
+      // Update language button visuals
+      const langSpan = document.querySelector('.selected-lang span');
+      const langFlag = document.querySelector('.selected-lang img');
+      if(lang==='es'){ langSpan.textContent = 'ES'; langFlag.src='https://flagcdn.com/es.svg'; }
+      else { langSpan.textContent = 'EN'; langFlag.src='https://flagcdn.com/us.svg'; }
+
+      // Reflect language in radios
+      document.querySelectorAll('input[name="lang"]').forEach(inp=>{ inp.checked = (inp.value===lang); });
+
+      localStorage.setItem('lang', lang);
+
+    }catch(e){ console.warn('i18n error', e); }
+  }
+
+  document.addEventListener('DOMContentLoaded', async ()=>{
+    // lucide
+    if(window.lucide){ lucide.createIcons(); }
+
+    // Cart wiring
+    document.getElementById('cartToggleBtn').addEventListener('click', ()=> toggleCart(true));
+    document.getElementById('closeCartBtn').addEventListener('click', ()=> toggleCart(false));
+    document.getElementById('clearCartBtn').addEventListener('click', clearCart);
+    document.getElementById('pageClearCartBtn')?.addEventListener('click', clearCart);
+    document.getElementById('proceedCheckoutBtn')?.addEventListener('click', checkout);
+    document.getElementById('continueShoppingBtn')?.addEventListener('click', showMainPage);
+
+    updateCartUI();
+
+    // Keep cart count in sync if another tab changes it
+    window.addEventListener('storage', (e)=>{ if(e.key==='cart'){ updateCartUI(); } });
+
+    // Search behavior: store query so pagina-libros.html puede leerlo sí o sí
+    document.getElementById('searchForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const q = document.getElementById('searchInput').value.trim();
+      if(!q) return;
+      // Persist for target page (doble seguro)
+      localStorage.setItem('searchQuery', q);
+      localStorage.setItem('searchTime', String(Date.now()));
+      // Redirige con parámetro estándar
+      window.location.href = `pagina-libros.html?query=${encodeURIComponent(q)}`;
+    });
+
+    // Focus overlay for search
+    const searchInput = document.getElementById('searchInput');
+    const overlay = document.getElementById('searchOverlay');
+    let overlayVisible=false;
+    searchInput.addEventListener('focus', ()=>{ overlay.style.display='block'; overlayVisible=true; });
+    searchInput.addEventListener('blur', ()=>{ setTimeout(()=>{ overlay.style.display='none'; overlayVisible=false; }, 150); });
+    window.addEventListener('wheel', ()=>{ if(overlayVisible){ overlay.style.display='none'; overlayVisible=false; searchInput.blur(); } });
+
+    // Language overlay hover fix (id exists now)
+    const langSelector = document.getElementById('langSelector');
+    const languageOverlay = document.getElementById('languageOverlay');
+    langSelector.addEventListener('mouseenter', ()=>{ languageOverlay.style.display='block'; });
+    langSelector.addEventListener('mouseleave', ()=>{ setTimeout(()=>{ if(!langSelector.matches(':hover')){ languageOverlay.style.display='none'; } }, 200); });
+    languageOverlay.addEventListener('mouseenter', ()=>{ languageOverlay.style.display='block'; });
+    languageOverlay.addEventListener('mouseleave', ()=>{ languageOverlay.style.display='none'; });
+
+    // Load language without reloading page
+    const saved = localStorage.getItem('lang') || 'en';
+    await loadLanguage(saved);
+
+    document.querySelectorAll('.language-dropdown input[name="lang"]').forEach(input=>{
+      input.addEventListener('change', async (e)=>{
+        const v = e.target.value;
+        document.getElementById('loader-overlay').style.display='flex';
+        await loadLanguage(v); // translate in place
+        setTimeout(()=>{ document.getElementById('loader-overlay').style.display='none'; }, 400);
+      });
+    });
+  });
+
+  // Entry loader UX (kept from your version, but faster)
+  document.body.classList.add('loading');
+  window.addEventListener('load', ()=>{
+    const loader = document.getElementById('loaderOverlay');
+    setTimeout(()=>{ loader.style.transition='none'; loader.style.background='rgba(255,255,255,.7)'; loader.offsetHeight; loader.style.transition='opacity .6s ease'; }, 700);
+    setTimeout(()=>{ loader.style.opacity='0'; document.body.classList.remove('loading'); }, 1500);
+    setTimeout(()=>{ loader.remove(); }, 1800);
+  });
+</script>
+
+<script> if(window.lucide){ lucide.createIcons(); } </script>
+</body>
+</html>
