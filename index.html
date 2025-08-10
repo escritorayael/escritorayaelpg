@@ -445,6 +445,59 @@
   </div>
 </section>
 
+<script>
+/**
+ * Carrusel móvil: 4 imágenes distintas y sin textos/botones.
+ * Edita los paths del array mobileImages con tus imágenes para celular.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  if (!isMobile) return;
+
+  // 👉 ASIGNA AQUÍ TUS 4 IMÁGENES MÓVILES (en el orden de los 4 slides)
+  const mobileImages = [
+    'IMAGES/banner MOBILE.png', // Slide 1 (ejemplo)
+    'IMAGES/banner MOBILE 1.png', // Slide 2 (ejemplo)
+    'IMAGES/banner MOBILE 2.png', // Slide 3 (ejemplo)
+    'IMAGES/banner MOBILE 3.png'  // Slide 4 (ejemplo)
+  ];
+
+  // 1) Reemplazar imágenes por sus versiones móviles
+  const slides = document.querySelectorAll('.carousel-fade-slide');
+  slides.forEach((slide, i) => {
+    const picture = slide.querySelector('picture');
+    const img = slide.querySelector('img');
+
+    // Quitar <source> para evitar que sobrescriba el src en móviles
+    if (picture) {
+      picture.querySelectorAll('source').forEach(s => s.remove());
+    }
+
+    // Setear la imagen móvil correspondiente (si existe)
+    if (img && mobileImages[i]) {
+      img.src = mobileImages[i];
+      img.srcset = ''; // Limpia posibles srcset previos
+      img.removeAttribute('srcset');
+      img.loading = 'eager'; // Evita parpadeo al cargar
+      img.decoding = 'sync';
+      // Opcional: ajustar alt si quieres un texto distinto
+      // img.alt = `Slide ${i+1} - móvil`;
+    }
+  });
+
+  // 2) Remover captions por completo (no solo ocultar) para que no aparezcan
+  document.querySelectorAll('.carousel-fade-caption').forEach(c => c.remove());
+
+  // 3) Ocultar flechas por si tu CSS las muestra en otros breakpoints
+  document.querySelectorAll('.carousel-arrow').forEach(a => {
+    a.style.display = 'none';
+    a.style.visibility = 'hidden';
+    a.style.pointerEvents = 'none';
+  });
+});
+</script>
+
+
 <section style="background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 2rem; margin: 2rem auto; width: 100%; height: 15rem; text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.1); font-family: Arial, sans-serif; margin-bottom: 0 !important;">
   <h2 style="font-size: 2rem; margin-bottom: 1rem;">🚧 Página Todavía en Construcción!!!</h2>
   <p style="font-size: 1.1rem;">Estamos trabajando para ofrecerte la mejor experiencia. ¡Muy pronto estará disponible!</p>
@@ -526,7 +579,7 @@
     <div style="flex: 1; height: 1px; background-color: #ccc; margin-left: 20px;"></div>
   </div>
 
-   <div class="distributors-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 0 20px;">
+  <div class="distributors-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 0 20px;">
   <a href="https://www.amazon.com/stores/author/B0CTTQ1X8C/allbooks?ingress=0&visitId=c146c036-f45e-40fc-834b-f36d50ce9c03&ref_=ap_rdr&ccs_id=fad4e1ac-15b8-48bf-bf20-2c1fd14c3383" target="_blank">
     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="height: 40px;">
   </a>
@@ -579,6 +632,7 @@
     <img src="IMAGES/fable_Logo.png" alt="Fable" style="height: 100px; margin-top: -2rem !important;">
   </a>
 </div>
+
 </section>
 
 
@@ -619,6 +673,7 @@
     </div>
   </div>
 </footer>
+
     </div>
     
 <script>
@@ -1038,5 +1093,3 @@ function closeMenu() {
       <script src="product-page.js"></script>
 </body>
 </html>
-
-
