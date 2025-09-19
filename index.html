@@ -167,6 +167,45 @@
   }
 }
 
+  /* --- PRIORIDAD: que los libros sean clicables en móvil --- */
+  .carousel-fade-section,
+  .carousel-fade-container {
+    position: relative !important;
+    z-index: 0 !important;              /* el carrusel no debe estar por encima del grid */
+  }
+
+  /* Los libros van por encima de cualquier remanente del carrusel */
+  .books-section {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  /* Si por CSS externo el carrusel tuviera overflow raro, evitamos superposición visual */
+  .carousel-fade-container {
+    overflow: hidden;                    /* nada del carrusel sobresale hacia abajo */
+  }
+
+  /* --- Overlays: cuando están ocultos NO deben capturar toques --- */
+  #searchOverlay,
+  #searchOverlayMobile,
+  #languageOverlay,
+  #menuOverlay {
+    display: none;                       /* estado inicial */
+    pointer-events: none;                /* aunque por error queden visibles, no comen taps */
+  }
+
+  /* Cuando se muestren explícitamente, sí aceptan interacción */
+  #searchOverlay[aria-hidden="false"],
+  #searchOverlayMobile[aria-hidden="false"],
+  #languageOverlay[aria-hidden="false"],
+  #menuOverlay[aria-hidden="false"] {
+    pointer-events: auto;
+  }
+
+  /* Flechas del carrusel ya estaban desactivadas en móvil, reforzamos */
+  .carousel-arrow {
+    pointer-events: none !important;
+  }
 
 </style>
 <body>
@@ -1079,6 +1118,50 @@ function closeMenu() {
 
   // Avance automático
   setInterval(nextSlide, 10000); // cada 10 segundos
+</script>
+
+<script>
+  // Función utilitaria: ocultar y desactivar overlays de forma segura
+  function hideOverlaySafe(el) {
+    if (!el) return;
+    el.style.display = 'none';
+    el.setAttribute('aria-hidden', 'true');
+  }
+
+  // Obtiene referencias (si existen)
+  const _searchOverlay        = document.getElementById('searchOverlay');
+  const _searchOverlayMobile  = document.getElementById('searchOverlayMobile');
+  const _languageOverlayFix   = document.getElementById('languageOverlay');
+  const _menuOverlayFix       = document.getElementById('menuOverlay');
+
+  // Al cargar, marcamos como ocultos y sin eventos
+  hideOverlaySafe(_searchOverlay);
+  hideOverlaySafe(_searchOverlayMobile);
+  hideOverlaySafe(_languageOverlayFix);
+  hideOverlaySafe(_menuOverlayFix);
+
+  // Si algún script los muestra, que lo haga usando aria-hidden="false"
+  // Ejemplo: para abrirlos, usar: el.style.display = 'block'; el.setAttribute('aria-hidden','false');
+
+  // En móvil, si cambia orientación/tamaño, cerramos cualquier overlay “pegado”
+  ['resize', 'orientationchange'].forEach(evt => {
+    window.addEventListener(evt, () => {
+      hideOverlaySafe(_searchOverlay);
+      hideOverlaySafe(_searchOverlayMobile);
+      hideOverlaySafe(_languageOverlayFix);
+      hideOverlaySafe(_menuOverlayFix);
+      // Rehabilita el scroll por si quedó bloqueado
+      document.body.style.overflow = '';
+    }, { passive: true });
+  });
+
+  // Extra: por si el carrusel tuviera un contenedor con z-index alto definido en CSS externo:
+  (function lowerCarouselZIndex() {
+    const sec = document.querySelector('.carousel-fade-section');
+    const con = document.querySelector('.carousel-fade-container');
+    if (sec) sec.style.zIndex = '0';
+    if (con) { con.style.zIndex = '0'; con.style.overflow = 'hidden'; }
+  })();
 </script>
 
 
