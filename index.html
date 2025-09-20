@@ -207,6 +207,73 @@
     pointer-events: none !important;
   }
 
+/* ----- FLECHAS DEL CARRUSEL (DESKTOP) ----- */
+.carousel-fade-container {
+  position: relative;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: auto !important; /* re-habilita clics */
+  cursor: pointer;
+  z-index: 5;
+  font-size: 38px;
+  line-height: 1;
+  user-select: none;
+  background: transparent;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: opacity .2s ease, background .2s ease;
+}
+
+
+.left-arrow { left: 16px; }
+.right-arrow { right: 16px; }
+
+/* Ocultar flechas en móvil */
+@media (max-width: 768px) {
+  .carousel-arrow {
+    display: none !important;
+    pointer-events: none !important;
+  }
+}
+
+/* ====== BOOKS: portadas proporcionadas y con separación exacta ====== */
+.books-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 40px;                      /* separación uniforme entre todos */
+  justify-items: center;
+  align-items: end;               /* bases alineadas */
+}
+
+.book-card{
+  width: 170px;                   /* ancho del “marco” */
+  height: 260px;                  /* ALTO UNIFICADO de todas las portadas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.book-card img{
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;            /* encaja sin recortes ni deformación */
+  display: block;
+}
+
+/* Responsive: en móviles reducimos un poco el marco */
+@media (max-width: 768px){
+  .books-grid{ gap: 28px; }
+  .book-card{ width: 150px; height: 230px; }
+}
+
+
 </style>
 <body>
 <div id="languageOverlay"></div>
@@ -445,35 +512,35 @@
 </div>
 
     <div class="carousel-fade-slide">
-  <a href="product-page.html?producto=encuentros-casuales">
+  <a href="book-details.html?book=encuentros-casuales">
     <img src="IMAGES/banner yael (1).png" alt="Slide 2">
   </a>
   <div class="carousel-fade-caption">
     <h2>Encuentros Casuales</h2>
     <p>La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
-    <a href="product-page.html?producto=encuentros-casuales" class="btn btn-primary" data-i18n="seemore">See More</a>
+    <a href="book-details.html?book=encuentros-casuales" class="btn btn-primary" data-i18n="seemore">See More</a>
   </div>
 </div>
 
     <div class="carousel-fade-slide">
-  <a href="product-page.html?producto=cuando-todo-calla">
+  <a href="book-details.html?book=cuando-todo-calla">
     <img src="IMAGES/banner yael (2).png" alt="Slide 3">
   </a>
   <div class="carousel-fade-caption">
     <h2>Cuando Todo Calla</h2>
     <p>Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
-    <a href="product-page.html?producto=cuando-todo-calla" class="btn btn-primary" data-i18n="seemore">See More</a>
+    <a href="book-details.html?book=cuando-todo-calla" class="btn btn-primary" data-i18n="seemore">See More</a>
   </div>
 </div>
 
    <div class="carousel-fade-slide">
-  <a href="product-page.html?producto=nombre-de-ella">
+  <a href="book-details.html?book=nombre-de-ella">
     <img src="IMAGES/banner yael (3).png" alt="Slide 4">
   </a>
   <div class="carousel-fade-caption">
     <h2>En el Nombre de Ella</h2>
     <p>Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
-    <a href="product-page.html?producto=nombre-de-ella" class="btn btn-primary" data-i18n="seemore">See More</a>
+<a href="book-details.html?book=nombre-de-ella" class="btn btn-primary" data-i18n="seemore">See More</a>
   </div>
 </div>
 
@@ -546,61 +613,50 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
   
-  <div class="books-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
-    <!-- Libro 1 -->
-    <a href="product-page.html?producto=cuando-todo-calla" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/cuando todo calla book.png" alt="Cuando Todo Calla" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">Cuando Todo Calla</h3>
-    </a>
+  <div class="books-grid">
+  <a class="book-card" href="book-details.html?book=cuando-todo-calla">
+    <img src="IMAGES/cuando todo calla book.png" alt="Cuando Todo Calla" loading="lazy">
+  </a>
 
-    <!-- Libro 2 -->
-    <a href="product-page.html?producto=nombre-de-ella" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/en el nombre de ella book.png" alt="En el Nombre de Ella" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">En el Nombre de Ella</h3>
-    </a>
+  <a class="book-card" href="book-details.html?book=nombre-de-ella">
+    <img src="IMAGES/en el nombre de ella book.png" alt="En el Nombre de Ella" loading="lazy">
+  </a>
 
-    <!-- Libro 3 -->
-    <a href="product-page.html?producto=amina-defiance" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/amina book.png" alt="Amina: La Princesa Rebelde" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">Amina - La Princesa Rebelde</h3>
-    </a>
+  <a class="book-card" href="book-details.html?book=amina-defiance">
+    <img src="IMAGES/amina book.png" alt="Amina: La Princesa Rebelde" loading="lazy">
+  </a>
 
-    <!-- Libro 4 -->
-    <a href="product-page.html?producto=destinos-entrelazados" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/destinos entrelazados.png" alt="Destinos EntreLazados" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">Destinos EntreLazados</h3>
-    </a>
+  <a class="book-card" href="book-details.html?book=destinos-entrelazados">
+    <img src="IMAGES/destinos entrelazados.png" alt="Destinos Entrelazados" loading="lazy">
+  </a>
 
-    <!-- Libro 5 -->
-    <a href="product-page.html?producto=jaque-a-la-reina" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/jaque reina book.png" alt="Jaque a la Reina" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">Jaque a la Reina</h3>
-    </a>
+  <a class="book-card" href="book-details.html?book=jaque-a-la-reina">
+    <img src="IMAGES/jaque reina book.png" alt="Jaque a la Reina" loading="lazy">
+  </a>
 
-    <!-- Libro 6 -->
-    <a href="product-page.html?producto=identidades-ocultas" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/identidades ocultas book.png" alt="Identidades Ocultas" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">Identidades Ocultas</h3>
-    </a>
+  <a class="book-card" href="book-details.html?book=identidades-ocultas">
+    <img src="IMAGES/identidades ocultas book.png" alt="Identidades Ocultas" loading="lazy">
+  </a>
 
-    <!-- Libro 7 -->
-    <a href="product-page.html?producto=encuentros-casuales" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/encuentros casuales book.png" alt="Encuentros Casuales" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">Encuentros Casuales</h3>
-    </a>
+  <a class="book-card" href="book-details.html?book=encuentros-casuales">
+    <img src="IMAGES/encuentros casuales book.png" alt="Encuentros Casuales" loading="lazy">
+  </a>
 
-    <!-- Libro 8 -->
-    <a href="product-page.html?producto=sobrevivir-a-la-vida" style="text-decoration: none; color: inherit;">
-      <img src="IMAGES/sobrevivir vida book.png" alt="Sobrevivir a la Vida" style="width: 160px; height: auto;">
-      <h3 style="margin-top: 10px;">Sobrevivir a la Vida</h3>
-    </a>
-  </div>
+  <a class="book-card" href="book-details.html?book=sobrevivir-a-la-vida">
+    <img src="IMAGES/sobrevivir vida book.png" alt="Sobrevivir a la Vida" loading="lazy">
+  </a>
+</div>
+
 
   <!-- Botón "See More Titles" -->
   <div style="margin-top: 50px;">
-    <a href="pagina-libros.html" class="btn btn-segundo" style="padding: 10px 20px; border: 1px solid #000; display: inline-block;">
-      SEE MORE TITLES
-    </a>
+<a href="pagina-libros.html"
+   class="btn btn-segundo"
+   style="padding: 10px 20px; margin-bottom: -4rem !important;border: 1px solid #000; display: inline-block;"
+   data-i18n="seeMoreTitlesBtn">
+  SEE MORE TITLES
+</a>
+
   </div>
 </section>
 
