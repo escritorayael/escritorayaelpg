@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="pageTitle">Book</title>
+  <link rel="icon" href="IMAGES/Imagen de WhatsApp 2025-07-05 a las 16.04.10_4774b179.jpg" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    body { background:#fff; color:#333; }
+    .wrap { max-width:1180px; margin:60px auto; padding:0 20px; display:grid; grid-template-columns: 1.1fr 0.9fr; gap:48px; align-items:start; }
+    .eyebrow { letter-spacing:.12em; font-size:12px; color:#6b6b6b; margin:4px 0 16px; text-transform:uppercase; }
+    h1 { font-family: "Georgia", serif; font-size:42px; line-height:1.1; margin:0 0 6px; }
+    h2.sub { font-size:20px; color:#7a5c53; margin:0 0 28px; font-weight:500; }
+    .copy p { line-height:1.8; margin:14px 0; font-size:16px; color:#3e3e3e; }
+    .book-figure { display:flex; justify-content:center; }
+    .book-figure img { width:min(420px, 90%); height:auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,.25)); }
+    .section { margin-top:28px; }
+    .cta-row { margin-top:28px; display:flex; gap:12px; flex-wrap:wrap; }
+    .btn { border:1px solid #482922; color:#482922; padding:10px 16px; text-decoration:none; font-size:14px; }
+    .btn.primary { background:#482922; color:#fff; border-color:#482922; }
+    @media (max-width: 900px) {
+      .wrap { grid-template-columns: 1fr; }
+      .book-figure { order:-1; margin-bottom:8px; }
+    }
+
+    /* ====== Estilos necesarios para el NAVBAR idéntico ====== */
+    .language-selector{position:relative;display:inline-block;margin-left:1rem;font-size:14px;cursor:pointer}
+    .selected-lang{display:flex;align-items:center;margin-left:2rem!important;margin-right:-8rem!important;gap:6px;padding:5px 10px;border-radius:1px;background-color:transparent;color:#482922}
+    .selected-lang:hover + .language-dropdown,.language-dropdown:hover{display:block}
+    .flag-icon{width:18px;height:auto}
+    .language-dropdown{display:none;position:absolute;top:100%;left:0;background-color:#fff;color:#000;border-radius:4px;box-shadow:0 4px 8px rgba(0,0,0,.1);padding:10px;z-index:999;white-space:nowrap;min-width:160px}
+    .language-dropdown label{display:flex;align-items:center;gap:6px;padding:5px;cursor:pointer}
+    .language-dropdown input{margin:0}
+    .selected-lang:hover + .language-dropdown{display:block;animation:fadeInLang .0s ease .1s forwards;opacity:0;pointer-events:none}
+    @keyframes fadeInLang{to{opacity:1;pointer-events:auto}}
+
+    #languageOverlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);z-index:100;display:none}
+
+    /* Overlays base */
+    #searchOverlay,#searchOverlayMobile,#languageOverlay,#menuOverlay{display:none;pointer-events:none}
+    #searchOverlay[aria-hidden="false"],#searchOverlayMobile[aria-hidden="false"],#languageOverlay[aria-hidden="false"],#menuOverlay[aria-hidden="false"]{pointer-events:auto}
+
+    /* Asegurar que el carrusel (si lo hubiera) no interfiera con clics sobre libros */
+    .carousel-fade-section,.carousel-fade-container{position:relative!important;z-index:0!important}
+    .books-section{position:relative!important;z-index:2!important}
+    .carousel-fade-container{overflow:hidden}
+    .carousel-arrow{pointer-events:none!important}
+  </style>
+</head>
+<body>
+
+  <!-- Overlay de idioma requerido por el navbar -->
+  <div id="languageOverlay"></div>
+
+  <!-- ====== NAVBAR (idéntico al de index) ====== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-content">
+        <!-- Ícono toggle ≣ -->
+        <button id="menuToggle" class="menu-toggle">
+          <span class="toggle-icon">
+            <span class="bar bar1"></span>
+            <span class="bar bar2"></span>
+            <span class="bar bar3"></span>
+          </span>
+        </button>
+
+<a href="index.html" class="logo" aria-label="Ir al inicio">Yael Goldmann</a>
+
+        <div class="amazon-searchbar">
+          <form id="searchForm">
+            <select class="search-category">
+              <option value="all" data-i18n="searchAll">All</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" />
+            <button type="submit">
+              <i data-lucide="search"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="language-selector">
+          <div class="selected-lang">
+            <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon" />
+            <span>EN</span>
+            <i data-lucide="chevron-down"></i>
+          </div>
+          <div class="language-dropdown">
+            <label>
+              <input type="radio" name="lang" value="en" checked />
+              English - EN
+            </label>
+            <label>
+              <input type="radio" name="lang" value="es" />
+              Español - ES
+            </label>
+          </div>
+        </div>
+
+        <!-- Búsqueda móvil -->
+        <button id="mobileSearchBtn" class="mobile-search-button">
+          <i data-lucide="search"></i>
+        </button>
+
+        <div class="nav-links">
+          <a href="pagina-libros.html" data-i18n="navBooks">Books</a>
+          <a href="about.html" data-i18n="navAbout">About</a>
+          <a href="blog.html" data-i18n="navBlog">Blog</a>
+          <a id="accountLink" href="login.html" class="nav-icon-button" title="My Account / Login">
+            <i data-lucide="user"></i>
+          </a>
+          <button class="cart-toggle" onclick="toggleCart()">
+            <i data-lucide="shopping-cart"></i>
+            <span class="cart-count" id="cartCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Overlays y contenedores del navbar -->
+  <div id="searchOverlay"></div>
+  <div id="searchOverlayMobile"></div>
+
+  <!-- Buscador móvil desplegable -->
+  <div id="mobileSearchContainer" class="mobile-search-container">
+    <form id="mobileSearchForm">
+      <select class="search-category">
+        <option value="all" data-i18n="searchAll">All</option>
+      </select>
+      <input type="text" id="mobileSearchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" />
+      <button type="submit">
+        <i data-lucide="search"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Overlay del menú y menú lateral -->
+  <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+
+  <div id="mobileMenu" class="mobile-menu">
+    <div class="menu-header">
+      <span class="menu-title" data-i18n="menu_toggle">Menú</span>
+    </div>
+    <hr style="margin: 1rem 0; border: none; border-top: 1px solid #482922; margin-top: -1rem !important;">
+    <ul class="menu-links">
+      <li><a href="pagina-libros.html" data-i18n="navBooks">Books</a></li>
+      <li><a href="about.html" data-i18n="navAbout">About</a></li>
+      <li><a href="blog.html" data-i18n="navBlog">Blog</a></li>
+    </ul>
+
+    <!-- Selector de idioma en móvil dentro del menú -->
+    <div class="mobile-language-selector">
+      <div class="selected-lang">
+        <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon" />
+        <span>EN</span>
+        <i data-lucide="chevron-down"></i>
+      </div>
+      <div class="language-dropdown">
+        <label>
+          <input type="radio" name="lang" value="en" checked />
+          English - EN
+        </label>
+        <label>
+          <input type="radio" name="lang" value="es" />
+          Español - ES
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Cart Modal (necesario porque el navbar incluye carrito) ====== -->
+  <div id="cartModal" class="cart-modal">
+    <div class="cart-modal-content">
+      <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <button class="close-cart" onclick="toggleCart()">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="cart-body" id="cartItems"></div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <div class="total-row">
+            <span>Subtotal:</span>
+            <span id="cartSubtotal">$0.00</span>
+          </div>
+          <div class="total-row">
+            <span>Tax (8.5%):</span>
+            <span id="cartTax">$0.00</span>
+          </div>
+          <div class="total-row total-final">
+            <span>Total:</span>
+            <span id="cartTotal">$0.00</span>
+          </div>
+        </div>
+        <div class="cart-actions">
+          <button class="btn btn-primero" onclick="clearCart()">Clear Cart</button>
+          <button class="btn btn-primero" onclick="checkout()" id="checkoutBtn">
+            <i data-lucide="credit-card"></i>
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- (Opcional) Vista de carrito en página; permanece oculta salvo que tú la uses -->
+  <div id="cartPage" class="cart-page" style="display: none;">
+    <div class="cart-page-container">
+      <div class="cart-page-header">
+        <h1>Your Shopping Cart</h1>
+        <button class="btn btn-outline" onclick="showMainPage()">
+          <i data-lucide="arrow-left"></i>
+          Continue Shopping
+        </button>
+      </div>
+      <div class="cart-page-content">
+        <div class="cart-items-section">
+          <div id="cartPageItems"></div>
+        </div>
+        <div class="cart-summary-section">
+          <div class="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="pageSubtotal">$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (8.5%):</span>
+              <span id="pageTax">$0.00</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping:</span>
+              <span>FREE</span>
+            </div>
+            <hr>
+            <div class="summary-row total">
+              <span>Total:</span>
+              <span id="pageTotal">$0.00</span>
+            </div>
+            <div class="checkout-section">
+              <button class="btn btn-primero btn-full" onclick="checkout()">
+                <i data-lucide="credit-card"></i>
+                Proceed to Checkout
+              </button>
+              <button class="btn btn-primero btn-full" onclick="clearCart()">Clear Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CONTENIDO ORIGINAL DE book-details (sin cambios) ====== -->
+  <div class="wrap">
+    <div class="copy">
+      <div class="eyebrow" id="release"></div>
+      <h1 id="title">Title</h1>
+      <h2 class="sub" id="tagline">Change Your Fate Or Kneel To It</h2>
+
+      <div id="description">
+        <!-- párrafos inyectados desde JS -->
+      </div>
+
+      <div class="section cta-row" id="ctaRow">
+        <!-- botones opcionales (comprar, leer más, etc.) -->
+      </div>
+    </div>
+
+    <figure class="book-figure">
+      <img id="cover" src="" alt="Book cover"/>
+    </figure>
+  </div>
+
+  <!-- DISTRIBUCIÓN (sin cambios) -->
+  <section id="available" style="text-align: center; padding: 60px 0;">
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 40px;">
+      <div style="flex: 1; height: 1px; background-color: #ccc; margin-right: 20px;"></div>
+      <h2 class="section-title" style="font-size: 24px; margin: 0;" data-i18n="availableOn">Available At</h2>
+      <div style="flex: 1; height: 1px; background-color: #ccc; margin-left: 20px;"></div>
+    </div>
+
+    <div class="distributors-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 0 20px;">
+      <a href="https://www.amazon.com/stores/author/B0CTTQ1X8C/allbooks?ingress=0&visitId=c146c036-f45e-40fc-834b-f36d50ce9c03&ref_=ap_rdr&ccs_id=fad4e1ac-15b8-48bf-bf20-2c1fd14c3383" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="height: 40px;">
+      </a>
+      <a href="https://play.google.com/store/search?q=yael+goldmann&c=books" target="_blank">
+        <img src="IMAGES/Google-Play-Logo.png" alt="Google Play" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.barnesandnoble.com/s/%22Yael%20Goldmann%22?Ntk=P_key_Contributor_List&Ns=P_Sales_Rank&Ntx=mode+matchall" target="_blank">
+        <img src="IMAGES/barnes-and-noble-logo.png" alt="Barnes & Noble" style="height: 40px;">
+      </a>
+      <a href="https://www.kobo.com" target="_blank">
+        <img src="IMAGES/rakuten-kobo-logo.png" alt="Rakuten Kobo" style="height: 140px; margin-top: -3rem !important;">
+      </a>
+      <a href="https://books.apple.com" target="_blank">
+        <img src="IMAGES/Apple-Books-Logo.png" alt="Apple Books" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.everand.com" target="_blank">
+        <img src="IMAGES/logo-everand-2x.png" alt="Everand" style="height: 40px;">
+      </a>
+      <a href="https://mytolino.com" target="_blank">
+        <img src="IMAGES/tolino-logo.png" alt="Tolino" style="height: 70px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.overdrive.com/search?q=yael+goldmann" target="_blank">
+        <img src="IMAGES/overdrive-logo.png" alt="OverDrive" style="height: 40px;">
+      </a>
+      <a href="https://www.yourcloudlibrary.com" target="_blank">
+        <img src="IMAGES/CloudLibrary-Logo-v2.png" alt="CloudLibrary" style="height: 70px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.baker-taylor.com" target="_blank">
+        <img src="IMAGES/bakertaylor-logo.png" alt="Baker & Taylor" style="height: 40px;">
+      </a>
+      <a href="https://www.hoopladigital.com" target="_blank">
+        <img src="IMAGES/Hoopla-Logo.png" alt="Hoopla" style="height: 40px;">
+      </a>
+      <a href="https://www.odilo.us" target="_blank">
+        <img src="IMAGES/odilo-logo.png" alt="Odilo" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.vivlio.com" target="_blank">
+        <img src="IMAGES/Logo_Vivlio.png" alt="Vivlio" style="height: 40px;">
+      </a>
+      <a href="https://www.borrowbox.com" target="_blank">
+        <img src="IMAGES/Borrowbox2.png" alt="BorrowBox" style="height: 40px;">
+      </a>
+      <a href="https://www.smashwords.com/profile/view/YaelGoldmann" target="_blank">
+        <img src="IMAGES/Smashwords-logo.png" alt="Smashwords" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://thepalaceproject.org/marketplace/" target="_blank">
+        <img src="IMAGES/Palace-Marketplace-1.png" alt="Palace Marketplace" style="height: 40px;">
+      </a>
+      <a href="https://fable.co" target="_blank">
+        <img src="IMAGES/fable_Logo.png" alt="Fable" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer (sin cambios) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <h3 class="footer-title">Yael Goldmann</h3>
+        <p class="footer-tagline" data-i18n="footerTagline">
+          Crafting stories that inspire, entertain, and transform
+        </p>
+        <div class="footer-links">
+          <a href="https://www.threads.com/@coach_yael_goldmann" aria-label="Threads">
+            <img src="IMAGES/threads-icon.png" class="icon-threads" alt="Threads" style="width: auto; height: 20px;">
+          </a>
+          <a href="https://www.instagram.com/coach_yael_goldmann/" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+          <a href="https://www.facebook.com/share/14GsERkFrrD/" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
+        </div>
+        <p class="footer-copyright" data-i18n="footerCopyright">
+          © 2025 Yael Goldmann. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====== SCRIPTS necesarios para el navbar idéntico ====== -->
+
+  <!-- Mostrar/Ocultar navbar al hacer scroll (igual al index) -->
+  <script>
+    let lastScrollTop = 0;
+    const navbar = document.querySelector('.navbar');
+
+    window.addEventListener('scroll', function () {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop) {
+        navbar.style.top = '-80px';
+      } else {
+        navbar.style.top = '0';
+      }
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+  </script>
+
+  <!-- Firebase Auth para accountLink (igual al index) -->
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBuUHOPcSjO71G0fftwhvqQV3UMqjpJJZU",
+      authDomain: "escritora-yael.firebaseapp.com",
+      projectId: "escritora-yael",
+      storageBucket: "escritora-yael.firebasestorage.app",
+      messagingSenderId: "403131540905",
+      appId: "1:403131540905:web:687084531c4e1ad74590b8",
+      measurementId: "G-2QYFEYN0BG"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const accountLink = document.getElementById("accountLink");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        accountLink.href = "account.html";
+        localStorage.setItem("userLoggedIn", "true");
+      } else {
+        accountLink.href = "login.html";
+        localStorage.removeItem("userLoggedIn");
+      }
+    });
+  </script>
+
+  <!-- Búsqueda desktop -->
+  <script>
+    document.getElementById("searchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const query = document.getElementById("searchInput").value.trim();
+      if (query !== "") {
+        window.location.href = `pagina-libros.html?query=${encodeURIComponent(query)}`;
+      }
+    });
+  </script>
+
+  <!-- Overlay de idioma + hover idéntico -->
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const searchOverlay = document.getElementById("searchOverlay");
+    const languageOverlay = document.getElementById("languageOverlay");
+
+    const langButton = document.querySelector('.language-selector .selected-lang');
+    const langDropdown = document.querySelector('.language-selector .language-dropdown');
+
+    let searchOverlayVisible = false;
+    let langHoverTimeout;
+
+    // Buscador: muestra overlay al enfocar
+    searchInput.addEventListener("focus", () => {
+      searchOverlay.style.display = "block";
+      searchOverlayVisible = true;
+    });
+    searchInput.addEventListener("blur", () => {
+      setTimeout(() => {
+        searchOverlay.style.display = "none";
+        searchOverlayVisible = false;
+      }, 150);
+    });
+    window.addEventListener("wheel", () => {
+      if (searchOverlayVisible) {
+        searchOverlay.style.display = "none";
+        searchOverlayVisible = false;
+        searchInput.blur();
+      }
+    });
+
+    // Idioma: overlay con hover retrasado
+    function showLangOverlay() {
+      languageOverlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+    function hideLangOverlay() {
+      languageOverlay.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    langButton.addEventListener('mouseenter', () => {
+      langHoverTimeout = setTimeout(() => { showLangOverlay(); }, 100);
+    });
+    langButton.addEventListener('mouseleave', () => {
+      clearTimeout(langHoverTimeout);
+      setTimeout(() => {
+        if (!langDropdown.matches(':hover') && !langButton.matches(':hover')) hideLangOverlay();
+      }, 300);
+    });
+    langDropdown.addEventListener('mouseleave', () => {
+      setTimeout(() => {
+        if (!langDropdown.matches(':hover') && !langButton.matches(':hover')) hideLangOverlay();
+      }, 300);
+    });
+    langDropdown.addEventListener('mouseenter', () => { clearTimeout(langHoverTimeout); });
+  </script>
+
+  <!-- LOADER usado al cambiar idioma (idéntico al index) -->
+  <div id="loader-overlay" style="display: none;">
+    <div class="loader-wrapper">
+      <div class="loader"></div>
+    </div>
+  </div>
+
+  <!-- Carga de idioma con lang.json (idéntico al index) -->
+  <script>
+    const loadLanguage = async (lang) => {
+      const response = await fetch('lang.json');
+      const translations = await response.json();
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang] && translations[lang][key]) {
+          if (el.querySelector("i")) {
+            const iconHTML = el.querySelector("i").outerHTML;
+            el.innerHTML = `${iconHTML} ${translations[lang][key]}`;
+          } else {
+            el.innerText = translations[lang][key];
+          }
+        }
+      });
+
+      const placeholderKeys = ["firstName", "lastName", "email", "subject", "message"];
+      placeholderKeys.forEach(id => {
+        const input = document.getElementById(id);
+        if (input && translations[lang][id]) input.placeholder = translations[lang][id];
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(input => {
+        const key = input.getAttribute("data-i18n-placeholder");
+        if (translations[lang] && translations[lang][key]) {
+          input.placeholder = translations[lang][key];
+        }
+      });
+
+      document.querySelectorAll("option[data-i18n]").forEach(option => {
+        const key = option.getAttribute("data-i18n");
+        if (translations[lang] && translations[lang][key]) {
+          option.textContent = translations[lang][key];
+        }
+      });
+
+      const langSpan = document.querySelector(".language-selector .selected-lang span");
+      const langFlag = document.querySelector(".language-selector .selected-lang img");
+      if (lang === "es") {
+        langSpan.textContent = "ES";
+        langFlag.src = "https://flagcdn.com/es.svg";
+      } else {
+        langSpan.textContent = "EN";
+        langFlag.src = "https://flagcdn.com/us.svg";
+      }
+
+      localStorage.setItem("lang", lang);
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedLang = localStorage.getItem("lang") || "en";
+      loadLanguage(savedLang);
+
+      const inputToCheck = document.querySelector(`.language-selector input[name="lang"][value="${savedLang}"]`);
+      if (inputToCheck) inputToCheck.checked = true;
+
+      document.querySelectorAll('.language-dropdown input[name="lang"]').forEach(input => {
+        input.addEventListener("change", e => {
+          const selectedLang = e.target.value;
+          const loader = document.getElementById('loader-overlay');
+          if (loader) loader.style.display = 'flex';
+          localStorage.setItem("lang", selectedLang);
+          setTimeout(() => { location.reload(); }, 800);
+        });
+      });
+    });
+  </script>
+
+  <!-- Menú móvil (idéntico) -->
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    let menuOpen = false;
+
+    menuToggle.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      mobileMenu.classList.toggle('open', menuOpen);
+      menuOverlay.style.display = menuOpen ? 'block' : 'none';
+      document.body.style.overflow = menuOpen ? 'hidden' : '';
+      menuToggle.classList.toggle('open', menuOpen);
+    });
+
+    function closeMenu() {
+      menuOpen = false;
+      mobileMenu.classList.remove('open');
+      menuOverlay.style.display = 'none';
+      document.body.style.overflow = '';
+      menuToggle.classList.remove('open');
+    }
+
+    // Cerrar menú y hacer scroll suave si el enlace tiene hash
+    document.querySelectorAll('#mobileMenu a[href*="#"]').forEach(link => {
+      link.addEventListener('click', function (e) {
+        closeMenu();
+        const href = this.getAttribute('href');
+        const id = href.split('#')[1];
+        const targetSection = document.getElementById(id);
+        if (targetSection) {
+          e.preventDefault();
+          setTimeout(() => { targetSection.scrollIntoView({ behavior: 'smooth' }); }, 100);
+        }
+      });
+    });
+  </script>
+
+  <!-- Búsqueda móvil (idéntico) -->
+  <script>
+    const mobileSearchBtn = document.getElementById('mobileSearchBtn');
+    const mobileSearchContainer = document.getElementById('mobileSearchContainer');
+    const mobileOverlay = document.getElementById('searchOverlayMobile');
+
+    let mobileSearchOpen = false;
+
+    mobileSearchBtn.addEventListener('click', () => {
+      mobileSearchOpen = !mobileSearchOpen;
+      mobileSearchContainer.style.display = mobileSearchOpen ? 'block' : 'none';
+      mobileOverlay.style.display = mobileSearchOpen ? 'block' : 'none';
+      document.body.style.overflow = mobileSearchOpen ? 'hidden' : '';
+    });
+
+    mobileOverlay.addEventListener('click', () => {
+      mobileSearchOpen = false;
+      mobileSearchContainer.style.display = 'none';
+      mobileOverlay.style.display = 'none';
+      document.body.style.overflow = '';
+    });
+
+    document.getElementById("mobileSearchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const query = document.getElementById("mobileSearchInput").value.trim();
+      if (query !== "") {
+        window.location.href = `pagina-libros.html?query=${encodeURIComponent(query)}`;
+      }
+    });
+  </script>
+
+  <!-- Seguridad para overlays “pegados” (idéntico) -->
+  <script>
+    function hideOverlaySafe(el) {
+      if (!el) return;
+      el.style.display = 'none';
+      el.setAttribute('aria-hidden', 'true');
+    }
+    const _searchOverlay        = document.getElementById('searchOverlay');
+    const _searchOverlayMobile  = document.getElementById('searchOverlayMobile');
+    const _languageOverlayFix   = document.getElementById('languageOverlay');
+    const _menuOverlayFix       = document.getElementById('menuOverlay');
+
+    hideOverlaySafe(_searchOverlay);
+    hideOverlaySafe(_searchOverlayMobile);
+    hideOverlaySafe(_languageOverlayFix);
+    hideOverlaySafe(_menuOverlayFix);
+
+    ['resize', 'orientationchange'].forEach(evt => {
+      window.addEventListener(evt, () => {
+        hideOverlaySafe(_searchOverlay);
+        hideOverlaySafe(_searchOverlayMobile);
+        hideOverlaySafe(_languageOverlayFix);
+        hideOverlaySafe(_menuOverlayFix);
+        document.body.style.overflow = '';
+      }, { passive: true });
+    });
+  </script>
+
+  <!-- Librería de iconos y script de funciones globales (misma referencia que index) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="script.js"></script>
+
+  <!-- ====== Lógica original del detalle de libro (sin cambios) ====== -->
+  <script src="books-landing.js"></script>
+  <script>
+    function getParam(name){
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    const slug = getParam('book');
+    const book = window.BOOKS_LANDING?.[slug];
+
+    if(!book){
+      window.location.replace('pagina-libros.html');
+    }else{
+      document.title = `${book.title} — Yael Goldmann`;
+      document.getElementById('pageTitle').textContent = book.title;
+      document.getElementById('title').textContent = book.title;
+      document.getElementById('tagline').textContent = book.tagline || '';
+      document.getElementById('release').textContent = book.release || '';
+
+      const cover = document.getElementById('cover');
+      cover.src = book.image;
+      cover.alt = book.title;
+
+      const desc = document.getElementById('description');
+      desc.innerHTML = '';
+      (book.paragraphs || []).forEach(p => {
+        const el = document.createElement('p');
+        el.textContent = p;
+        desc.appendChild(el);
+      });
+
+      const ctaRow = document.getElementById('ctaRow');
+      ctaRow.innerHTML = '';
+      (book.ctas || []).forEach(btn => {
+        const a = document.createElement('a');
+        a.href = btn.href;
+        a.textContent = btn.label;
+        a.target = btn.newTab ? '_blank' : '_self';
+        a.rel = btn.newTab ? 'noopener noreferrer' : '';
+        a.className = 'btn ' + (btn.variant || '');
+        ctaRow.appendChild(a);
+      });
+    }
+  </script>
+</body>
+</html>
