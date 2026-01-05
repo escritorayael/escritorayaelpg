@@ -9,6 +9,80 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 
+<style>/* =========================
+   BADGES DE IDIOMA (HOME)
+========================= */
+.book-lang{
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 8px; /* debajo de la imagen, antes del título */
+  margin-left: 2.7rem !important;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.lang-pill{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  border: 1px solid #482922;
+  background: #fff;
+  color: #1c2426;
+  line-height: 1;
+}
+
+.lang-spn{
+  display: inline-flex;
+  width: 12rem !important;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  margin-left: -1rem !important;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  border: 1px solid #482922;
+  background: #fff;
+  color: #1c2426;
+  line-height: 1;
+}
+
+
+@media (max-width: 760px){
+  .lang-pill{
+    font-size: 10px;
+    padding: 4px 9px;
+  }
+}
+
+@media (max-width: 760px){
+  .lang-spn{
+    font-size: 10px;
+      width: 10rem !important;
+    padding: 4px 9px;
+    margin-left: -0.5rem !important;
+  }
+}
+
+@media (max-width: 760px){
+  .book-lang{
+    font-size: 10px;
+      width: 10rem !important;
+    padding: 4px 9px;
+margin-left: 1rem !important;
+  }
+}
+
+
+
+</style>
+
 <body>
   <!-- TOP BAR / HEADER -->
   <header class="site-header">
@@ -133,8 +207,10 @@
   </div>
 </div>
 
+
       <div class="social">
         <a class="social-btn" href="https://www.facebook.com/people/Coach-Yael-Goldmann/61556085566737/" aria-label="Facebook">
+          <!-- icon -->
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.5 1.6-1.5h1.6V5c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7v3h2.7v8h3.8z"/></svg>
         </a>
         <a class="social-btn" href="https://www.instagram.com/yael_escritora/" aria-label="Instagram">
@@ -143,6 +219,7 @@
         <a class="social-btn" href="https://www.threads.com/@yael_escritora?xmt=AQF0rSFfqUTwxvTnxbN-vOzx4Di2bfx6JeCWXYEgkYXIAgQ" aria-label="Threads">
           <img src="IMAGES/threads-icon.png" class="icon-threads" alt="Threads" style="width: auto; height: 20px;">
         </a>
+        
       </div>
     </div>
   </header>
@@ -224,6 +301,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-1" aria-label="Leer más sobre Amina: La Princesa Rebelde">
           <img class="book-cover" src="IMAGES/amina book.png" alt="Portada Amina: La Princesa Rebelde">
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
           <h3 class="book-name">Amina: La Princesa Rebelde</h3>
           <p class="book-desc">Amina, hija de una poderosa familia real kuwaití, siempre supo que su destino no le pertenecía. Prometida en matrimonio con un hombre al que no ama y atrapada en una jaula de oro tejida por la tradición y las expectativas, decide arriesgarlo todo: escapar. Buscando asilo en la embajada de Panamá en Londres, Amina encuentra aliados inesperados en Isabel, la embajadora, y Alex Fitzwilliam, un brillante abogado británico.</p>
         </a>
@@ -234,6 +316,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-2" aria-label="Leer más sobre Cuando Todo Calla">
           <img class="book-cover" src="IMAGES/cuando todo calla book.png" alt="Portada Cuando Todo Calla">
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
           <h3 class="book-name">Cuando Todo Calla</h3>
           <p class="book-desc">Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
         </a>
@@ -244,6 +331,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-3" aria-label="Leer más sobre Destinos Entrelazados">
           <img class="book-cover" src="IMAGES/destinos entrelazados.png" alt="Portada Destinos Entrelazados">
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
           <h3 class="book-name">Destinos Entrelazados</h3>
           <p class="book-desc">Experimenta la intensidad de una historia cargada de amor, peligro y dilemas éticos. Raquel, una periodista argentina audaz, y Walter, un joven en busca de libertad, se encuentran en un peligroso cruce de caminos. Desafiando todo y enfrentándose a fuerzas que superan la comprensión humana.</p>
         </a>
@@ -254,6 +346,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-4" aria-label="Leer más sobre En el Nombre de Ella">
           <img class="book-cover" src="IMAGES/en el nombre de ella book.png" alt="Portada En el Nombre de Ella">
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
           <h3 class="book-name">En el Nombre de Ella</h3>
           <p class="book-desc">Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
         </a>
@@ -264,6 +361,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-5" aria-label="Leer más sobre Encuentros Casuales">
           <img class="book-cover" src="IMAGES/encuentros casuales book.png" alt="Portada Encuentros Casuales">
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
           <h3 class="book-name">Encuentros Casuales</h3>
           <p class="book-desc">La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
         </a>
@@ -274,6 +376,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-6" aria-label="Leer más sobre Identidades Ocultas">
           <img class="book-cover" src="IMAGES/identidades ocultas book.png" alt="Portada Identidades Ocultas">
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
           <h3 class="book-name">Identidades Ocultas</h3>
           <p class="book-desc">Sumérgete en Identidades Ocultas, una novela que combina la emoción del thriller tecnológico con una conmovedora historia de amor. Sigue a Laura Trend, una mujer fuerte y determinada, mientras enfrenta una peligrosa trama de cibercrimen que amenaza con desestabilizar la economía mundial y poner en riesgo la seguridad global.</p>
         </a>
@@ -284,6 +391,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-7" aria-label="Leer más sobre Jaque a la Reina: Códigos Mortales">
           <img class="book-cover" src="IMAGES/jaque reina book.png" alt="Portada Jaque a la Reina: Códigos Mortales">
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
           <h3 class="book-name">Jaque a la Reina: Códigos Mortales</h3>
           <p class="book-desc">Emma Glow, una joven marcada por el destino, retorna a Estados Unidos tras la trágica pérdida de sus padres en Caracas. Su corazón, aún envuelto en sombras, encuentra un rayo de luz en su pasión por el ajedrez, que la lleva a un encuentro fortuito con un enigmático jugador que cambiará el rumbo de su existencia para siempre.</p>
         </a>
@@ -294,7 +406,11 @@
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-8" aria-label="Leer más sobre Cómo Sobrevivir a la Vida">
           <img class="book-cover" src="IMAGES/sobrevivir vida book.png" alt="Portada Cómo Sobrevivir a la Vida">
-          <h3 class="book-name">Como Sobrevivir a la Vida: Simples Consejos para Lograrlo</h3>
+          <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-spn">ESPAÑOL</span>
+</div>
+
+          <h3 class="book-name">Como Sobrevivir a la Vida</h3>
           <p class="book-desc">¡Descubre cómo superar los obstáculos de la vida y encontrar la plenitud con Cómo Sobrevivir a la Vida de Yael Goldmann!. Cómo Sobrevivir a la Vida no solo te ofrece una mirada honesta a los desafíos comunes de la vida, sino que también te brinda herramientas prácticas respaldadas por evidencia para superar la adversidad.</p>
         </a>
         <a class="book-link" href="book-details.html?book=libro-8">LEER MÁS</a>
@@ -521,4 +637,3 @@ mobileMenu.addEventListener('click', (e) => {
   <script src="script.js"></script>
 </body>
 </html>
-
