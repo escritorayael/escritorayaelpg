@@ -7,9 +7,61 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/IMAGES/favicon-babe.jpg" type="image/jpeg">
 <link rel="apple-touch-icon" href="/IMAGES/favicon-babe.jpg">
-  <meta name="description" content="Sobre Yael Goldmann — escritora, periodista y executive/life coach." />
+  <meta name="description" content="Catálogo de libros de Yael Goldmann." />
   <link rel="stylesheet" href="styles.css" />
 </head>
+
+<style>
+   /* =========================
+   BADGES DE IDIOMA (HOME)
+========================= */
+
+/* Contenedor: siempre centrado respecto a la portada */
+.book-lang{
+  display: flex;
+  gap: 8px;                 /* separación entre pills */
+  margin: 10px 0 8px;       /* debajo de la imagen, antes del título */
+  justify-content: center;  /* <<< CENTRADO */
+  align-items: center;
+  flex-wrap: nowrap;        /* queremos 1 sola línea */
+  width: 100%;              /* ocupa todo el ancho del card */
+}
+
+/* Pills (ES / EN) */
+.lang-pill{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  border: 1px solid #482922;
+  background: #fff;
+  color: #1c2426;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Si hay un solo pill (como Sobrevivir), mantiene ancho pero centrado */
+.book-lang.is-single .lang-pill{
+  width: 12rem;             /* tu ancho deseado en desktop */
+}
+
+/* Mobile */
+@media (max-width: 760px){
+  .lang-pill{
+    font-size: 10px;
+    padding: 4px 9px;
+  }
+
+  .book-lang.is-single .lang-pill{
+    width: 10rem;           /* tu ancho deseado en móvil */
+  }
+}
+
+</style>
 
 <body>
   <!-- TOP BAR / HEADER (IDÉNTICO) -->
@@ -178,6 +230,11 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-1" aria-label="Leer más sobre Amina: La Princesa Rebelde">
               <img class="book-cover" src="IMAGES/amina book.png" alt="Portada Amina: La Princesa Rebelde">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
               <h3 class="book-name">Amina: La Princesa Rebelde</h3>
               <p class="book-desc">Amina, hija de una poderosa familia real kuwaití, siempre supo que su destino no le pertenecía. Prometida en matrimonio con un hombre al que no ama y atrapada en una jaula de oro tejida por la tradición y las expectativas, decide arriesgarlo todo: escapar. Buscando asilo en la embajada de Panamá en Londres, Amina encuentra aliados inesperados en Isabel, la embajadora, y Alex Fitzwilliam, un brillante abogado británico.</p>
             </a>
@@ -188,6 +245,11 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-2" aria-label="Leer más sobre Cuando Todo Calla">
               <img class="book-cover" src="IMAGES/cuando todo calla book.png" alt="Portada Cuando Todo Calla">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
               <h3 class="book-name">Cuando Todo Calla</h3>
               <p class="book-desc">Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
             </a>
@@ -198,6 +260,11 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-3" aria-label="Leer más sobre Destinos Entrelazados">
               <img class="book-cover" src="IMAGES/destinos entrelazados.png" alt="Portada Destinos Entrelazados">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
               <h3 class="book-name">Destinos Entrelazados</h3>
               <p class="book-desc">Experimenta la intensidad de una historia cargada de amor, peligro y dilemas éticos. Raquel, una periodista argentina audaz, y Walter, un joven en busca de libertad, se encuentran en un peligroso cruce de caminos. Desafiando todo y enfrentándose a fuerzas que superan la comprensión humana.</p>
             </a>
@@ -208,6 +275,11 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-4" aria-label="Leer más sobre En el Nombre de Ella">
               <img class="book-cover" src="IMAGES/en el nombre de ella book.png" alt="Portada En el Nombre de Ella">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
               <h3 class="book-name">En el Nombre de Ella</h3>
               <p class="book-desc">Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
             </a>
@@ -218,6 +290,11 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-5" aria-label="Leer más sobre Encuentros Casuales">
               <img class="book-cover" src="IMAGES/encuentros casuales book.png" alt="Portada Encuentros Casuales">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
               <h3 class="book-name">Encuentros Casuales</h3>
               <p class="book-desc">La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
             </a>
@@ -228,6 +305,11 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-6" aria-label="Leer más sobre Identidades Ocultas">
               <img class="book-cover" src="IMAGES/identidades ocultas book.png" alt="Portada Identidades Ocultas">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
               <h3 class="book-name">Identidades Ocultas</h3>
               <p class="book-desc">Sumérgete en Identidades Ocultas, una novela que combina la emoción del thriller tecnológico con una conmovedora historia de amor. Sigue a Laura Trend, una mujer fuerte y determinada, mientras enfrenta una peligrosa trama de cibercrimen que amenaza con desestabilizar la economía mundial y poner en riesgo la seguridad global.</p>
             </a>
@@ -238,6 +320,10 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-7" aria-label="Leer más sobre Jaque a la Reina: Códigos Mortales">
               <img class="book-cover" src="IMAGES/jaque reina book.png" alt="Portada Jaque a la Reina: Códigos Mortales">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
               <h3 class="book-name">Jaque a la Reina: Códigos Mortales</h3>
               <p class="book-desc">Emma Glow, una joven marcada por el destino, retorna a Estados Unidos tras la trágica pérdida de sus padres en Caracas. Su corazón, aún envuelto en sombras, encuentra un rayo de luz en su pasión por el ajedrez, que la lleva a un encuentro fortuito con un enigmático jugador que cambiará el rumbo de su existencia para siempre.</p>
             </a>
@@ -248,6 +334,10 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-8" aria-label="Leer más sobre Cómo Sobrevivir a la Vida">
               <img class="book-cover" src="IMAGES/sobrevivir vida book.png" alt="Portada Cómo Sobrevivir a la Vida">
+              <div class="book-lang is-single" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+</div>
+
               <h3 class="book-name">Como Sobrevivir a la Vida: Simples Consejos para Lograrlo</h3>
               <p class="book-desc">¡Descubre cómo superar los obstáculos de la vida y encontrar la plenitud con Cómo Sobrevivir a la Vida de Yael Goldmann!. Cómo Sobrevivir a la Vida no solo te ofrece una mirada honesta a los desafíos comunes de la vida, sino que también te brinda herramientas prácticas respaldadas por evidencia para superar la adversidad.</p>
             </a>
@@ -258,6 +348,11 @@
           <article class="book-card">
             <a class="book-hit" href="book-details.html?book=libro-9" aria-label="Leer más sobre Libro 9">
               <img class="book-cover" src="IMAGES/vida-encuentre-book.png" alt="Portada Libro 9">
+              <div class="book-lang" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
+  <span class="lang-pill">ENGLISH</span>
+</div>
+
               <h3 class="book-name">Hasta que la Vida me Encuentre</h3>
               <p class="book-desc">"Perder al amor de tu vida no siempre significa dejar de amarlo. Mina Suárez, mediadora internacional, puede reconciliar naciones enteras… pero no logra hacer las paces con su propio corazón. Se prometió no volver a sentir, hasta que la vida —y un hombre llamado Pierre Durand— la enfrentan al riesgo más humano de todos: volver a amar. Entre Ginebra y los recuerdos de Buenos Aires, Mina descubrirá que la paz no se firma, se construye. Que el deseo de una vida normal —un hogar, una familia, un hijo— puede volver irracional incluso a la mente más racional. Y que a veces, para encontrarse con la vida, hay que perder el control."</p>
             </a>
@@ -432,7 +527,3 @@ mobileMenu.addEventListener('click', (e) => {
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
-
