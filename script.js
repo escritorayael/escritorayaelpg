@@ -1,240 +1,448 @@
-// Variables globales
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+/* =========================
+   Helpers
+========================= */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+/* =========================
+   Footer year
+========================= */
+(() => {
+  const yearEl = $("#year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+})();
 
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
+/* =========================
+   Dropdowns (desktop + mobile)
+========================= */
+(() => {
+  const dropdownItems = Array.from(document.querySelectorAll(".has-dropdown"));
+  let pinnedItem = null;  // abierto por click
+  let hoverItem = null;   // abierto por hover temporal
+  const closeTimers = new Map(); // timers por item (para no cerrar por "gap")
 
-// Funciones generales
-function scrollToSection(sectionId) {
-    const element = document.getElementById(sectionId);
-    if (element) {
-        const offsetTop = element.offsetTop - 80;
-        window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-    }
-}
-
-function handleFormSubmit(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    alert('Thank you for your message! We\'ll get back to you soon.');
-    event.target.reset();
-}
-
-function toggleMobileMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    navLinks.classList.toggle('active');
-}
-
-function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-function calculateTotals() {
-    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-    const tax = subtotal * 0.085;
-    const total = subtotal + tax;
-    return { subtotal, tax, total };
-}
-
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const count = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const cartCountElement = document.getElementById("cartCount");
-
-  if (cartCountElement) {
-    cartCountElement.textContent = count;
-    cartCountElement.style.display = count > 0 ? "flex" : "none";
-  }
-}
-
-function toggleCart() {
-    const cartModal = document.getElementById('cartModal');
-    cartModal.classList.toggle('active');
-    document.body.style.overflow = cartModal.classList.contains('active') ? 'hidden' : 'auto';
-}
-
-function addToCart(id, name, price, image, quantity = 1, format = "Paperback") {
-    const existingItem = cart.find(item => item.id === id);
-    if (existingItem) {
-        existingItem.quantity += quantity;
-    } else {
-        cart.push({
-            id,
-            name,
-            price,
-            image,
-            quantity,
-            format
-        });
-    }
-
-    saveCart();
-    updateCartDisplay();
-    updateCartCount();
-
-    const cartModal = document.getElementById("cartModal");
-    if (cartModal) {
-        cartModal.classList.add("active");
-        document.body.style.overflow = "hidden";
-    }
-}
-
-function removeFromCart(id) {
-    cart = cart.filter(item => item.id !== id);
-    saveCart();
-    updateCartDisplay();
-    updateCartCount();
-}
-
-function updateQuantity(id, newQuantity) {
-  const item = cart.find(item => item.id === id);
-  if (!item) return;
-
-  if (newQuantity <= 0) {
-    removeFromCart(id);
-  } else {
-    item.quantity = newQuantity;
+  function openItem(item) {
+    if (!item) return;
+    item.classList.add("is-open");
+    const btn = item.querySelector(".nav-link-btn");
+    if (btn) btn.setAttribute("aria-expanded", "true");
   }
 
-  saveCart();
-  updateCartDisplay();
-  updateCartCount();
-}
+  function closeHoverItem(item) {
+    if (!item) return;
+    // Si este item está pinned, no lo cierres aquí
+    if (item.classList.contains("is-pinned")) return;
 
+    item.classList.remove("is-open");
+    const btn = item.querySelector(".nav-link-btn");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+  }
 
-function clearCart() {
-    if (cart.length > 0 && confirm('Are you sure you want to clear your cart?')) {
-        cart = [];
-        saveCart();
-        updateCartDisplay();
-        updateCartCount();
-    }
-}
+  function closePinned(item) {
+    if (!item) return;
+    item.classList.remove("is-open", "is-pinned");
+    const btn = item.querySelector(".nav-link-btn");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+  }
 
-function checkout() {
-    if (cart.length === 0) {
-        alert('Your cart is empty!');
+  function clearCloseTimer(item) {
+    const t = closeTimers.get(item);
+    if (t) clearTimeout(t);
+    closeTimers.delete(item);
+  }
+
+  function scheduleCloseIfNotHovered(item) {
+    clearCloseTimer(item);
+
+    // delay pequeño para permitir bajar del link al dropdown sin "parpadeo"
+    const timer = setTimeout(() => {
+      // si el mouse no está sobre el item (ni link ni dropdown), cerramos hover
+      if (!item.matches(":hover") && !item.classList.contains("is-pinned")) {
+        closeHoverItem(item);
+        if (hoverItem === item) hoverItem = null;
+        restorePinned();
+      }
+    }, 120);
+
+    closeTimers.set(item, timer);
+  }
+
+  function restorePinned() {
+    // Si no hay hover activo y existe pinned, re-abrimos pinned
+    if (!hoverItem && pinnedItem) openItem(pinnedItem);
+  }
+
+  dropdownItems.forEach(item => {
+    const btn = item.querySelector(".nav-link-btn");
+    if (!btn) return;
+
+    // CLICK: fija/desfija
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const isAlreadyPinned = item.classList.contains("is-pinned");
+
+      // Si ya estaba pinned -> cerrar todo
+      if (isAlreadyPinned) {
+        clearCloseTimer(item);
+        closePinned(item);
+        pinnedItem = null;
+        hoverItem = null;
         return;
-    }
-    const { total } = calculateTotals();
-    const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
-    if (confirm(`Proceed to checkout?\n\nTotal: $${total.toFixed(2)}\nItems: ${itemCount}`)) {
-        alert('Redirecting to secure checkout...\n\n(In a real application, this would redirect to a payment processor like Stripe or PayPal)');
-    }
-}
+      }
 
-function updateCartDisplay() {
-    updateCartModal();
-    updateCartPage();
-}
+      // Fijar este
+      pinnedItem = item;
 
-function updateCartModal() {
-    const cartItems = document.getElementById('cartItems');
-    const { subtotal, tax, total } = calculateTotals();
-    if (cartItems) {
-        cartItems.innerHTML = cart.length === 0
-            ? `<div class="empty-cart"><i data-lucide="shopping-cart"></i><h3>Your cart is empty</h3><p>Add some books to get started!</p></div>`
-            : cart.map(item => `
-    <div class="cart-item">
-        <div class="cart-item-image">
-            <img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto; border-radius: 4px;">
-        </div>
-        <div class="cart-item-details">
-            <div class="cart-item-title">${item.name}</div>
-            <p style="font-size: 0.75rem; color: #9ca3af;">Format: ${item.format}</p>
-            <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
-        </div>
-        <div class="cart-item-controls">
-            <div class="quantity-selector">
-                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}>-</button>
-                <span class="quantity-value">${item.quantity}</span>
-                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
-            </div>
-        </div>
-    </div>
-`).join('');
+      // Cerrar cualquier hover abierto (distinto al pinned)
+      dropdownItems.forEach(x => {
+        clearCloseTimer(x);
+        if (x !== item) {
+          x.classList.remove("is-open", "is-pinned");
+          const b = x.querySelector(".nav-link-btn");
+          if (b) b.setAttribute("aria-expanded", "false");
+        }
+      });
 
-        document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
-        document.getElementById('cartTax').textContent = `$${tax.toFixed(2)}`;
-        document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-}
-
-
-function updateCartPage() {
-    const cartPageItems = document.getElementById('cartPageItems');
-    const { subtotal, tax, total } = calculateTotals();
-    if (cartPageItems) {
-        cartPageItems.innerHTML = cart.length === 0
-            ? `<div class="empty-cart"><i data-lucide="shopping-cart"></i><h3>Your cart is empty</h3><p>Add some books to get started!</p><button class="btn btn-primary" onclick="showMainPage(); scrollToSection('books');">Browse Books</button></div>`
-            : cart.map(item => `
-                <div class="cart-page-item">
-                    <div class="cart-page-item-image"><img src="${item.image}" style="width: 60px; height: auto;"></div>
-                    <div class="cart-page-item-details">
-                        <div class="cart-page-item-title">${item.name} (${item.format})</div>
-                        <div class="cart-page-item-price">$${item.price.toFixed(2)} each</div>
-                        <div class="cart-page-item-controls">
-                            <div class="quantity-controls">
-                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" ${item.quantity <= 1 ? 'disabled' : ''}><i data-lucide="minus"></i></button>
-                                <input type="number" class="quantity-input" value="${item.quantity}" onchange="updateQuantity('${item.id}', parseInt(this.value))" min="1">
-                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})"><i data-lucide="plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        document.getElementById('pageSubtotal').textContent = `$${subtotal.toFixed(2)}`;
-        document.getElementById('pageTax').textContent = `$${tax.toFixed(2)}`;
-        document.getElementById('pageTotal').textContent = `$${total.toFixed(2)}`;
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
-}
-
-// Event listeners globales
-document.addEventListener('DOMContentLoaded', () => {
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-    updateCartDisplay();
-    updateCartCount();
-
-    document.querySelectorAll('.book-card .btn-primary').forEach(button => {
-        button.addEventListener('click', () => {
-            alert('Redirecting to purchase page...');
-        });
+      item.classList.add("is-pinned");
+      openItem(item);
     });
 
-    document.querySelectorAll('.book-card, .stat-card, .testimonials-card').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
+    // ENTER por hover (sirve tanto en link como en dropdown porque están dentro del LI)
+    item.addEventListener("mouseenter", () => {
+      // si entro al mismo que está pinned, no cambies hoverItem
+      if (pinnedItem === item) {
+        clearCloseTimer(item);
+        return;
+      }
+
+      clearCloseTimer(item);
+
+      hoverItem = item;
+
+      // Oculta pinned mientras hover está activo
+      if (pinnedItem) pinnedItem.classList.remove("is-open");
+
+      // Cierra otros hovers
+      dropdownItems.forEach(x => {
+        if (x !== item && x !== pinnedItem) {
+          clearCloseTimer(x);
+          closeHoverItem(x);
+        }
+      });
+
+      openItem(item);
     });
-});
 
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (navbar) {
-        navbar.style.background = window.scrollY > 50 ? 'rgba(255, 255, 255, 0.95)' : 'rgba(255, 255, 255, 0.8)';
+    // LEAVE: no cierres inmediatamente; programa cierre si realmente ya no está hovered
+    item.addEventListener("mouseleave", () => {
+      // si es pinned, no hacemos nada
+      if (item.classList.contains("is-pinned")) return;
+
+      scheduleCloseIfNotHovered(item);
+    });
+
+    // EXTRA: si el cursor entra directamente al dropdown (por cualquier razón) cancela cierre
+    const dropdown = item.querySelector(".dropdown");
+    if (dropdown) {
+      dropdown.addEventListener("mouseenter", () => clearCloseTimer(item));
+      dropdown.addEventListener("mouseleave", () => {
+        if (!item.classList.contains("is-pinned")) scheduleCloseIfNotHovered(item);
+      });
     }
-});
+  });
 
-window.addEventListener('click', event => {
-    if (event.target.id === 'cartModal') toggleCart();
-});
+  // Click afuera: cerrar todo
+  document.addEventListener("click", () => {
+    dropdownItems.forEach(item => {
+      clearCloseTimer(item);
+      item.classList.remove("is-open", "is-pinned");
+      const btn = item.querySelector(".nav-link-btn");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+    });
+    pinnedItem = null;
+    hoverItem = null;
+  });
 
-document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-        if (document.getElementById('cartModal')?.classList.contains('active')) toggleCart();
+  // ESC: cerrar todo
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    dropdownItems.forEach(item => {
+      clearCloseTimer(item);
+      item.classList.remove("is-open", "is-pinned");
+      const btn = item.querySelector(".nav-link-btn");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+    });
+    pinnedItem = null;
+    hoverItem = null;
+  });
+})();
+
+
+
+/* =========================
+   Mobile nav toggle
+========================= */
+(() => {
+  const toggle = $(".nav-toggle");
+  const nav = $(".nav");
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-open");
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  // Cierra el menú al hacer click en un link (móvil)
+  $$(".nav a", nav).forEach(a => {
+    a.addEventListener("click", () => {
+      nav.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
+
+/* =========================
+   Hero carousel
+========================= */
+(() => {
+  const track = $("#heroTrack");
+  if (!track) return;
+
+  const slides = $$("[data-slide]", track);
+  const prevBtn = $(".hero-arrow-left");
+  const nextBtn = $(".hero-arrow-right");
+  const dots = $$(".dot");
+  let index = 0;
+  let autoTimer = null;
+
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(${-index * 100}%)`;
+
+    dots.forEach((d, di) => d.classList.toggle("is-active", di === index));
+  }
+
+  function next() { goTo(index + 1); }
+  function prev() { goTo(index - 1); }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(next, 6500);
+  }
+
+  function stopAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = null;
+  }
+
+  prevBtn?.addEventListener("click", () => { prev(); startAuto(); });
+  nextBtn?.addEventListener("click", () => { next(); startAuto(); });
+
+  dots.forEach(d => {
+    d.addEventListener("click", () => {
+      const i = Number(d.dataset.dot || "0");
+      goTo(i);
+      startAuto();
+    });
+  });
+
+  // Swipe (móvil)
+  let startX = 0;
+  let isDown = false;
+
+  track.addEventListener("pointerdown", (e) => {
+    isDown = true;
+    startX = e.clientX;
+    stopAuto();
+  });
+
+  track.addEventListener("pointerup", (e) => {
+    if (!isDown) return;
+    isDown = false;
+    const dx = e.clientX - startX;
+
+    if (Math.abs(dx) > 40) {
+      dx < 0 ? next() : prev();
     }
-});
+    startAuto();
+  });
+
+  track.addEventListener("pointercancel", () => {
+    isDown = false;
+    startAuto();
+  });
+
+  // Teclado (accesibilidad)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") { prev(); startAuto(); }
+    if (e.key === "ArrowRight") { next(); startAuto(); }
+  });
+
+  goTo(0);
+  startAuto();
+})();
+
+/* =========================
+   FULL WIDTH FADE CAROUSEL
+========================= */
+(() => {
+  const root = document.getElementById("heroCarousel");
+  if (!root) return;
+
+  const slides = Array.from(root.querySelectorAll(".carousel-fade-slide"));
+  const prevBtn = root.querySelector(".left-arrow");
+  const nextBtn = root.querySelector(".right-arrow");
+  const dots = Array.from(root.querySelectorAll(".c-dot"));
+
+  let index = 0;
+  let timer = null;
+
+  function show(i){
+    index = (i + slides.length) % slides.length;
+    slides.forEach((s, si) => s.classList.toggle("active", si === index));
+    dots.forEach((d, di) => d.classList.toggle("is-active", di === index));
+  }
+
+  function next(){ show(index + 1); }
+  function prev(){ show(index - 1); }
+
+  function start(){
+    stop();
+    timer = setInterval(next, 6500);
+  }
+  function stop(){
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  prevBtn?.addEventListener("click", () => { prev(); start(); });
+  nextBtn?.addEventListener("click", () => { next(); start(); });
+
+  dots.forEach(d => {
+    d.addEventListener("click", () => {
+      const i = Number(d.dataset.dot || 0);
+      show(i);
+      start();
+    });
+  });
+
+  // Pausa si el mouse está encima
+  root.addEventListener("mouseenter", stop);
+  root.addEventListener("mouseleave", start);
+
+  // Swipe (móvil)
+  let startX = 0;
+  let down = false;
+
+  root.addEventListener("pointerdown", (e) => {
+    down = true;
+    startX = e.clientX;
+    stop();
+  });
+
+  root.addEventListener("pointerup", (e) => {
+    if (!down) return;
+    down = false;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 50) dx < 0 ? next() : prev();
+    start();
+  });
+
+  root.addEventListener("pointercancel", () => {
+    down = false;
+    start();
+  });
+
+  show(0);
+  start();
+})();
+
+
+/* =========================
+   Fade Carousel (full width) + dots
+========================= */
+(() => {
+  const container = document.querySelector(".carousel-fade-container");
+  if (!container) return;
+
+  const slides = Array.from(container.querySelectorAll(".carousel-fade-slide"));
+  const prevBtn = container.querySelector(".left-arrow");
+  const nextBtn = container.querySelector(".right-arrow");
+  const dots = Array.from(container.querySelectorAll(".c-dot"));
+
+  let index = 0;
+  let timer = null;
+  const interval = 6500;
+
+  function paintDots() {
+    dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
+  }
+
+  function show(i) {
+    index = (i + slides.length) % slides.length;
+    slides.forEach((s, si) => s.classList.toggle("active", si === index));
+    paintDots();
+  }
+
+  function next() { show(index + 1); }
+  function prev() { show(index - 1); }
+
+  function start() {
+    stop();
+    timer = setInterval(next, interval);
+  }
+
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
+
+  prevBtn?.addEventListener("click", () => { prev(); start(); });
+  nextBtn?.addEventListener("click", () => { next(); start(); });
+
+  // Dots click
+  dots.forEach(d => {
+    d.addEventListener("click", () => {
+      const i = Number(d.dataset.dot || "0");
+      show(i);
+      start();
+    });
+  });
+
+  // Pausa al hover
+  container.addEventListener("mouseenter", stop);
+  container.addEventListener("mouseleave", start);
+
+  // Swipe
+  let startX = 0;
+  let isDown = false;
+
+  container.addEventListener("pointerdown", (e) => {
+    isDown = true;
+    startX = e.clientX;
+    stop();
+  });
+
+  container.addEventListener("pointerup", (e) => {
+    if (!isDown) return;
+    isDown = false;
+
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
+    start();
+  });
+
+  container.addEventListener("pointercancel", () => {
+    isDown = false;
+    start();
+  });
+
+  show(0);
+  start();
+
+  // Compatibilidad si algo llama estas funciones
+  window.nextSlide = next;
+  window.prevSlide = prev;
+})();
