@@ -190,7 +190,11 @@ main{
 
           <div class="bookdetails-divider" aria-hidden="true"></div>
 
-          <h3 class="bookdetails-section">Descripción</h3>
+          <div class="bd-langbar" aria-label="Idioma del libro">
+  <button type="button" class="bd-lang-pill is-active" id="bdLangEs">ESPAÑOL</button>
+  <button type="button" class="bd-lang-pill" id="bdLangEn">ENGLISH</button>
+</div>
+
 
           <div id="bdDesc" class="bookdetails-desc"></div>
 
@@ -301,5 +305,3 @@ mobileMenu.addEventListener('click', (e) => {
   <script src="book-details.js"></script>
 </body>
 </html>
-
-
