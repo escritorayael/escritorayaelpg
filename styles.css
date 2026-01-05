@@ -1893,3 +1893,60 @@ body.menu-locked{
     max-height: 42px !important;
   }
 }
+
+
+/* =========================================================
+   FIX DEFINITIVO: LIBROS EN 2 COLUMNAS EN CELULAR
+   (pegar al FINAL del styles.css)
+========================================================= */
+@media (max-width: 760px){
+
+  /* Fuerza 2 columnas reales en móvil */
+  .books-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 14px !important;
+    justify-items: stretch !important; /* que la celda se use completa */
+    align-items: start !important;
+  }
+
+  /* La tarjeta se adapta a la celda (no “rompe” a 1 columna) */
+  .book-card{
+    width: 100% !important;
+    max-width: none !important;
+    text-align: center;
+  }
+
+  /* Portadas más compactas para 2 columnas */
+  .book-cover{
+    width: 100% !important;
+    max-width: 150px !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3;          /* mantiene proporción libro */
+    object-fit: cover !important;
+    margin: 0 auto 10px !important;
+  }
+
+  /* Texto: un poco más compacto */
+  .book-name{
+    font-size: 13px !important;
+    letter-spacing: .06em !important;
+    margin: 6px 0 8px !important;
+  }
+
+  /* Importante: en móvil, recorta más para que no empuje la columna */
+  .book-desc{
+    max-width: 100% !important;
+    -webkit-line-clamp: 3 !important;
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* En pantallas MUY pequeñas, si realmente no cabe, ahí sí 1 columna */
+@media (max-width: 360px){
+  .books-grid{
+    grid-template-columns: 1fr !important;
+  }
+}
+
