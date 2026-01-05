@@ -1,670 +1,324 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yael Goldmann - Escritora</title>
-    <link rel="icon" href="IMAGES/Imagen de WhatsApp 2025-07-05 a las 16.04.10_4774b179.jpg" type="image/png">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yael Goldmann | Escritora</title>
+  <link rel="icon" href="IMAGES/favicon-babe.jpg" type="image/png">
+  <meta name="description" content="Sitio oficial de Yael Goldmann. Novelas, libros, audiolibros y novedades." />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<style>
 
-    #loaderOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loader-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loader {
-  border: 6px solid #ccc;
-  border-top: 6px solid #482922;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-    .language-selector {
-  position: relative;
-  display: inline-block;
-  margin-left: 1rem;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.selected-lang {
-  display: flex;
-  align-items: center;
-  margin-left: 2rem !important;
-  margin-right: -8rem !important;
-  gap: 6px;
-  padding: 5px 10px;
-  border-radius: 1px;
-  background-color: transparent;
-  color: #482922;
-}
-
-.selected-lang:hover + .language-dropdown,
-.language-dropdown:hover {
-  display: block;
-}
-
-.flag-icon {
-  width: 18px;
-  height: auto;
-}
-
-.language-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  color: black;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 10px;
-  z-index: 999;
-  white-space: nowrap;
-  min-width: 160px;
-}
-
-.language-dropdown label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px;
-  cursor: pointer;
-}
-
-.language-dropdown input {
-  margin: 0;
-}
-
-.selected-lang:hover + .language-dropdown {
-  display: block;
-  animation: fadeInLang 0.0s ease 0.1s forwards; /* 400ms delay */
-  opacity: 0;
-  pointer-events: none;
-}
-
-@keyframes fadeInLang {
-  to {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
-#languageOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(2px);
-  z-index: 100;
-  display: none;
-}
-
-.navbar,
-.language-selector {
-  position: relative;
-  z-index: 101;
-}
-
-#loader-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loader-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.loader {
-  border: 6px solid #ccc;
-  border-top: 6px solid #482922;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-  /* --- PRIORIDAD: que los libros sean clicables en móvil --- */
-  .carousel-fade-section,
-  .carousel-fade-container {
-    position: relative !important;
-    z-index: 0 !important;              /* el carrusel no debe estar por encima del grid */
-  }
-
-  /* Los libros van por encima de cualquier remanente del carrusel */
-  .books-section {
-    position: relative !important;
-    z-index: 2 !important;
-  }
-
-  /* Si por CSS externo el carrusel tuviera overflow raro, evitamos superposición visual */
-  .carousel-fade-container {
-    overflow: hidden;                    /* nada del carrusel sobresale hacia abajo */
-  }
-
-  /* --- Overlays: cuando están ocultos NO deben capturar toques --- */
-  #searchOverlay,
-  #searchOverlayMobile,
-  #languageOverlay,
-  #menuOverlay {
-    display: none;                       /* estado inicial */
-    pointer-events: none;                /* aunque por error queden visibles, no comen taps */
-  }
-
-  /* Cuando se muestren explícitamente, sí aceptan interacción */
-  #searchOverlay[aria-hidden="false"],
-  #searchOverlayMobile[aria-hidden="false"],
-  #languageOverlay[aria-hidden="false"],
-  #menuOverlay[aria-hidden="false"] {
-    pointer-events: auto;
-  }
-
-  /* Flechas del carrusel ya estaban desactivadas en móvil, reforzamos */
-  .carousel-arrow {
-    pointer-events: none !important;
-  }
-
-/* ----- FLECHAS DEL CARRUSEL (DESKTOP) ----- */
-.carousel-fade-container {
-  position: relative;
-}
-
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: auto !important; /* re-habilita clics */
-  cursor: pointer;
-  z-index: 5;
-  font-size: 38px;
-  line-height: 1;
-  user-select: none;
-  background: transparent;
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 6px;
-  transition: opacity .2s ease, background .2s ease;
-}
-
-
-.left-arrow { left: 16px; }
-.right-arrow { right: 16px; }
-
-/* Ocultar flechas en móvil */
-@media (max-width: 768px) {
-  .carousel-arrow {
-    display: none !important;
-    pointer-events: none !important;
-  }
-}
-
-/* ====== BOOKS: portadas proporcionadas y con separación exacta ====== */
-.books-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 40px;                      /* separación uniforme entre todos */
-  justify-items: center;
-  align-items: end;               /* bases alineadas */
-}
-
-.book-card{
-  width: 170px;                   /* ancho del “marco” */
-  height: 260px;                  /* ALTO UNIFICADO de todas las portadas */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: inherit;
-}
-
-.book-card img{
-  max-height: 100%;
-  max-width: 100%;
-  object-fit: contain;            /* encaja sin recortes ni deformación */
-  display: block;
-}
-
-/* Responsive: en móviles reducimos un poco el marco */
-@media (max-width: 768px){
-  .books-grid{ gap: 28px; }
-  .book-card{ width: 150px; height: 230px; }
-}
-
-
-</style>
 <body>
-<div id="languageOverlay"></div>
-<div id="loaderOverlay">
-  <div class="loader-wrapper">
-    <div class="loader"></div>
-  </div>
-</div>
+  <!-- TOP BAR / HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Ir al inicio">
+        <span class="brand-name">YAEL GOLDMANN</span>
+        <span class="brand-sub">ESCRITORA</span>
+      </a>
 
-    <div class="container">
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-content">
-<!-- Ícono toggle menu ≣ a la izquierda del logo -->
-<button id="menuToggle" class="menu-toggle">
-  <span class="toggle-icon">
-    <span class="bar bar1"></span>
-    <span class="bar bar2"></span>
-    <span class="bar bar3"></span>
-  </span>
+<button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+  <span class="nav-toggle-lines"></span>
 </button>
 
-              <div class="logo">Yael Goldmann</div>
-                <div class="amazon-searchbar">
-    <form id="searchForm">
-        <select class="search-category">
-  <option value="all" data-i18n="searchAll">All</option>
-</select>
-<input type="text" id="searchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" />
 
-        <button type="submit">
-            <i data-lucide="search"></i>
+      <nav class="nav" id="primaryNav" aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a class="nav-link is-active" href="index.html">Inicio</a>
+          </li>
+
+          <li class="nav-item has-dropdown">
+            <button class="nav-link nav-link-btn" type="button">
+  <span class="nav-text">Sobre Yael</span>
+  <span class="caret">▾</span>
+</button>
+
+            <div class="dropdown" role="menu">
+              <a class="dropdown-link" href="about.html" role="menuitem">Biografía</a>
+            </div>
+          </li>
+
+          <li class="nav-item has-dropdown">
+            <button class="nav-link nav-link-btn" type="button" aria-expanded="false">
+              <span class="nav-text">Libros</span>
+  <span class="caret">▾</span>
+            </button>
+            <div class="dropdown" role="menu">
+              <a class="dropdown-link" href="catalogo.html" role="menuitem">Catálogo</a>
+            </div>
+          </li>
+
+          <li class="nav-item has-dropdown">
+            <button class="nav-link nav-link-btn" type="button" aria-expanded="false">
+              <span class="nav-text">Tienda</span>
+  <span class="caret">▾</span>
+            </button>
+            <div class="dropdown" role="menu">
+              <a class="dropdown-link" href="index.html#available" role="menuitem">Dónde comprar</a>
+            </div>
+          </li>
+
+<li class="nav-item">
+  <a class="nav-link" href="contacto.html"><span class="nav-text">Contacto</span></a>
+</li>
+
+        </ul>
+      </nav>
+
+<!-- MOBILE FULLSCREEN MENU -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Menú">
+    
+    <div class="mobile-menu-top">
+      <span class="mobile-menu-title">Menú</span>
+      <button class="mobile-menu-close" type="button" aria-label="Cerrar menú">✕</button>
+    </div>
+
+    <ul class="mobile-menu-list">
+
+      <li class="mobile-item">
+        <a class="mobile-link" href="index.html">Inicio</a>
+      </li>
+
+      <li class="mobile-item mobile-accordion">
+        <button class="mobile-link mobile-acc-btn" type="button" aria-expanded="false">
+          Sobre Yael <span class="mobile-acc-caret">▾</span>
         </button>
-    </form>
-</div>
-                
-<div class="language-selector">
-  <div class="selected-lang">
-    <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon" />
-    <span>EN</span>
-    <i data-lucide="chevron-down"></i>
-  </div>
-  <div class="language-dropdown">
-    <label>
-      <input type="radio" name="lang" value="en" checked />
-      English - EN
-    </label>
-    <label>
-      <input type="radio" name="lang" value="es" />
-      Español - ES
-    </label>
-  </div>
-</div>
-
-<!-- Ícono de búsqueda móvil -->
-<button id="mobileSearchBtn" class="mobile-search-button">
-  <i data-lucide="search"></i>
-</button>
-
-
-                <div class="nav-links">
-                    <a href="pagina-libros.html" data-i18n="navBooks">Books</a>
-  <a href="about.html" data-i18n="navAbout">About</a>
-<a href="blog.html" data-i18n="navBlog">Blog</a>
-                    <a id="accountLink" href="login.html" class="nav-icon-button" title="My Account / Login">
-  <i data-lucide="user"></i>
-</a>
-                    <button class="cart-toggle" onclick="toggleCart()">
-                        <i data-lucide="shopping-cart"></i>
-                        <span class="cart-count" id="cartCount">0</span>
-                    </button>
-                </div>
-            </div>
+        <div class="mobile-submenu" aria-hidden="true">
+          <a class="mobile-sublink" href="about.html">Biografía</a>
         </div>
-    </nav>
+      </li>
 
-    <div id="searchOverlay"></div>
-
-    <div id="searchOverlayMobile"></div>
-<!-- Buscador desplegable móvil -->
-<div id="mobileSearchContainer" class="mobile-search-container">
-  <form id="mobileSearchForm">
-    <select class="search-category">
-      <option value="all" data-i18n="searchAll">All</option>
-    </select>
-    <input type="text" id="mobileSearchInput" placeholder="Search..." data-i18n-placeholder="searchPlaceholder" />
-    <button type="submit">
-      <i data-lucide="search"></i>
-    </button>
-  </form>
-</div>
-
-
-<!-- Overlay del menú -->
-<div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
-
-<!-- Menú desplegable lateral -->
-<div id="mobileMenu" class="mobile-menu">
-  <div class="menu-header">
-    <span class="menu-title"data-i18n="menu_toggle">Menú</span>
-  </div>
-  <hr style="margin: 1rem 0; border: none; border-top: 1px solid #482922; margin-top: -1rem !important;">
-  <ul class="menu-links">
-    <li><a href="pagina-libros.html" data-i18n="navBooks">Books</a></li>
-    <li><a href="about.html" data-i18n="navAbout">About</a></li>
-<li><a href="blog.html" data-i18n="navBlog">Blog</a></li>
-  </ul>
-<!-- Language Selector (solo en móvil, dentro del menú) -->
-<div class="mobile-language-selector">
-  <div class="selected-lang">
-    <img src="https://flagcdn.com/us.svg" alt="EN" class="flag-icon" />
-    <span>EN</span>
-    <i data-lucide="chevron-down"></i>
-  </div>
-  <div class="language-dropdown">
-    <label>
-      <input type="radio" name="lang" value="en" checked />
-      English - EN
-    </label>
-    <label>
-      <input type="radio" name="lang" value="es" />
-      Español - ES
-    </label>
-  </div>
-</div>
-
-
-
-</div>
-
-
-    <!-- Cart Modal -->
-        <div id="cartModal" class="cart-modal">
-            <div class="cart-modal-content">
-                <div class="cart-header">
-                    <h2>Shopping Cart</h2>
-                    <button class="close-cart" onclick="toggleCart()">
-                        <i data-lucide="x"></i>
-                    </button>
-                </div>
-                <div class="cart-body" id="cartItems">
-                    <!-- Cart items will be populated by JavaScript -->
-                </div>
-                <div class="cart-footer">
-                    <div class="cart-total">
-                        <div class="total-row">
-                            <span>Subtotal:</span>
-                            <span id="cartSubtotal">$0.00</span>
-                        </div>
-                        <div class="total-row">
-                            <span>Tax (8.5%):</span>
-                            <span id="cartTax">$0.00</span>
-                        </div>
-                        <div class="total-row total-final">
-                            <span>Total:</span>
-                            <span id="cartTotal">$0.00</span>
-                        </div>
-                    </div>
-                    <div class="cart-actions">
-                        <button class="btn btn-primero" onclick="clearCart()">Clear Cart</button>
-                        <button class="btn btn-primero" onclick="checkout()" id="checkoutBtn">
-                            <i data-lucide="credit-card"></i>
-                            Checkout
-                        </button>
-                    </div>
-                </div>
-            </div>
+      <li class="mobile-item mobile-accordion">
+        <button class="mobile-link mobile-acc-btn" type="button" aria-expanded="false">
+          Libros <span class="mobile-acc-caret">▾</span>
+        </button>
+        <div class="mobile-submenu" aria-hidden="true">
+          <a class="mobile-sublink" href="catalogo.html">Catálogo</a>
         </div>
+      </li>
 
-        <!-- Cart Page (Alternative view) -->
-        <div id="cartPage" class="cart-page" style="display: none;">
-            <div class="cart-page-container">
-                <div class="cart-page-header">
-                    <h1>Your Shopping Cart</h1>
-                    <button class="btn btn-outline" onclick="showMainPage()">
-                        <i data-lucide="arrow-left"></i>
-                        Continue Shopping
-                    </button>
-                </div>
-                
-                <div class="cart-page-content">
-                    <div class="cart-items-section">
-                        <div id="cartPageItems">
-                            <!-- Cart items will be populated here -->
-                        </div>
-                    </div>
-                    
-                    <div class="cart-summary-section">
-                        <div class="cart-summary">
-                            <h3>Order Summary</h3>
-                            <div class="summary-row">
-                                <span>Subtotal:</span>
-                                <span id="pageSubtotal">$0.00</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Tax (8.5%):</span>
-                                <span id="pageTax">$0.00</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Shipping:</span>
-                                <span>FREE</span>
-                            </div>
-                            <hr>
-                            <div class="summary-row total">
-                                <span>Total:</span>
-                                <span id="pageTotal">$0.00</span>
-                            </div>
-                            
-                            <div class="checkout-section">
-                                <button class="btn btn-primero btn-full" onclick="checkout()">
-                                    <i data-lucide="credit-card"></i>
-                                    Proceed to Checkout
-                                </button>
-                                <button class="btn btn-primero btn-full" onclick="clearCart()">
-                                    Clear Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <li class="mobile-item mobile-accordion">
+        <button class="mobile-link mobile-acc-btn" type="button" aria-expanded="false">
+          Tienda <span class="mobile-acc-caret">▾</span>
+        </button>
+        <div class="mobile-submenu" aria-hidden="true">
+          <a class="mobile-sublink" href="index.html#available">Dónde comprar</a>
         </div>
-<!-- Carousel Section (Replaces Hero) -->
-<section class="carousel-fade-section">
+      </li>
+
+      <li class="mobile-item">
+        <a class="mobile-link" href="contacto.html">Contacto</a>
+      </li>
+
+    </ul>
+
+<!-- Social abajo en el menú móvil -->
+<div class="mobile-menu-social" aria-label="Redes sociales">
+  <a class="social-btn" href="https://www.facebook.com/CoachYaelGoldmann?rdid=xKAJ0B4Td386g26u&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F14GsERkFrrD%2F#" aria-label="Facebook" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.5 1.6-1.5h1.6V5c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7v3h2.7v8h3.8z"/></svg>
+  </a>
+
+  <a class="social-btn" href="https://www.instagram.com/yael_escritora/" aria-label="Instagram" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5zM18 6.8a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
+  </a>
+
+  <a class="social-btn" href="https://www.threads.com/@yael_escritora?xmt=AQF0rSFfqUTwxvTnxbN-vOzx4Di2bfx6JeCWXYEgkYXIAgQ" aria-label="Threads" target="_blank" rel="noopener">
+    <img src="IMAGES/threads-icon.png" class="icon-threads" alt="Threads" style="width:auto;height:20px;">
+  </a>
+</div>
+
+  </div>
+</div>
+
+
+      <div class="social">
+        <a class="social-btn" href="https://www.facebook.com/CoachYaelGoldmann?rdid=xKAJ0B4Td386g26u&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F14GsERkFrrD%2F#" aria-label="Facebook">
+          <!-- icon -->
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.5 1.6-1.5h1.6V5c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7v3h2.7v8h3.8z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.instagram.com/yael_escritora/" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5zM18 6.8a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.threads.com/@yael_escritora?xmt=AQF0rSFfqUTwxvTnxbN-vOzx4Di2bfx6JeCWXYEgkYXIAgQ" aria-label="Threads">
+          <img src="IMAGES/threads-icon.png" class="icon-threads" alt="Threads" style="width: auto; height: 20px;">
+        </a>
+        
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO / CAROUSEL -->
+  <main>
+<!-- SEPARACIÓN NAVBAR / CARRUSEL -->
+<section class="carousel-fade-section" aria-label="Carrusel principal">
   <div class="carousel-fade-container">
-<div class="carousel-fade-slide active">
-  <a href="about.html">
-    <img src="IMAGES/banner yael.png" alt="Slide 1">
-  </a>
-  <div class="carousel-fade-caption">
-    <h1>Yael Goldmann</h1>
-    <h3>Escritora - Coach de Vida - Comunicadora</h3>
-    <a href="about.html" class="btn-more" data-i18n="morebtn">More</a>
-  </div>
-</div>
+
+    <div class="carousel-fade-slide active">
+      <a href="about.html">
+        <img src="IMAGES/banner yael.png" alt="Slide 1">
+      </a>
+      <div class="carousel-fade-caption">
+        <h1>Yael Goldmann</h1>
+        <h3>Escritora - Coach de Vida - Comunicadora</h3>
+<a href="about.html" class="btn-more" data-i18n="morebtn">Ver más</a>
+      </div>
+    </div>
 
     <div class="carousel-fade-slide">
-  <a href="book-details.html?book=encuentros-casuales">
-    <img src="IMAGES/banner yael (1).png" alt="Slide 2">
-  </a>
-  <div class="carousel-fade-caption">
-    <h2>Encuentros Casuales</h2>
-    <p>La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
-    <a href="book-details.html?book=encuentros-casuales" class="btn btn-primary" data-i18n="seemore">See More</a>
-  </div>
-</div>
+      <a href="book-details.html?book=encuentros-casuales">
+        <img src="IMAGES/banner yael (1).png" alt="Slide 2">
+      </a>
+      <div class="carousel-fade-caption">
+        <h2>Encuentros Casuales</h2>
+        <p>La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
+        <a href="book-details.html?book=encuentros-casuales" class="btn btn-primary" data-i18n="seemore">Ver Más</a>
+      </div>
+    </div>
 
     <div class="carousel-fade-slide">
-  <a href="book-details.html?book=cuando-todo-calla">
-    <img src="IMAGES/banner yael (2).png" alt="Slide 3">
-  </a>
-  <div class="carousel-fade-caption">
-    <h2>Cuando Todo Calla</h2>
-    <p>Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
-    <a href="book-details.html?book=cuando-todo-calla" class="btn btn-primary" data-i18n="seemore">See More</a>
-  </div>
-</div>
+      <a href="book-details.html?book=cuando-todo-calla">
+        <img src="IMAGES/banner yael (2).png" alt="Slide 3">
+      </a>
+      <div class="carousel-fade-caption">
+        <h2>Cuando Todo Calla</h2>
+        <p>Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
+        <a href="book-details.html?book=cuando-todo-calla" class="btn btn-primary" data-i18n="seemore">Ver Más</a>
+      </div>
+    </div>
 
-   <div class="carousel-fade-slide">
-  <a href="book-details.html?book=nombre-de-ella">
-    <img src="IMAGES/banner yael (3).png" alt="Slide 4">
-  </a>
-  <div class="carousel-fade-caption">
-    <h2>En el Nombre de Ella</h2>
-    <p>Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
-<a href="book-details.html?book=nombre-de-ella" class="btn btn-primary" data-i18n="seemore">See More</a>
-  </div>
-</div>
+    <div class="carousel-fade-slide">
+      <a href="book-details.html?book=nombre-de-ella">
+        <img src="IMAGES/banner yael (3).png" alt="Slide 4">
+      </a>
+      <div class="carousel-fade-caption">
+        <h2>En el Nombre de Ella</h2>
+        <p>Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
+        <a href="book-details.html?book=nombre-de-ella" class="btn btn-primary" data-i18n="seemore">Ver Más</a>
+      </div>
+    </div>
 
-    <!-- FLECHAS DEL CARRUSEL -->
-<div class="carousel-arrow left-arrow" onclick="prevSlide()">&#10094;</div>
-<div class="carousel-arrow right-arrow" onclick="nextSlide()">&#10095;</div>
+    <!-- Flechas -->
+    <button class="carousel-arrow left-arrow" type="button" aria-label="Anterior">&#10094;</button>
+    <button class="carousel-arrow right-arrow" type="button" aria-label="Siguiente">&#10095;</button>
+
+      <!-- Dots -->
+  <div class="carousel-dots" aria-label="Indicadores">
+    <button class="c-dot is-active" type="button" aria-label="Ir al slide 1" data-dot="0"></button>
+    <button class="c-dot" type="button" aria-label="Ir al slide 2" data-dot="1"></button>
+    <button class="c-dot" type="button" aria-label="Ir al slide 3" data-dot="2"></button>
+    <button class="c-dot" type="button" aria-label="Ir al slide 4" data-dot="3"></button>
+  </div>
+
 
   </div>
 </section>
 
-<script>
-/**
- * Carrusel móvil: 4 imágenes distintas y sin textos/botones.
- * Edita los paths del array mobileImages con tus imágenes para celular.
- */
-document.addEventListener('DOMContentLoaded', () => {
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  if (!isMobile) return;
+<!-- BOOK GRID (8 libros, 4 por fila) -->
+<section class="books-showcase" id="libros-home" aria-label="Libros destacados">
+  <div class="container">
+    <h2 class="books-title">LIBROS DESTACADOS</h2>
+    <div class="books-topline"></div>
 
-  // 👉 ASIGNA AQUÍ TUS 4 IMÁGENES MÓVILES (en el orden de los 4 slides)
-  const mobileImages = [
-    'IMAGES/banner MOBILE.png', // Slide 1 (ejemplo)
-    'IMAGES/banner MOBILE 1.png', // Slide 2 (ejemplo)
-    'IMAGES/banner MOBILE 2.png', // Slide 3 (ejemplo)
-    'IMAGES/banner MOBILE 3.png'  // Slide 4 (ejemplo)
-  ];
+    <div class="books-grid">
+      <!-- 1 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-1" aria-label="Leer más sobre Amina: La Princesa Rebelde">
+          <img class="book-cover" src="IMAGES/amina book.png" alt="Portada Amina: La Princesa Rebelde">
+          <h3 class="book-name">Amina: La Princesa Rebelde</h3>
+          <p class="book-desc">Amina, hija de una poderosa familia real kuwaití, siempre supo que su destino no le pertenecía. Prometida en matrimonio con un hombre al que no ama y atrapada en una jaula de oro tejida por la tradición y las expectativas, decide arriesgarlo todo: escapar. Buscando asilo en la embajada de Panamá en Londres, Amina encuentra aliados inesperados en Isabel, la embajadora, y Alex Fitzwilliam, un brillante abogado británico.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-1">LEER MÁS</a>
+      </article>
 
-  // 1) Reemplazar imágenes por sus versiones móviles
-  const slides = document.querySelectorAll('.carousel-fade-slide');
-  slides.forEach((slide, i) => {
-    const picture = slide.querySelector('picture');
-    const img = slide.querySelector('img');
+      <!-- 2 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-2" aria-label="Leer más sobre Cuando Todo Calla">
+          <img class="book-cover" src="IMAGES/cuando todo calla book.png" alt="Portada Cuando Todo Calla">
+          <h3 class="book-name">Cuando Todo Calla</h3>
+          <p class="book-desc">Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-2">LEER MÁS</a>
+      </article>
 
-    // Quitar <source> para evitar que sobrescriba el src en móviles
-    if (picture) {
-      picture.querySelectorAll('source').forEach(s => s.remove());
-    }
+      <!-- 3 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-3" aria-label="Leer más sobre Destinos Entrelazados">
+          <img class="book-cover" src="IMAGES/destinos entrelazados.png" alt="Portada Destinos Entrelazados">
+          <h3 class="book-name">Destinos Entrelazados</h3>
+          <p class="book-desc">Experimenta la intensidad de una historia cargada de amor, peligro y dilemas éticos. Raquel, una periodista argentina audaz, y Walter, un joven en busca de libertad, se encuentran en un peligroso cruce de caminos. Desafiando todo y enfrentándose a fuerzas que superan la comprensión humana.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-3">LEER MÁS</a>
+      </article>
 
-    // Setear la imagen móvil correspondiente (si existe)
-    if (img && mobileImages[i]) {
-      img.src = mobileImages[i];
-      img.srcset = ''; // Limpia posibles srcset previos
-      img.removeAttribute('srcset');
-      img.loading = 'eager'; // Evita parpadeo al cargar
-      img.decoding = 'sync';
-      // Opcional: ajustar alt si quieres un texto distinto
-      // img.alt = `Slide ${i+1} - móvil`;
-    }
-  });
+      <!-- 4 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-4" aria-label="Leer más sobre En el Nombre de Ella">
+          <img class="book-cover" src="IMAGES/en el nombre de ella book.png" alt="Portada En el Nombre de Ella">
+          <h3 class="book-name">En el Nombre de Ella</h3>
+          <p class="book-desc">Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-4">LEER MÁS</a>
+      </article>
 
-  // 2) Remover captions por completo (no solo ocultar) para que no aparezcan
-  document.querySelectorAll('.carousel-fade-caption').forEach(c => c.remove());
+      <!-- 5 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-5" aria-label="Leer más sobre Encuentros Casuales">
+          <img class="book-cover" src="IMAGES/encuentros casuales book.png" alt="Portada Encuentros Casuales">
+          <h3 class="book-name">Encuentros Casuales</h3>
+          <p class="book-desc">La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-5">LEER MÁS</a>
+      </article>
 
-  // 3) Ocultar flechas por si tu CSS las muestra en otros breakpoints
-  document.querySelectorAll('.carousel-arrow').forEach(a => {
-    a.style.display = 'none';
-    a.style.visibility = 'hidden';
-    a.style.pointerEvents = 'none';
-  });
-});
-</script>
+      <!-- 6 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-6" aria-label="Leer más sobre Identidades Ocultas">
+          <img class="book-cover" src="IMAGES/identidades ocultas book.png" alt="Portada Identidades Ocultas">
+          <h3 class="book-name">Identidades Ocultas</h3>
+          <p class="book-desc">Sumérgete en Identidades Ocultas, una novela que combina la emoción del thriller tecnológico con una conmovedora historia de amor. Sigue a Laura Trend, una mujer fuerte y determinada, mientras enfrenta una peligrosa trama de cibercrimen que amenaza con desestabilizar la economía mundial y poner en riesgo la seguridad global.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-6">LEER MÁS</a>
+      </article>
 
+      <!-- 7 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-7" aria-label="Leer más sobre Jaque a la Reina: Códigos Mortales">
+          <img class="book-cover" src="IMAGES/jaque reina book.png" alt="Portada Jaque a la Reina: Códigos Mortales">
+          <h3 class="book-name">Jaque a la Reina: Códigos Mortales</h3>
+          <p class="book-desc">Emma Glow, una joven marcada por el destino, retorna a Estados Unidos tras la trágica pérdida de sus padres en Caracas. Su corazón, aún envuelto en sombras, encuentra un rayo de luz en su pasión por el ajedrez, que la lleva a un encuentro fortuito con un enigmático jugador que cambiará el rumbo de su existencia para siempre.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-7">LEER MÁS</a>
+      </article>
 
-<!-- Books Section -->
-<section id="books" class="books-section" style="text-align: center; padding: 60px 0;">
-<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 40px;">
-  <div style="flex: 1; height: 1px; background-color: #ccc; margin-right: 20px;"></div>
-  <h2 class="section-title" style="font-size: 24px; margin: 0;margin-bottom: 2rem !important;" data-i18n="currentTitles">Current Titles</h2>
-  <div style="flex: 1; height: 1px; background-color: #ccc; margin-left: 20px;"></div>
-</div>
-
+      <!-- 8 -->
+      <article class="book-card">
+        <a class="book-hit" href="book-details.html?book=libro-8" aria-label="Leer más sobre Cómo Sobrevivir a la Vida">
+          <img class="book-cover" src="IMAGES/sobrevivir vida book.png" alt="Portada Cómo Sobrevivir a la Vida">
+          <h3 class="book-name">Como Sobrevivir a la Vida: Simples Consejos para Lograrlo</h3>
+          <p class="book-desc">¡Descubre cómo superar los obstáculos de la vida y encontrar la plenitud con Cómo Sobrevivir a la Vida de Yael Goldmann!. Cómo Sobrevivir a la Vida no solo te ofrece una mirada honesta a los desafíos comunes de la vida, sino que también te brinda herramientas prácticas respaldadas por evidencia para superar la adversidad.</p>
+        </a>
+        <a class="book-link" href="book-details.html?book=libro-8">LEER MÁS</a>
+      </article>
+    </div>
+  </div>
+</section>
   
-  <div class="books-grid">
-  <a class="book-card" href="book-details.html?book=cuando-todo-calla">
-    <img src="IMAGES/cuando todo calla book.png" alt="Cuando Todo Calla" loading="lazy">
-  </a>
-
-  <a class="book-card" href="book-details.html?book=nombre-de-ella">
-    <img src="IMAGES/en el nombre de ella book.png" alt="En el Nombre de Ella" loading="lazy">
-  </a>
-
-  <a class="book-card" href="book-details.html?book=amina-defiance">
-    <img src="IMAGES/amina book.png" alt="Amina: La Princesa Rebelde" loading="lazy">
-  </a>
-
-  <a class="book-card" href="book-details.html?book=destinos-entrelazados">
-    <img src="IMAGES/destinos entrelazados.png" alt="Destinos Entrelazados" loading="lazy">
-  </a>
-
-  <a class="book-card" href="book-details.html?book=jaque-a-la-reina">
-    <img src="IMAGES/jaque reina book.png" alt="Jaque a la Reina" loading="lazy">
-  </a>
-
-  <a class="book-card" href="book-details.html?book=identidades-ocultas">
-    <img src="IMAGES/identidades ocultas book.png" alt="Identidades Ocultas" loading="lazy">
-  </a>
-
-  <a class="book-card" href="book-details.html?book=encuentros-casuales">
-    <img src="IMAGES/encuentros casuales book.png" alt="Encuentros Casuales" loading="lazy">
-  </a>
-
-  <a class="book-card" href="book-details.html?book=sobrevivir-a-la-vida">
-    <img src="IMAGES/sobrevivir vida book.png" alt="Sobrevivir a la Vida" loading="lazy">
-  </a>
+<!-- BOTÓN: TODOS LOS LIBROS -->
+<div class="all-books-wrap">
+  <a class="all-books-btn" href="catalogo.html">TODOS LOS LIBROS</a>
 </div>
 
+</main>
 
-  <!-- Botón "See More Titles" -->
-  <div style="margin-top: 50px;">
-<a href="pagina-libros.html"
-   class="btn btn-segundo"
-   style="padding: 10px 20px; margin-bottom: -4rem !important;border: 1px solid #000; display: inline-block;"
-   data-i18n="seeMoreTitlesBtn">
-  SEE MORE TITLES
-</a>
-
-  </div>
-</section>
 
 <!-- DISTRIBUCIÓN -->
-<section id="available" style="text-align: center; padding: 60px 0;">
+<section id="available" style="text-align: center; padding: 60px 0; background-color: #efece4;">
   <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 40px;">
     <div style="flex: 1; height: 1px; background-color: #ccc; margin-right: 20px;"></div>
-    <h2 class="section-title" style="font-size: 24px; margin: 0;" data-i18n="availableOn">Available At</h2>
+    <h2 class="section-title" style="font-size: 24px; margin: 0; font-family: Arial, Helvetica, sans-serif; font-weight: 500; letter-spacing: 2px;" data-i18n="availableOn">DISPONIBLE EN</h2>
     <div style="flex: 1; height: 1px; background-color: #ccc; margin-left: 20px;"></div>
   </div>
 
@@ -724,505 +378,149 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </section>
 
-
-            <!-- Footer -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-content">
-      <h3 class="footer-title">Yael Goldmann</h3>
-      <p class="footer-tagline" data-i18n="footerTagline">
-        Crafting stories that inspire, entertain, and transform
-      </p>
-      <div class="footer-links">
-        <!-- Threads icon -->
-        <a href="https://www.threads.com/@coach_yael_goldmann" aria-label="Threads">
-          <img src="IMAGES/threads-icon.png" class="icon-threads" alt="Threads" style="width: auto; height: 20px;">
-        </a>
-
-        <!-- Instagram icon -->
-        <a href="https://www.instagram.com/coach_yael_goldmann/" aria-label="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-          </svg>
-        </a>
-
-        <!-- Facebook icon -->
-        <a href="https://www.facebook.com/share/14GsERkFrrD/" aria-label="Facebook">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-          </svg>
-        </a>
-      </div>
-
-      <p class="footer-copyright" data-i18n="footerCopyright">
-        © 2025 Yael Goldmann. All rights reserved.
-      </p>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Yael Goldmann. Todos los derechos reservados.</p>
     </div>
-  </div>
-</footer>
+  </footer>
 
-    </div>
-    
 <script>
-  let lastScrollTop = 0;
-  const navbar = document.querySelector('.navbar');
 
-  window.addEventListener('scroll', function () {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+// =========================
+// MOBILE FULLSCREEN MENU
+// =========================
+(function(){
+  const toggleBtn = document.querySelector('.nav-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeBtn = mobileMenu?.querySelector('.mobile-menu-close');
+  const panel = mobileMenu?.querySelector('.mobile-menu-panel');
+  const accordions = mobileMenu?.querySelectorAll('.mobile-accordion');
 
-    if (scrollTop > lastScrollTop) {
-      // Scroll hacia abajo - ocultar navbar
-      navbar.style.top = '-80px'; // Ajusta si tu navbar es más alto
-    } else {
-      // Scroll hacia arriba - mostrar navbar
-      navbar.style.top = '0';
-    }
+  if(!toggleBtn || !mobileMenu) return;
 
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Previene valores negativos
-  });
-</script>
-
-<script type="module">
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBuUHOPcSjO71G0fftwhvqQV3UMqjpJJZU",
-  authDomain: "escritora-yael.firebaseapp.com",
-  projectId: "escritora-yael",
-  storageBucket: "escritora-yael.firebasestorage.app",
-  messagingSenderId: "403131540905",
-  appId: "1:403131540905:web:687084531c4e1ad74590b8",
-  measurementId: "G-2QYFEYN0BG"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-const accountLink = document.getElementById("accountLink");
-
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    accountLink.href = "account.html";
-    localStorage.setItem("userLoggedIn", "true");
-  } else {
-    accountLink.href = "login.html";
-    localStorage.removeItem("userLoggedIn");
+  function openMenu(){
+    mobileMenu.classList.add('is-open');
+    document.body.classList.add('menu-locked');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    mobileMenu.setAttribute('aria-hidden', 'false');
   }
+
+  function closeMenu(){
+    mobileMenu.classList.remove('is-open');
+    document.body.classList.remove('menu-locked');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+
+    // Cierra submenus al cerrar
+    accordions?.forEach(acc => {
+      acc.classList.remove('is-open');
+      const btn = acc.querySelector('.mobile-acc-btn');
+      const submenu = acc.querySelector('.mobile-submenu');
+      btn?.setAttribute('aria-expanded', 'false');
+      submenu?.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  closeBtn?.addEventListener('click', closeMenu);
+
+mobileMenu.addEventListener('click', (e) => {
+  // si clickeas en el overlay (no dentro del panel), cierra
+  if(!panel.contains(e.target)) closeMenu();
 });
-</script>
-
-<script>
-  // Ocultar el loader cuando la página esté completamente cargada
-  window.addEventListener("load", () => {
-    const loader = document.getElementById("loader-overlay");
-    if (loader) {
-      loader.style.display = "none";
-    }
-  });
-</script>
 
 
-<script>
-  document.getElementById("searchForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const query = document.getElementById("searchInput").value.trim();
-    if (query !== "") {
-      window.location.href = `pagina-libros.html?query=${encodeURIComponent(query)}`;
-    }
-  });
-</script>
-
-<script>
-  const searchInput = document.getElementById("searchInput");
-  const searchOverlay = document.getElementById("searchOverlay");
-  const languageOverlay = document.getElementById("languageOverlay");
-
-  const langButton = document.querySelector('.selected-lang');
-  const langDropdown = document.querySelector('.language-dropdown');
-
-  let searchOverlayVisible = false;
-  let langHoverTimeout;
-
-  // ---------- BUSCADOR ----------
-  searchInput.addEventListener("focus", () => {
-    searchOverlay.style.display = "block";
-    searchOverlayVisible = true;
+  // ESC cierra
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && mobileMenu.classList.contains('is-open')) closeMenu();
   });
 
-  searchInput.addEventListener("blur", () => {
-    setTimeout(() => {
-      searchOverlay.style.display = "none";
-      searchOverlayVisible = false;
-    }, 150);
-  });
+  // Acordeones (solo uno abierto a la vez)
+  accordions?.forEach(acc => {
+    const btn = acc.querySelector('.mobile-acc-btn');
+    const submenu = acc.querySelector('.mobile-submenu');
 
-  window.addEventListener("wheel", () => {
-    if (searchOverlayVisible) {
-      searchOverlay.style.display = "none";
-      searchOverlayVisible = false;
-      searchInput.blur();
-    }
-  });
+    btn?.addEventListener('click', () => {
+      const isOpen = acc.classList.contains('is-open');
 
-  // ---------- SELECTOR DE IDIOMA ----------
-  function showLangOverlay() {
-    languageOverlay.style.display = 'block';
-    document.body.style.overflow = 'hidden'; // opcional para bloquear scroll
-  }
-
-  function hideLangOverlay() {
-    languageOverlay.style.display = 'none';
-    document.body.style.overflow = ''; // restaurar scroll
-  }
-
-  langButton.addEventListener('mouseenter', () => {
-    langHoverTimeout = setTimeout(() => {
-      showLangOverlay();
-    }, 100); // delay de aparición
-  });
-
-  langButton.addEventListener('mouseleave', () => {
-    clearTimeout(langHoverTimeout);
-    setTimeout(() => {
-      if (!langDropdown.matches(':hover') && !langButton.matches(':hover')) {
-        hideLangOverlay();
-      }
-    }, 300);
-  });
-
-  langDropdown.addEventListener('mouseleave', () => {
-    setTimeout(() => {
-      if (!langDropdown.matches(':hover') && !langButton.matches(':hover')) {
-        hideLangOverlay();
-      }
-    }, 300);
-  });
-
-  langDropdown.addEventListener('mouseenter', () => {
-    clearTimeout(langHoverTimeout);
-  });
-</script>
-
-<!-- LOADER (Mismo de pagina-libros.html) -->
-<div id="loader-overlay" style="display: none;">
-  <div class="loader-wrapper">
-    <div class="loader"></div>
-  </div>
-</div>
-
-
-<script>
-  const loadLanguage = async (lang) => {
-    const response = await fetch('lang.json');
-    const translations = await response.json();
-
-    // Traducción de elementos con data-i18n
-    document.querySelectorAll("[data-i18n]").forEach(el => {
-      const key = el.getAttribute("data-i18n");
-      if (translations[lang] && translations[lang][key]) {
-        if (el.querySelector("i")) {
-          const iconHTML = el.querySelector("i").outerHTML;
-          el.innerHTML = `${iconHTML} ${translations[lang][key]}`;
-        } else {
-          el.innerText = translations[lang][key];
+      // Cierra otros
+      accordions.forEach(other => {
+        if(other !== acc){
+          other.classList.remove('is-open');
+          const b = other.querySelector('.mobile-acc-btn');
+          const s = other.querySelector('.mobile-submenu');
+          b?.setAttribute('aria-expanded', 'false');
+          s?.setAttribute('aria-hidden', 'true');
         }
-      }
-    });
-
-    // Traducción de placeholders (inputs con ID conocidos)
-    const placeholderKeys = ["firstName", "lastName", "email", "subject", "message"];
-    placeholderKeys.forEach(id => {
-      const input = document.getElementById(id);
-      if (input && translations[lang][id]) {
-        input.placeholder = translations[lang][id];
-      }
-    });
-
-    // Traducción de inputs con atributo data-i18n-placeholder
-    document.querySelectorAll("[data-i18n-placeholder]").forEach(input => {
-      const key = input.getAttribute("data-i18n-placeholder");
-      if (translations[lang] && translations[lang][key]) {
-        input.placeholder = translations[lang][key];
-      }
-    });
-
-    // Traducción de opciones de <select> con data-i18n
-    document.querySelectorAll("option[data-i18n]").forEach(option => {
-      const key = option.getAttribute("data-i18n");
-      if (translations[lang] && translations[lang][key]) {
-        option.textContent = translations[lang][key];
-      }
-    });
-
-    // Traducción del botón de idioma (flag + sigla)
-    const langSpan = document.querySelector(".selected-lang span");
-    const langFlag = document.querySelector(".selected-lang img");
-    if (lang === "es") {
-      langSpan.textContent = "ES";
-      langFlag.src = "https://flagcdn.com/es.svg";
-    } else {
-      langSpan.textContent = "EN";
-      langFlag.src = "https://flagcdn.com/us.svg";
-    }
-
-    localStorage.setItem("lang", lang);
-  };
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const savedLang = localStorage.getItem("lang") || "en";
-    loadLanguage(savedLang);
-
-    const inputToCheck = document.querySelector(`input[name="lang"][value="${savedLang}"]`);
-    if (inputToCheck) inputToCheck.checked = true;
-
-    document.querySelectorAll('.language-dropdown input[name="lang"]').forEach(input => {
-      input.addEventListener("change", e => {
-        const selectedLang = e.target.value;
-        document.getElementById('loader-overlay').style.display = 'flex';
-        localStorage.setItem("lang", selectedLang);
-        setTimeout(() => {
-          location.reload();
-        }, 800);
       });
+
+      // Toggle actual
+      acc.classList.toggle('is-open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      submenu?.setAttribute('aria-hidden', String(isOpen));
     });
   });
-</script>
 
-<script>
-  document.body.classList.add("loading");
-
-  window.addEventListener("load", () => {
-    const loader = document.getElementById("loaderOverlay");
-
-    // Fase 1: A los 1s, cambiar el fondo blanco a translúcido sin transición
-    setTimeout(() => {
-      loader.style.transition = "none";
-      loader.style.background = "rgba(255, 255, 255, 0.7)";
-      loader.offsetHeight; // Forzar reflow
-      loader.style.transition = "opacity 0.6s ease";
-    }, 1000);
-
-    // Fase 2: A los 3s, ocultar el loader
-    setTimeout(() => {
-      loader.style.opacity = "0";
-      document.body.classList.remove("loading");
-    }, 3000);
-
-    // Fase 3: A los 3.2s, eliminar el loader del DOM
-    setTimeout(() => {
-      loader.remove();
-    }, 3200);
+  // Si clickeas un link, cierra menú
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => closeMenu());
   });
-</script>
-
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-  (function(){
-    emailjs.init("ABJqx_FyXkXU3Pa53"); // reemplaza con tu public key de EmailJS
-  })();
+})();
 </script>
 
 <script>
-  function handleFormSubmit(event) {
-    event.preventDefault();
+/* =========================================================
+   MOBILE: usar otras imágenes en el carrusel (solo celular)
+   Reemplaza src por versiones mobile
+========================================================= */
+(function () {
+  const mq = window.matchMedia("(max-width: 760px)");
+  const slides = document.querySelectorAll(".carousel-fade-slide img");
 
-    const form = event.target;
+  // Aquí defines el reemplazo: desktop -> mobile
+  // (pon tus rutas reales de imágenes para celular)
+  const mobileSrc = [
+    "IMAGES/banner MOBILE.png",          // Slide 1
+    "IMAGES/banner MOBILE 1.png",    // Slide 2
+    "IMAGES/banner MOBILE 2.png",      // Slide 3
+    "IMAGES/banner MOBILE 3.png"         // Slide 4
+  ];
 
-    const data = {
-      firstName: form.firstName.value,
-      lastName: form.lastName.value,
-      email: form.email.value,
-      subject: form.subject.value,
-      message: form.message.value,
-    };
+  // Guardamos los src originales para restaurar al salir de móvil
+  const originalSrc = Array.from(slides).map(img => img.getAttribute("src"));
 
-emailjs.send("service_4emdcim", "template_2wu59le", data)
-  .then(() => {
-    console.log("Enviado con:", data);
-    alert("Mensaje enviado correctamente. Te responderé pronto.");
-    form.reset();
-  })
-  .catch((error) => {
-    console.error("Error al enviar:", error);
-    alert("Hubo un error al enviar tu mensaje. Intenta nuevamente.");
-  });
+  function applyByViewport() {
+    if (!slides.length) return;
 
-  }
-</script>
-
-<script>
-const menuToggle = document.getElementById('menuToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-const menuOverlay = document.getElementById('menuOverlay');
-
-let menuOpen = false;
-
-menuToggle.addEventListener('click', () => {
-  menuOpen = !menuOpen;
-
-  mobileMenu.classList.toggle('open', menuOpen);
-  menuOverlay.style.display = menuOpen ? 'block' : 'none';
-  document.body.style.overflow = menuOpen ? 'hidden' : '';
-  menuToggle.classList.toggle('open', menuOpen);
-});
-
-function closeMenu() {
-  menuOpen = false;
-  mobileMenu.classList.remove('open');
-  menuOverlay.style.display = 'none';
-  document.body.style.overflow = '';
-  menuToggle.classList.remove('open');
-}
-
-</script>
-
-<script>
-  // Detectar clics en los enlaces del menú móvil
-  document.querySelectorAll('#mobileMenu a[href*="#"]').forEach(link => {
-    link.addEventListener('click', function (e) {
-      // Cierra el menú primero
-      closeMenu();
-
-      // Espera a que se cierre visualmente, luego hace scroll
-      const href = this.getAttribute('href');
-      const id = href.split('#')[1];
-      const targetSection = document.getElementById(id);
-
-      if (targetSection) {
-        e.preventDefault(); // Previene salto instantáneo
-        setTimeout(() => {
-          targetSection.scrollIntoView({ behavior: 'smooth' });
-        }, 100); // Pequeña espera para que el menú termine de cerrarse
-      }
-    });
-  });
-</script>
-
-<script>
-  const mobileSearchBtn = document.getElementById('mobileSearchBtn');
-  const mobileSearchContainer = document.getElementById('mobileSearchContainer');
-  const mobileOverlay = document.getElementById('searchOverlayMobile');
-
-  let mobileSearchOpen = false;
-
-  mobileSearchBtn.addEventListener('click', () => {
-    mobileSearchOpen = !mobileSearchOpen;
-    mobileSearchContainer.style.display = mobileSearchOpen ? 'block' : 'none';
-    mobileOverlay.style.display = mobileSearchOpen ? 'block' : 'none';
-    document.body.style.overflow = mobileSearchOpen ? 'hidden' : '';
-  });
-
-  mobileOverlay.addEventListener('click', () => {
-    mobileSearchOpen = false;
-    mobileSearchContainer.style.display = 'none';
-    mobileOverlay.style.display = 'none';
-    document.body.style.overflow = '';
-  });
-
-  document.getElementById("mobileSearchForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const query = document.getElementById("mobileSearchInput").value.trim();
-    if (query !== "") {
-      window.location.href = `pagina-libros.html?query=${encodeURIComponent(query)}`;
+    if (mq.matches) {
+      // MODO CELULAR: cambia las imágenes
+      slides.forEach((img, i) => {
+        if (mobileSrc[i]) img.src = mobileSrc[i];
+      });
+    } else {
+      // MODO NORMAL: vuelve a las imágenes originales
+      slides.forEach((img, i) => {
+        if (originalSrc[i]) img.src = originalSrc[i];
+      });
     }
-  });
-</script>
-
-<script>
-  function changeLanguage(lang) {
-    localStorage.setItem("selectedLanguage", lang);
-    location.reload(); // O llamar a tu función de traducción dinámica
   }
 
-  // Al cargar, aplicamos el idioma guardado
-  document.addEventListener("DOMContentLoaded", () => {
-    const savedLang = localStorage.getItem("selectedLanguage");
-    if (savedLang) {
-      document.getElementById("languageSelect").value = savedLang;
-      // Aplica tu sistema dinámico si usas lang.json
-      // applyLanguage(savedLang); 
-    }
-  });
-</script>
+  // Ejecuta al cargar
+  applyByViewport();
 
-<script>
-  const slides = document.querySelectorAll('.carousel-fade-slide');
-  let currentIndex = 0;
-
-  function showSlide(index) {
-    slides.forEach((slide, i) => {
-      slide.classList.remove('active');
-    });
-    slides[index].classList.add('active');
+  // Reacciona a cambios (rotación / resize)
+  if (mq.addEventListener) {
+    mq.addEventListener("change", applyByViewport);
+  } else {
+    mq.addListener(applyByViewport); // fallback
   }
-
-  function nextSlide() {
-    currentIndex = (currentIndex + 1) % slides.length;
-    showSlide(currentIndex);
-  }
-
-  function prevSlide() {
-    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-    showSlide(currentIndex);
-  }
-
-  // Mostrar primer slide
-  showSlide(currentIndex);
-
-  // Avance automático
-  setInterval(nextSlide, 10000); // cada 10 segundos
-</script>
-
-<script>
-  // Función utilitaria: ocultar y desactivar overlays de forma segura
-  function hideOverlaySafe(el) {
-    if (!el) return;
-    el.style.display = 'none';
-    el.setAttribute('aria-hidden', 'true');
-  }
-
-  // Obtiene referencias (si existen)
-  const _searchOverlay        = document.getElementById('searchOverlay');
-  const _searchOverlayMobile  = document.getElementById('searchOverlayMobile');
-  const _languageOverlayFix   = document.getElementById('languageOverlay');
-  const _menuOverlayFix       = document.getElementById('menuOverlay');
-
-  // Al cargar, marcamos como ocultos y sin eventos
-  hideOverlaySafe(_searchOverlay);
-  hideOverlaySafe(_searchOverlayMobile);
-  hideOverlaySafe(_languageOverlayFix);
-  hideOverlaySafe(_menuOverlayFix);
-
-  // Si algún script los muestra, que lo haga usando aria-hidden="false"
-  // Ejemplo: para abrirlos, usar: el.style.display = 'block'; el.setAttribute('aria-hidden','false');
-
-  // En móvil, si cambia orientación/tamaño, cerramos cualquier overlay “pegado”
-  ['resize', 'orientationchange'].forEach(evt => {
-    window.addEventListener(evt, () => {
-      hideOverlaySafe(_searchOverlay);
-      hideOverlaySafe(_searchOverlayMobile);
-      hideOverlaySafe(_languageOverlayFix);
-      hideOverlaySafe(_menuOverlayFix);
-      // Rehabilita el scroll por si quedó bloqueado
-      document.body.style.overflow = '';
-    }, { passive: true });
-  });
-
-  // Extra: por si el carrusel tuviera un contenedor con z-index alto definido en CSS externo:
-  (function lowerCarouselZIndex() {
-    const sec = document.querySelector('.carousel-fade-section');
-    const con = document.querySelector('.carousel-fade-container');
-    if (sec) sec.style.zIndex = '0';
-    if (con) { con.style.zIndex = '0'; con.style.overflow = 'hidden'; }
-  })();
+})();
 </script>
 
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="script.js"></script>
-      <script src="product-page.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
