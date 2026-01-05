@@ -9,18 +9,23 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 
-<style>/* =========================
+<style>
+   /* =========================
    BADGES DE IDIOMA (HOME)
 ========================= */
+
+/* Contenedor: siempre centrado respecto a la portada */
 .book-lang{
   display: flex;
-  gap: 8px;
-  margin: 10px 0 8px; /* debajo de la imagen, antes del título */
-  margin-left: 2.7rem !important;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  gap: 8px;                 /* separación entre pills */
+  margin: 10px 0 8px;       /* debajo de la imagen, antes del título */
+  justify-content: center;  /* <<< CENTRADO */
+  align-items: center;
+  flex-wrap: nowrap;        /* queremos 1 sola línea */
+  width: 100%;              /* ocupa todo el ancho del card */
 }
 
+/* Pills (ES / EN) */
 .lang-pill{
   display: inline-flex;
   align-items: center;
@@ -34,52 +39,25 @@
   background: #fff;
   color: #1c2426;
   line-height: 1;
+  white-space: nowrap;
 }
 
-.lang-spn{
-  display: inline-flex;
-  width: 12rem !important;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 10px;
-  margin-left: -1rem !important;
-  border-radius: 999px;
-  font-size: 11px;
-  letter-spacing: .6px;
-  text-transform: uppercase;
-  border: 1px solid #482922;
-  background: #fff;
-  color: #1c2426;
-  line-height: 1;
+/* Si hay un solo pill (como Sobrevivir), mantiene ancho pero centrado */
+.book-lang.is-single .lang-pill{
+  width: 12rem;             /* tu ancho deseado en desktop */
 }
 
-
+/* Mobile */
 @media (max-width: 760px){
   .lang-pill{
     font-size: 10px;
     padding: 4px 9px;
   }
-}
 
-@media (max-width: 760px){
-  .lang-spn{
-    font-size: 10px;
-      width: 10rem !important;
-    padding: 4px 9px;
-    margin-left: -0.5rem !important;
+  .book-lang.is-single .lang-pill{
+    width: 10rem;           /* tu ancho deseado en móvil */
   }
 }
-
-@media (max-width: 760px){
-  .book-lang{
-    font-size: 10px;
-      width: 10rem !important;
-    padding: 4px 9px;
-margin-left: 1rem !important;
-  }
-}
-
-
 
 </style>
 
@@ -406,8 +384,8 @@ margin-left: 1rem !important;
       <article class="book-card">
         <a class="book-hit" href="book-details.html?book=libro-8" aria-label="Leer más sobre Cómo Sobrevivir a la Vida">
           <img class="book-cover" src="IMAGES/sobrevivir vida book.png" alt="Portada Cómo Sobrevivir a la Vida">
-          <div class="book-lang" aria-label="Idiomas disponibles">
-  <span class="lang-spn">ESPAÑOL</span>
+<div class="book-lang is-single" aria-label="Idiomas disponibles">
+  <span class="lang-pill">ESPAÑOL</span>
 </div>
 
           <h3 class="book-name">Como Sobrevivir a la Vida</h3>
