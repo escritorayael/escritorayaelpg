@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catálogo | Yael Goldmann</title>
+  <link rel="icon" href="IMAGES/favicon-babe.jpg" type="image/png">
+  <meta name="description" content="Catálogo de libros de Yael Goldmann." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- TOP BAR / HEADER (IDÉNTICO) -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="Ir al inicio">
+        <span class="brand-name">YAEL GOLDMANN</span>
+        <span class="brand-sub">ESCRITORA</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="primaryNav">
+        <span class="nav-toggle-lines"></span>
+      </button>
+
+      <nav class="nav" id="primaryNav" aria-label="Navegación principal">
+        <ul class="nav-list">
+          <li class="nav-item">
+<a class="nav-link" href="index.html"><span class="nav-text">Inicio</span></a>
+
+          </li>
+
+          <li class="nav-item has-dropdown">
+            <button class="nav-link nav-link-btn" type="button">
+              <span class="nav-text">Sobre Yael</span>
+              <span class="caret">▾</span>
+            </button>
+
+            <div class="dropdown" role="menu">
+              <a class="dropdown-link" href="about.html" role="menuitem">Biografía</a>
+            </div>
+          </li>
+
+<li class="nav-item has-dropdown is-current">
+  <button class="nav-link nav-link-btn" type="button" aria-expanded="false">
+    <span class="nav-text">Libros</span>
+    <span class="caret">▾</span>
+  </button>
+
+  <div class="dropdown" role="menu">
+    <a class="dropdown-link is-active" href="catalogo.html" role="menuitem">Catálogo</a>
+  </div>
+</li>
+
+          <li class="nav-item has-dropdown">
+            <button class="nav-link nav-link-btn" type="button" aria-expanded="false">
+              <span class="nav-text">Tienda</span>
+              <span class="caret">▾</span>
+            </button>
+            <div class="dropdown" role="menu">
+              <a class="dropdown-link" href="index.html#available" role="menuitem">Dónde comprar</a>
+            </div>
+          </li>
+
+<li class="nav-item">
+  <a class="nav-link" href="contacto.html"><span class="nav-text">Contacto</span></a>
+</li>
+        </ul>
+      </nav>
+
+<!-- MOBILE FULLSCREEN MENU -->
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Menú">
+    
+    <div class="mobile-menu-top">
+      <span class="mobile-menu-title">Menú</span>
+      <button class="mobile-menu-close" type="button" aria-label="Cerrar menú">✕</button>
+    </div>
+
+    <ul class="mobile-menu-list">
+
+      <li class="mobile-item">
+        <a class="mobile-link" href="index.html">Inicio</a>
+      </li>
+
+      <li class="mobile-item mobile-accordion">
+        <button class="mobile-link mobile-acc-btn" type="button" aria-expanded="false">
+          Sobre Yael <span class="mobile-acc-caret">▾</span>
+        </button>
+        <div class="mobile-submenu" aria-hidden="true">
+          <a class="mobile-sublink" href="about.html">Biografía</a>
+        </div>
+      </li>
+
+      <li class="mobile-item mobile-accordion">
+        <button class="mobile-link mobile-acc-btn" type="button" aria-expanded="false">
+          Libros <span class="mobile-acc-caret">▾</span>
+        </button>
+        <div class="mobile-submenu" aria-hidden="true">
+          <a class="mobile-sublink" href="catalogo.html">Catálogo</a>
+        </div>
+      </li>
+
+      <li class="mobile-item mobile-accordion">
+        <button class="mobile-link mobile-acc-btn" type="button" aria-expanded="false">
+          Tienda <span class="mobile-acc-caret">▾</span>
+        </button>
+        <div class="mobile-submenu" aria-hidden="true">
+          <a class="mobile-sublink" href="index.html#available">Dónde comprar</a>
+        </div>
+      </li>
+
+      <li class="mobile-item">
+        <a class="mobile-link" href="contacto.html">Contacto</a>
+      </li>
+
+    </ul>
+
+<!-- Social abajo en el menú móvil -->
+<div class="mobile-menu-social" aria-label="Redes sociales">
+  <a class="social-btn" href="https://www.facebook.com/CoachYaelGoldmann?rdid=xKAJ0B4Td386g26u&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F14GsERkFrrD%2F#" aria-label="Facebook" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.5 1.6-1.5h1.6V5c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7v3h2.7v8h3.8z"/></svg>
+  </a>
+
+  <a class="social-btn" href="https://www.instagram.com/yael_escritora/" aria-label="Instagram" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5zM18 6.8a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
+  </a>
+
+  <a class="social-btn" href="https://www.threads.com/@yael_escritora?xmt=AQF0rSFfqUTwxvTnxbN-vOzx4Di2bfx6JeCWXYEgkYXIAgQ" aria-label="Threads" target="_blank" rel="noopener">
+    <img src="IMAGES/threads-icon.png" class="icon-threads" alt="Threads" style="width:auto;height:20px;">
+  </a>
+</div>
+
+  </div>
+</div>
+
+      <div class="social">
+        <a class="social-btn" href="https://www.facebook.com/CoachYaelGoldmann?rdid=xKAJ0B4Td386g26u&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F14GsERkFrrD%2F#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8h2.7l.4-3H13.5V9.1c0-.9.3-1.5 1.6-1.5h1.6V5c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.5V11H7v3h2.7v8h3.8z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.instagram.com/yael_escritora/" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5zM18 6.8a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
+        </a>
+        <a class="social-btn" href="https://www.threads.com/@yael_escritora?xmt=AQF0rSFfqUTwxvTnxbN-vOzx4Di2bfx6JeCWXYEgkYXIAgQ" aria-label="Threads">
+          <img src="IMAGES/threads-icon.png" class="icon-threads" alt="Threads" style="width:auto;height:20px;">
+        </a>
+      </div>
+    </div>
+  </header>
+
+<!-- BREADCRUMB / PAGE BAR -->
+<section class="page-bar">
+  <div class="page-bar-inner">
+
+    <!-- TÍTULO IZQUIERDA -->
+    <h1 class="page-bar-title">Catálogo</h1>
+
+    <!-- BREADCRUMB DERECHA -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="index.html" class="breadcrumb-link">Inicio</a>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">Catálogo</span>
+    </nav>
+
+  </div>
+</section>
+
+
+  <main>
+    <!-- CATÁLOGO (10 libros, 4 por fila) -->
+    <section class="books-showcase" id="catalogo" aria-label="Catálogo de libros">
+      <div class="container">
+
+        <div class="books-grid">
+
+          <!-- 1 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-1" aria-label="Leer más sobre Amina: La Princesa Rebelde">
+              <img class="book-cover" src="IMAGES/amina book.png" alt="Portada Amina: La Princesa Rebelde">
+              <h3 class="book-name">Amina: La Princesa Rebelde</h3>
+              <p class="book-desc">Amina, hija de una poderosa familia real kuwaití, siempre supo que su destino no le pertenecía. Prometida en matrimonio con un hombre al que no ama y atrapada en una jaula de oro tejida por la tradición y las expectativas, decide arriesgarlo todo: escapar. Buscando asilo en la embajada de Panamá en Londres, Amina encuentra aliados inesperados en Isabel, la embajadora, y Alex Fitzwilliam, un brillante abogado británico.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-1">LEER MÁS</a>
+          </article>
+
+          <!-- 2 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-2" aria-label="Leer más sobre Cuando Todo Calla">
+              <img class="book-cover" src="IMAGES/cuando todo calla book.png" alt="Portada Cuando Todo Calla">
+              <h3 class="book-name">Cuando Todo Calla</h3>
+              <p class="book-desc">Una historia de amor, pérdidas, resiliencia y segundas oportunidades cuando el escándalo mediático lo cambia todo. La vida de Lilian Mann se derrumba tras una pérdida devastadora. Deberá aprender a confiar cuando todo parece perdido, a amar en medio del caos, y a encontrar sentido en lo que no tiene explicación.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-2">LEER MÁS</a>
+          </article>
+
+          <!-- 3 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-3" aria-label="Leer más sobre Destinos Entrelazados">
+              <img class="book-cover" src="IMAGES/destinos entrelazados.png" alt="Portada Destinos Entrelazados">
+              <h3 class="book-name">Destinos Entrelazados</h3>
+              <p class="book-desc">Experimenta la intensidad de una historia cargada de amor, peligro y dilemas éticos. Raquel, una periodista argentina audaz, y Walter, un joven en busca de libertad, se encuentran en un peligroso cruce de caminos. Desafiando todo y enfrentándose a fuerzas que superan la comprensión humana.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-3">LEER MÁS</a>
+          </article>
+
+          <!-- 4 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-4" aria-label="Leer más sobre En el Nombre de Ella">
+              <img class="book-cover" src="IMAGES/en el nombre de ella book.png" alt="Portada En el Nombre de Ella">
+              <h3 class="book-name">En el Nombre de Ella</h3>
+              <p class="book-desc">Un inocente juego virtual conecta a Silvina Stern, una periodista de investigación decidida, con Alessandro De Luca, un cirujano de renombre internacional. En el Nombre de Ella es un thriller vibrante que fusiona pasión, peligro y verdad en una historia donde la emoción nunca da tregua y el amor puede ser la única salida.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-4">LEER MÁS</a>
+          </article>
+
+          <!-- 5 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-5" aria-label="Leer más sobre Encuentros Casuales">
+              <img class="book-cover" src="IMAGES/encuentros casuales book.png" alt="Portada Encuentros Casuales">
+              <h3 class="book-name">Encuentros Casuales</h3>
+              <p class="book-desc">La brillante científica Eliana se encuentra con un descubrimiento revolucionario que tiene la capacidad de detener una epidemia devastadora en el sudeste asiático. Su decisión de actuar furtivamente desencadena una serie de eventos que desafían no solo su carrera, sino también su vida y la de su hija.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-5">LEER MÁS</a>
+          </article>
+
+          <!-- 6 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-6" aria-label="Leer más sobre Identidades Ocultas">
+              <img class="book-cover" src="IMAGES/identidades ocultas book.png" alt="Portada Identidades Ocultas">
+              <h3 class="book-name">Identidades Ocultas</h3>
+              <p class="book-desc">Sumérgete en Identidades Ocultas, una novela que combina la emoción del thriller tecnológico con una conmovedora historia de amor. Sigue a Laura Trend, una mujer fuerte y determinada, mientras enfrenta una peligrosa trama de cibercrimen que amenaza con desestabilizar la economía mundial y poner en riesgo la seguridad global.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-6">LEER MÁS</a>
+          </article>
+
+          <!-- 7 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-7" aria-label="Leer más sobre Jaque a la Reina: Códigos Mortales">
+              <img class="book-cover" src="IMAGES/jaque reina book.png" alt="Portada Jaque a la Reina: Códigos Mortales">
+              <h3 class="book-name">Jaque a la Reina: Códigos Mortales</h3>
+              <p class="book-desc">Emma Glow, una joven marcada por el destino, retorna a Estados Unidos tras la trágica pérdida de sus padres en Caracas. Su corazón, aún envuelto en sombras, encuentra un rayo de luz en su pasión por el ajedrez, que la lleva a un encuentro fortuito con un enigmático jugador que cambiará el rumbo de su existencia para siempre.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-7">LEER MÁS</a>
+          </article>
+
+          <!-- 8 -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-8" aria-label="Leer más sobre Cómo Sobrevivir a la Vida">
+              <img class="book-cover" src="IMAGES/sobrevivir vida book.png" alt="Portada Cómo Sobrevivir a la Vida">
+              <h3 class="book-name">Como Sobrevivir a la Vida: Simples Consejos para Lograrlo</h3>
+              <p class="book-desc">¡Descubre cómo superar los obstáculos de la vida y encontrar la plenitud con Cómo Sobrevivir a la Vida de Yael Goldmann!. Cómo Sobrevivir a la Vida no solo te ofrece una mirada honesta a los desafíos comunes de la vida, sino que también te brinda herramientas prácticas respaldadas por evidencia para superar la adversidad.</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-8">LEER MÁS</a>
+          </article>
+
+          <!-- 9 (NUEVO) -->
+          <article class="book-card">
+            <a class="book-hit" href="book-details.html?book=libro-9" aria-label="Leer más sobre Libro 9">
+              <img class="book-cover" src="IMAGES/vida-encuentre-book.png" alt="Portada Libro 9">
+              <h3 class="book-name">Hasta que la Vida me Encuentre</h3>
+              <p class="book-desc">"Perder al amor de tu vida no siempre significa dejar de amarlo. Mina Suárez, mediadora internacional, puede reconciliar naciones enteras… pero no logra hacer las paces con su propio corazón. Se prometió no volver a sentir, hasta que la vida —y un hombre llamado Pierre Durand— la enfrentan al riesgo más humano de todos: volver a amar. Entre Ginebra y los recuerdos de Buenos Aires, Mina descubrirá que la paz no se firma, se construye. Que el deseo de una vida normal —un hogar, una familia, un hijo— puede volver irracional incluso a la mente más racional. Y que a veces, para encontrarse con la vida, hay que perder el control."</p>
+            </a>
+            <a class="book-link" href="book-details.html?book=libro-9">LEER MÁS</a>
+          </article>
+
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- (OPCIONAL) Si quieres mantener la sección DISPONIBLE EN también en catálogo, déjala.
+       Si no la quieres, borra este bloque completo. -->
+  <section id="available" style="text-align: center; padding: 60px 0; background-color: #efece4;">
+    <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 40px;">
+      <div style="flex: 1; height: 1px; background-color: #ccc; margin-right: 20px;"></div>
+      <h2 class="section-title" style="font-size: 24px; margin: 0; font-family: Arial, Helvetica, sans-serif; font-weight: 500; letter-spacing: 2px;" data-i18n="availableOn">DISPONIBLE EN</h2>
+      <div style="flex: 1; height: 1px; background-color: #ccc; margin-left: 20px;"></div>
+    </div>
+
+    <div class="distributors-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; padding: 0 20px;">
+      <a href="https://www.amazon.com/stores/author/B0CTTQ1X8C/allbooks?ingress=0&visitId=c146c036-f45e-40fc-834b-f36d50ce9c03&ref_=ap_rdr&ccs_id=fad4e1ac-15b8-48bf-bf20-2c1fd14c3383" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" style="height: 40px;">
+      </a>
+      <a href="https://play.google.com/store/search?q=yael+goldmann&c=books" target="_blank">
+        <img src="IMAGES/Google-Play-Logo.png" alt="Google Play" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.barnesandnoble.com/s/%22Yael%20Goldmann%22?Ntk=P_key_Contributor_List&Ns=P_Sales_Rank&Ntx=mode+matchall" target="_blank">
+        <img src="IMAGES/barnes-and-noble-logo.png" alt="Barnes & Noble" style="height: 40px;">
+      </a>
+      <a href="https://www.kobo.com" target="_blank">
+        <img src="IMAGES/rakuten-kobo-logo.png" alt="Rakuten Kobo" style="height: 140px; margin-top: -3rem !important;">
+      </a>
+      <a href="https://books.apple.com" target="_blank">
+        <img src="IMAGES/Apple-Books-Logo.png" alt="Apple Books" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.everand.com" target="_blank">
+        <img src="IMAGES/logo-everand-2x.png" alt="Everand" style="height: 40px;">
+      </a>
+      <a href="https://mytolino.com" target="_blank">
+        <img src="IMAGES/tolino-logo.png" alt="Tolino" style="height: 70px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.overdrive.com/search?q=yael+goldmann" target="_blank">
+        <img src="IMAGES/overdrive-logo.png" alt="OverDrive" style="height: 40px;">
+      </a>
+      <a href="https://www.yourcloudlibrary.com" target="_blank">
+        <img src="IMAGES/CloudLibrary-Logo-v2.png" alt="CloudLibrary" style="height: 70px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.baker-taylor.com" target="_blank">
+        <img src="IMAGES/bakertaylor-logo.png" alt="Baker & Taylor" style="height: 40px;">
+      </a>
+      <a href="https://www.hoopladigital.com" target="_blank">
+        <img src="IMAGES/Hoopla-Logo.png" alt="Hoopla" style="height: 40px;">
+      </a>
+      <a href="https://www.odilo.us" target="_blank">
+        <img src="IMAGES/odilo-logo.png" alt="Odilo" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://www.vivlio.com" target="_blank">
+        <img src="IMAGES/Logo_Vivlio.png" alt="Vivlio" style="height: 40px;">
+      </a>
+      <a href="https://www.borrowbox.com" target="_blank">
+        <img src="IMAGES/Borrowbox2.png" alt="BorrowBox" style="height: 40px;">
+      </a>
+      <a href="https://www.smashwords.com/profile/view/YaelGoldmann" target="_blank">
+        <img src="IMAGES/Smashwords-logo.png" alt="Smashwords" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+      <a href="https://thepalaceproject.org/marketplace/" target="_blank">
+        <img src="IMAGES/Palace-Marketplace-1.png" alt="Palace Marketplace" style="height: 40px;">
+      </a>
+      <a href="https://fable.co" target="_blank">
+        <img src="IMAGES/fable_Logo.png" alt="Fable" style="height: 100px; margin-top: -2rem !important;">
+      </a>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Yael Goldmann. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+<script>
+
+// =========================
+// MOBILE FULLSCREEN MENU
+// =========================
+(function(){
+  const toggleBtn = document.querySelector('.nav-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeBtn = mobileMenu?.querySelector('.mobile-menu-close');
+  const panel = mobileMenu?.querySelector('.mobile-menu-panel');
+  const accordions = mobileMenu?.querySelectorAll('.mobile-accordion');
+
+  if(!toggleBtn || !mobileMenu) return;
+
+  function openMenu(){
+    mobileMenu.classList.add('is-open');
+    document.body.classList.add('menu-locked');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeMenu(){
+    mobileMenu.classList.remove('is-open');
+    document.body.classList.remove('menu-locked');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+
+    // Cierra submenus al cerrar
+    accordions?.forEach(acc => {
+      acc.classList.remove('is-open');
+      const btn = acc.querySelector('.mobile-acc-btn');
+      const submenu = acc.querySelector('.mobile-submenu');
+      btn?.setAttribute('aria-expanded', 'false');
+      submenu?.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  closeBtn?.addEventListener('click', closeMenu);
+
+mobileMenu.addEventListener('click', (e) => {
+  // si clickeas en el overlay (no dentro del panel), cierra
+  if(!panel.contains(e.target)) closeMenu();
+});
+
+
+  // ESC cierra
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && mobileMenu.classList.contains('is-open')) closeMenu();
+  });
+
+  // Acordeones (solo uno abierto a la vez)
+  accordions?.forEach(acc => {
+    const btn = acc.querySelector('.mobile-acc-btn');
+    const submenu = acc.querySelector('.mobile-submenu');
+
+    btn?.addEventListener('click', () => {
+      const isOpen = acc.classList.contains('is-open');
+
+      // Cierra otros
+      accordions.forEach(other => {
+        if(other !== acc){
+          other.classList.remove('is-open');
+          const b = other.querySelector('.mobile-acc-btn');
+          const s = other.querySelector('.mobile-submenu');
+          b?.setAttribute('aria-expanded', 'false');
+          s?.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Toggle actual
+      acc.classList.toggle('is-open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      submenu?.setAttribute('aria-hidden', String(isOpen));
+    });
+  });
+
+  // Si clickeas un link, cierra menú
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => closeMenu());
+  });
+})();
+
+
+</script>
+
+  <script src="script.js"></script>
+</body>
+</html>
