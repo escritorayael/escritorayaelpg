@@ -446,3 +446,181 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   window.nextSlide = next;
   window.prevSlide = prev;
 })();
+
+
+
+
+
+
+
+// =========================
+// SEARCH SYSTEM (About sidebar + Search page)
+// =========================
+(function(){
+  const BOOKS = Array.isArray(window.BOOKS) ? window.BOOKS : [];
+
+  function escapeHtml(str){
+    return String(str ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function formatDate(iso){
+    if(!iso) return "";
+    // muestra estilo "Oct 1,2003" similar a la imagen (sin espacio después de coma)
+    const d = new Date(iso + "T00:00:00");
+    if(Number.isNaN(d.getTime())) return iso;
+    const months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    const m = months[d.getMonth()];
+    const day = d.getDate();
+    const year = d.getFullYear();
+    return `${m} ${day},${year}`;
+  }
+
+  function normalize(s){
+    return String(s || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function searchBooks(q){
+    const nq = normalize(q).trim();
+    if(!nq) return [];
+
+    return BOOKS.filter(b => {
+      const title = normalize(b.title);
+      return title.includes(nq);
+    });
+  }
+
+  function sortPopular(list){
+    return [...list].sort((a,b) => (b.popularity||0) - (a.popularity||0));
+  }
+  function sortRecent(list){
+    return [...list].sort((a,b) => new Date(b.date||0) - new Date(a.date||0));
+  }
+  function sortComment(list){
+    return [...list].sort((a,b) => (b.comments||0) - (a.comments||0));
+  }
+
+  function renderMiniList(container, list){
+    if(!container) return;
+    container.innerHTML = list.slice(0,4).map(b => {
+      return `
+        <a class="nr-mini-item" href="${escapeHtml(b.url || "#")}">
+          <img class="nr-mini-cover"
+     src="${escapeHtml(b.cover || "")}"
+     alt="${escapeHtml(b.title)}"
+     onerror="this.onerror=null; this.src='IMAGES/placeholder-book.png';">
+
+          <div>
+            <div class="nr-mini-title">${escapeHtml(b.title)}</div>
+            <div class="nr-mini-date">${escapeHtml(formatDate(b.date))}</div>
+          </div>
+        </a>
+      `;
+    }).join("");
+  }
+
+  function initSidebarWidget(scopeEl){
+    if(!scopeEl) return;
+
+    const tabs = scopeEl.querySelectorAll(".nr-tab");
+    const panes = scopeEl.querySelectorAll(".nr-pane");
+
+    const popularPane = scopeEl.querySelector('[data-pane="popular"]');
+    const recentPane  = scopeEl.querySelector('[data-pane="recent"]');
+    const commentPane = scopeEl.querySelector('[data-pane="comment"]');
+
+    renderMiniList(popularPane, sortPopular(BOOKS));
+    renderMiniList(recentPane,  sortRecent(BOOKS));
+    renderMiniList(commentPane, sortComment(BOOKS));
+
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tab = btn.getAttribute("data-tab");
+        tabs.forEach(t => {
+          const active = t === btn;
+          t.classList.toggle("is-active", active);
+          t.setAttribute("aria-selected", String(active));
+        });
+
+        panes.forEach(p => {
+          const match = p.getAttribute("data-pane") === tab;
+          p.classList.toggle("is-active", match);
+          p.hidden = !match;
+        });
+      });
+    });
+  }
+
+  // Init all sidebar widgets (about + search page)
+  document.querySelectorAll(".nr-sidebar .nr-widget").forEach(initSidebarWidget);
+
+  // SEARCH PAGE render
+  const isSearchPage = document.body?.getAttribute("data-page") === "search";
+  if(isSearchPage){
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q") || "";
+    const cleanQ = q.trim();
+
+    const titleEl = document.getElementById("searchTitle");
+    const subEl   = document.getElementById("searchSub");
+    const crumbEl = document.getElementById("searchCrumb");
+
+    if(titleEl) titleEl.textContent = `Resultados para ${cleanQ || ""}`.trim();
+    if(crumbEl){
+      crumbEl.innerHTML = `
+        <a href="index.html" class="breadcrumb-link">Inicio</a>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-current">Resultados para "${escapeHtml(cleanQ)}"</span>
+      `;
+    }
+
+    // rellena input del sidebar
+    const q2 = document.getElementById("q2");
+    if(q2) q2.value = cleanQ;
+
+    const results = cleanQ ? searchBooks(cleanQ) : [];
+    const listEl = document.getElementById("resultsList");
+    const noEl = document.getElementById("noResults");
+
+    if(listEl){
+      listEl.innerHTML = results.map(b => {
+        const cats = Array.isArray(b.categories) ? b.categories : [];
+        const catsText = cats.length ? cats.join(", ") : "Todos los libros";
+        return `
+          <article class="nr-result">
+            <img class="nr-result-cover"
+     src="${escapeHtml(b.cover || "")}"
+     alt="${escapeHtml(b.title)}"
+     onerror="this.onerror=null; this.src='IMAGES/placeholder-book.png';">
+
+            <div>
+              <h2 class="nr-result-title">
+                <a href="${escapeHtml(b.url || "#")}">${escapeHtml(b.title)}</a>
+              </h2>
+
+              <div class="nr-result-meta">
+                <span>${escapeHtml(formatDate(b.date))}</span>
+                <span class="nr-dot" aria-hidden="true"></span>
+                <span>${escapeHtml(catsText)}</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    const has = results.length > 0;
+    if(noEl) noEl.hidden = has;
+  }
+
+  // Footer year (si no lo tienes ya en tu script)
+  const y = document.getElementById("year");
+  if(y && !y.textContent) y.textContent = new Date().getFullYear();
+})();
