@@ -624,3 +624,48 @@ const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const y = document.getElementById("year");
   if(y && !y.textContent) y.textContent = new Date().getFullYear();
 })();
+
+
+// =========================
+// FIX: submit/click siempre redirige a search.html?q=...
+// =========================
+(function () {
+  function goToSearch(query) {
+    const q = String(query || "").trim();
+    if (!q) return;
+    window.location.href = "search.html?q=" + encodeURIComponent(q);
+  }
+
+  // Soporta varios forms (about, search, etc.)
+  const forms = document.querySelectorAll(
+    'form[action="search.html"], form[action="./search.html"], #siteSearchForm2, #siteSearchForm'
+  );
+
+  forms.forEach((form) => {
+    // input por name="q" (tu caso) o cualquier input type search/text dentro
+    const input =
+      form.querySelector('input[name="q"]') ||
+      form.querySelector('input[type="search"]') ||
+      form.querySelector('input[type="text"]');
+
+    if (!input) return;
+
+    // 1) Submit (Enter o botón submit)
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      goToSearch(input.value);
+    });
+
+    // 2) Click en botón (por si el botón es type="button" en otra página)
+    const btn = form.querySelector('button[type="submit"], button, input[type="submit"]');
+    if (btn) {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        goToSearch(input.value);
+      });
+    }
+  });
+})();
+
