@@ -1991,3 +1991,386 @@ body.menu-locked{
   opacity: .45;
   cursor: default;
 }
+
+
+
+
+
+
+/* =========================
+   SEARCH / SIDEBAR (estilo NoraRoberts)
+========================= */
+
+.sr-only{
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);
+  white-space:nowrap;border:0;
+}
+
+.nr-two-col{
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 22px 16px 48px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 320px;
+  gap: 42px;
+}
+
+@media (max-width: 980px){
+  .nr-two-col{ grid-template-columns: 1fr; gap: 26px; }
+}
+
+.nr-sidebar{ align-self: start; }
+.nr-widget{
+  background: transparent;
+}
+
+.nr-search{
+  display: grid;
+  gap: 12px;
+}
+
+.nr-search-input{
+  width: 100%;
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.18);
+  border-radius: 1px;
+  background: #fff;
+  font-size: 15px;
+}
+
+.nr-search-btn{
+  width: 118px;
+  height: 40px;
+  border: 0;
+  border-radius: 1px;
+  background: #482922; /* similar al verde-teal de la foto */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nr-rule{
+  margin: 18px 0 14px;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.12);
+}
+
+.nr-tabs{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.nr-tab{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-weight: 700;
+  color: #2a2f33;
+  cursor: pointer;
+}
+
+.nr-tab.is-active{
+  color: #482922;
+}
+
+.nr-tab-sep{
+  color: rgba(0,0,0,.35);
+  font-weight: 600;
+}
+
+.nr-pane{
+  padding-top: 12px;
+}
+
+.nr-mini-item{
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  text-decoration: none;
+  color: inherit;
+}
+
+.nr-mini-cover{
+  width: 46px;
+  height: 64px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+}
+
+.nr-mini-title{
+  font-size: 14px;
+  line-height: 1.2;
+  color: #1d2327;
+}
+
+.nr-mini-date{
+  margin-top: 4px;
+  font-size: 12px;
+  color: #6a757c;
+}
+
+/* PAGE BAR subtitle en search */
+.page-bar-sub{
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(0,0,0,.55);
+  font-style: italic;
+}
+
+/* Search page content */
+.nr-search-page{ background: #fff; }
+
+/* Results list (lado izquierdo) */
+.nr-result{
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.nr-result-cover{
+  width: 78px;
+  height: 110px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+}
+
+.nr-result-title{
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0 0 6px;
+}
+
+.nr-result-title a{
+  text-decoration: none;
+  color: #1d2327;
+}
+
+.nr-result-meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(0,0,0,.65);
+}
+
+.nr-dot{
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.35);
+  display: inline-block;
+}
+
+.nr-no-results{
+  margin-top: 18px;
+  color: rgba(0,0,0,.65);
+}
+
+
+
+
+
+
+
+/* =========================
+   FIX ABOUT + SIDEBAR LAYOUT (texto ancho y legible)
+   Pegar AL FINAL
+========================= */
+
+/* El grid principal: izquierda grande + sidebar */
+.nr-two-col{
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 22px 16px 48px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 42px;
+}
+
+/* La columna izquierda no debe tener "máximo" angosto */
+.nr-left{
+  min-width: 0;
+}
+
+/* Quitamos el max-width que te estaba angostando el texto */
+.about-wrap{
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 40px 0 !important;
+}
+
+/* Foto más pegada a la izquierda y texto más respirable */
+.about-grid{
+  display: grid;
+  grid-template-columns: 420px 1fr;   /* antes 460px -> lo bajo un poco para dar más texto */
+  gap: 48px;
+  align-items: start;
+}
+
+/* La imagen NO se encoge raro */
+.about-photo{
+  justify-self: start;
+}
+
+.about-img{
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
+/* Texto más ancho y cómodo */
+.about-text{
+  max-width: 720px;
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .nr-two-col{ grid-template-columns: 1fr; }
+  .about-grid{ grid-template-columns: 1fr; }
+  .about-wrap{ padding: 22px 0 !important; }
+  .about-img{ max-width: 360px; }
+}
+
+
+/* =========================================================
+   ABOUT (desktop): foto más a la izquierda + texto más ancho
+   Pegar AL FINAL de styles.css
+========================================================= */
+
+/* 1) Haz el layout principal más ancho (aprovecha pantalla) */
+.nr-two-col{
+  max-width: 1320px !important;                 /* más ancho que 1120 */
+  width: min(1320px, calc(100% - 48px)) !important;
+  margin: 0 auto !important;
+  grid-template-columns: minmax(0, 1fr) 300px !important; /* sidebar un pelín más angosta */
+  gap: 36px !important;
+}
+
+/* 2) Quita restricciones que te vuelven el texto “delgado” */
+.about-wrap{
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 32px 0 !important;
+}
+
+.about-text{
+  max-width: none !important;  /* <- CLAVE: que el texto use todo el ancho disponible */
+}
+
+/* 3) Mueve la foto más a la izquierda (sin “aire”) */
+.about-grid{
+  grid-template-columns: 480px 1fr !important;  /* foto grande pero deja buen ancho de texto */
+  gap: 34px !important;
+}
+
+.about-photo{
+  justify-self: start !important;
+  margin-left: -22px !important;               /* empuja hacia la izquierda */
+}
+
+.about-img{
+  max-width: 480px !important;
+  width: 100% !important;
+}
+
+/* 4) Bio más legible */
+.about-text{
+  font-size: 18px !important;
+  line-height: 1.85 !important;
+}
+
+/* 5) En pantallas medianas, quita el empuje negativo */
+@media (max-width: 1200px){
+  .nr-two-col{
+    max-width: 1120px !important;
+    grid-template-columns: minmax(0, 1fr) 320px !important;
+  }
+  .about-photo{
+    margin-left: 0 !important;
+  }
+  .about-grid{
+    grid-template-columns: 420px 1fr !important;
+  }
+}
+/* =========================================================
+   FIX MOBILE: devuelve About/Search al look anterior en celular
+   (no afecta desktop)
+========================================================= */
+@media (max-width: 760px){
+
+  /* Layout principal: 1 columna y ancho normal */
+  .nr-two-col{
+    max-width: var(--container) !important;
+    width: min(var(--container), calc(100% - 32px)) !important;
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+    padding: 22px 16px 36px !important;
+  }
+
+  /* About: 1 columna */
+  .about-wrap{
+    padding: 22px 16px !important;
+  }
+
+  .about-grid{
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  /* Imagen: centrada y sin empujes */
+  .about-photo{
+    margin-left: 0 !important;          /* quita el -22px */
+    justify-self: stretch !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .about-img{
+    max-width: 360px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Texto: como antes en móvil */
+  .about-text{
+    max-width: none !important;
+    font-size: 15px !important;
+    line-height: 1.75 !important;
+  }
+}
+
+
+/* =========================================================
+   SOLO LAPTOP: reducir un poco la imagen de About
+   (NO afecta celular, NO afecta desktop grande)
+   Pegar AL FINAL del styles.css
+========================================================= */
+@media (min-width: 1025px) and (max-width: 1536px){
+
+  /* Reduce la columna de la foto para darle más ancho al texto */
+  .about-grid{
+    grid-template-columns: 380px 1fr !important; /* antes 480/420 */
+    gap: 34px !important;
+  }
+
+  /* Limita el tamaño de la imagen */
+  .about-img{
+    max-width: 360px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+}
