@@ -165,14 +165,16 @@
 
   <!-- ABOUT (estructura tipo tu imagen: foto izquierda + texto derecha, foto MÁS GRANDE) -->
 <main class="about-main">
-  <section class="about-wrap">
-    <div class="about-grid">
+  <div class="nr-two-col">
 
-      <!-- FOTO -->
-      <div class="about-photo">
-        <img src="IMAGES/favicon-babe.jpg" alt="Yael Goldmann" class="about-img">
-      </div>
+    <!-- COLUMNA IZQUIERDA COMPLETA (foto + texto) -->
+    <section class="nr-left">
+      <div class="about-wrap">
+        <div class="about-grid">
 
+          <div class="about-photo">
+            <img src="IMAGES/favicon-babe.jpg" alt="Yael Goldmann" class="about-img">
+          </div>
       <!-- TEXTO -->
       <div class="about-text">
         <p>
@@ -198,6 +200,28 @@
 
     </div>
   </section>
+<!-- COLUMNA DERECHA (buscador estilo NoraRoberts) -->
+    <aside class="nr-sidebar" aria-label="Sidebar">
+      <div class="nr-widget">
+        <form class="nr-search" id="siteSearchForm" action="search.html" method="GET" role="search">
+          <label class="sr-only" for="q">Buscar</label>
+          <input id="q" name="q" type="search" class="nr-search-input" placeholder="Buscar" autocomplete="off">
+<button class="nr-search-btn" type="submit" disabled>Buscar</button>
+        </form>
+
+        <hr class="nr-rule">
+
+        <div class="nr-tabs" role="tablist" aria-label="Sidebar tabs">
+          <button class="nr-tab is-active" type="button" data-tab="popular" role="tab" aria-selected="true">Popular</button>
+        </div>
+
+        <div class="nr-tabpanes">
+          <div class="nr-pane is-active" data-pane="popular" role="tabpanel"></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
 </main>
 
 
@@ -292,11 +316,12 @@ mobileMenu.addEventListener('click', (e) => {
     a.addEventListener('click', () => closeMenu());
   });
 })();
-
-
 </script>
 
-  <script src="script.js"></script>
+
+
+<script src="books-data.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
-
