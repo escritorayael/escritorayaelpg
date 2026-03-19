@@ -2374,3 +2374,83 @@ body.menu-locked{
     height: auto !important;
   }
 }
+/* =========================
+   BLOG ESTILO PREMIUM
+========================= */
+
+.blog-container {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.blog-container h1 {
+  font-size: 42px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  color: #1a2a3a;
+}
+
+.post-card {
+  background: #ffffff;
+  padding: 30px;
+  margin-bottom: 25px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-4px);
+}
+
+.post-card h2 {
+  margin-bottom: 10px;
+  color: #1a2a3a;
+}
+
+.post-card p {
+  color: #555;
+  line-height: 1.6;
+}
+
+.contact-box {
+  margin-top: 40px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.contact-box h2 {
+  margin-bottom: 20px;
+}
+
+.contact-box input,
+.contact-box textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.contact-box textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contact-box button {
+  background: #1a2a3a;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.contact-box button:hover {
+  opacity: 0.9;
+}
