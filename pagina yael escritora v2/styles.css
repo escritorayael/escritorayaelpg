@@ -1,0 +1,2376 @@
+/* =========================
+   BASE
+========================= */
+:root{
+  --bg-header: #482922;     /* verde/teal como referencia */
+  --bg-page:   #fff;     /* crema suave */
+  --ink:       #1c2426;     /* texto */
+  --muted:     #5d6a6c;
+  --paper:     #fff;
+  --line:      rgba(0,0,0,.12);
+  --shadow:    0 18px 45px rgba(0,0,0,.14);
+
+  --container: 1120px;
+  --radius: 12px;
+
+  --font-sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, "Times New Roman", Times, serif;
+}
+
+/* Sticky footer layout */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* Empuja el footer hacia abajo */
+}
+
+
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
+body{
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img{ max-width: 100%; display: block; }
+a{ color: inherit; text-decoration: none; }
+
+.container{
+  width: min(var(--container), calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.sr-only{
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* =========================
+   HEADER / NAV
+========================= */
+.site-header{
+  background: var(--bg-header);
+  color: #fff;
+}
+
+.header-inner{
+  width: min(var(--container), calc(100% - 32px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0;
+}
+
+.brand{
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+  letter-spacing: .06em;
+  user-select: none;
+}
+
+.brand-name{
+  font-size: clamp(28px, 3.2vw, 44px);
+  font-weight: 800;
+  margin-left: -20rem !important;
+  white-space: nowrap;   /* <- evita que “YAEL” y “GOLDMANN” se separen */
+}
+
+.brand-sub{
+  font-size: 12px;
+  opacity: .85;
+  margin-top: 6px;
+  letter-spacing: 2.5rem;
+  margin-left: -19rem !important;
+}
+
+.nav{
+  position: relative;
+}
+
+.nav-list{
+  list-style: none;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link{
+  color: rgba(255,255,255,.92);
+  font-size: 16px;
+  letter-spacing: .04em;
+  padding: 10px 8px;
+  border-radius: 1px;
+  transition: background .2s ease, color .2s ease;
+}
+
+/* Quita subrayado al contenedor */
+.nav-link:hover,
+.nav-link.is-active{
+  text-decoration: none;
+}
+
+/* Subrayado SOLO al texto */
+.nav-link:hover .nav-text,
+.nav-link.is-active .nav-text{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.nav-link.is-active{
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    font-size: 16px;
+  color: #fff;
+}
+
+.nav-item{ position: relative; }
+
+.nav-link-btn{
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.caret{
+  margin-left: 6px;
+  opacity: .9;
+}
+
+/* Mantén subrayado el nav link mientras el dropdown esté abierto */
+.has-dropdown.is-open > .nav-link .nav-text{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+/* (Opcional) si también quieres que se vea "activo" el tamaño */
+.has-dropdown.is-open > .nav-link{
+  font-size: 16px;
+  color: #fff;
+}
+
+
+/* Dropdown */
+.has-dropdown .dropdown{
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  min-width: 190px;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 1px;
+  box-shadow: 0 14px 30px rgba(0,0,0,.18);
+  border: 1px solid rgba(0,0,0,.08);
+  padding: 10px;
+  display: none;
+  z-index: 50;
+}
+
+.has-dropdown.is-open .dropdown{
+  display: block;
+}
+
+.dropdown-link{
+  display: block;
+  padding: 10px 10px;
+  border-radius: 1px;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.dropdown-link:hover{
+  background: #482922;
+  color: #fff;
+}
+
+
+/* Hover abre dropdown SOLO si NO está fijado por click */
+.has-dropdown:not(.is-pinned):hover .dropdown{
+  display: block;
+}
+
+/* Hover subraya SOLO si NO está fijado */
+.has-dropdown:not(.is-pinned):hover > .nav-link .nav-text{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+/* Click (fijado) mantiene dropdown abierto */
+.has-dropdown.is-open .dropdown{
+  display: block;
+}
+
+/* Click (fijado) mantiene subrayado */
+.has-dropdown.is-open > .nav-link .nav-text{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+
+/* Social icons */
+.social{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-btn{
+width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  transition: transform .15s ease, background .15s ease;
+}
+
+
+.social-btn svg{
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+  opacity: .95;
+}
+
+/* Mobile toggle */
+.nav-toggle{
+  display: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.nav-toggle-lines{
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: #fff;
+  margin: 0 auto;
+  position: relative;
+}
+
+.nav-toggle-lines::before,
+.nav-toggle-lines::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: #fff;
+}
+
+.nav-toggle-lines::before{ top: -6px; }
+.nav-toggle-lines::after{ top: 6px; }
+
+/* =========================
+   HERO / CAROUSEL
+========================= */
+.hero{
+  position: relative;
+  padding: 34px 0 20px;
+  background: var(--bg-page);
+}
+
+.hero-viewport{
+  width: min(var(--container), calc(100% - 70px));
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.hero-track{
+  display: flex;
+  transition: transform .55s ease;
+  will-change: transform;
+}
+
+.hero-slide{
+  min-width: 100%;
+}
+
+.hero-card{
+  background: var(--paper);
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: var(--shadow);
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: 420px;
+}
+
+.hero-media{
+  background: #ddd;
+  overflow: hidden;
+}
+
+.hero-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-copy{
+  display: grid;
+  align-items: center;
+  padding: 26px 26px;
+}
+
+.hero-copy-inner{
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hero-kicker{
+  font-size: 12px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.hero-title{
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: .02em;
+  font-size: clamp(34px, 4vw, 58px);
+  margin: 0;
+  color: #2a3436;
+}
+
+.hero-rule{
+  height: 1px;
+  width: min(520px, 80%);
+  background: var(--line);
+  margin: 18px auto 18px;
+  position: relative;
+}
+
+.hero-rule::before,
+.hero-rule::after{
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 70px;
+  height: 7px;
+  background: transparent;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  opacity: .7;
+}
+
+.hero-rule::before{ left: -6px; }
+.hero-rule::after{ right: -6px; }
+
+.hero-lead{
+  margin: 0 auto 18px;
+  color: #3b4749;
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: 560px;
+}
+
+.hero-actions{
+  display: inline-flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Arrows */
+.hero-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-62%);
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  z-index: 5;
+  transition: transform .15s ease, background .15s ease;
+}
+
+.hero-arrow:hover{
+  transform: translateY(-62%) scale(1.03);
+  background: rgba(255,255,255,.92);
+}
+
+.hero-arrow span{
+  font-size: 30px;
+  line-height: 1;
+  color: #2a3436;
+}
+
+.hero-arrow-left{ left: 12px; }
+.hero-arrow-right{ right: 12px; }
+
+/* Dots */
+.hero-dots{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.dot{
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(0,0,0,.25);
+  cursor: pointer;
+}
+
+.dot.is-active{
+  background: rgba(0,0,0,.55);
+}
+
+/* Buttons */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--bg-header);
+  border: 1px solid rgba(0,0,0,.12);
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: .03em;
+  transition: transform .12s ease, filter .12s ease;
+}
+
+.btn:hover{ transform: translateY(-1px); filter: brightness(1.06); }
+
+.btn.btn-ghost{
+  background: transparent;
+  color: #2a3436;
+  border: 1px solid rgba(0,0,0,.18);
+}
+
+.btn.btn-ghost:hover{
+  background: rgba(0,0,0,.04);
+}
+
+/* =========================
+   BANDS / SECTIONS
+========================= */
+.band{
+  padding: 52px 0;
+}
+
+.band-alt{
+  background: rgba(255,255,255,.35);
+  border-top: 1px solid rgba(0,0,0,.06);
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+.section-title{
+  margin: 0 0 10px;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: #2a3436;
+}
+
+.section-lead{
+  margin: 0 0 22px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.cards{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+  transition: transform .15s ease;
+}
+
+.card:hover{ transform: translateY(-2px); }
+
+.card-thumb{
+  height: 160px;
+  background: linear-gradient(135deg, rgba(47,109,105,.35), rgba(0,0,0,.10));
+}
+
+.card-body{
+  padding: 14px 14px 16px;
+}
+
+.card-title{
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.card-meta{
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Newsletter */
+.newsletter{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.newsletter input{
+  flex: 1 1 260px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.15);
+  outline: none;
+  background: #fff;
+}
+
+.newsletter input:focus{
+  border-color: rgba(47,109,105,.55);
+  box-shadow: 0 0 0 4px rgba(47,109,105,.18);
+}
+
+/* Contact */
+.contact-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.contact-box{
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.contact-box h4{
+  margin: 0 0 8px;
+}
+
+.contact-box p{
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.site-footer{
+  background: #482922;
+  color: rgba(255,255,255,.86);
+  padding: 22px 0;
+}
+
+.footer-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+margin-left: 10px !important;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 980px){
+  .header-inner{
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .nav-list{
+    gap: 12px;
+  }
+
+  .hero-card{
+    grid-template-columns: 300px 1fr;
+  }
+
+  .cards{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .contact-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px){
+  .nav-toggle{ display: inline-grid; place-items: center; }
+  .nav{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: #482922;
+    border-top: 1px solid rgba(255,255,255,.12);
+    display: none;
+    padding: 10px 16px 14px;
+    z-index: 60;
+  }
+
+  .nav.is-open{ display: block; }
+
+  .nav-list{
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .nav-link{
+    width: 100%;
+    text-align: left;
+    padding: 12px 10px;
+    border-radius: 12px;
+  }
+
+  .has-dropdown .dropdown{
+    position: static;
+    display: none;
+    margin-top: 6px;
+    background: rgba(255,255,255,.95);
+  }
+
+  .has-dropdown.is-open .dropdown{
+    display: block;
+  }
+
+  .social{ gap: 8px; }
+
+  .hero-viewport{
+    width: min(var(--container), calc(100% - 22px));
+  }
+
+  .hero-card{
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero-media{ height: 320px; }
+
+  .hero-arrow{
+    top: 38%;
+    transform: translateY(-50%);
+  }
+
+  .hero-arrow:hover{
+    transform: translateY(-50%) scale(1.03);
+  }
+
+  .cards{
+    grid-template-columns: 1fr;
+  }
+
+  .footer-inner{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* =========================
+   FULL WIDTH FADE CAROUSEL (FINAL - SIN DUPLICADOS)
+========================= */
+
+/* Separación navbar / carrusel */
+.carousel-fade-section{
+  width: 100%;
+  background: #fff;
+  margin-top: 4rem; /* separación */
+}
+
+.carousel-fade-container{
+  position: relative;
+  width: 100%;
+  height: clamp(320px, 42vw, 520px);
+  overflow: hidden;
+  background: #000;
+}
+
+/* Slides */
+.carousel-fade-slide{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .75s ease;
+  pointer-events: none;
+}
+
+.carousel-fade-slide.active{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel-fade-slide a,
+.carousel-fade-slide img{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.carousel-fade-slide img{
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Overlay para legibilidad */
+.carousel-fade-slide::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,.55) 0%,
+    rgba(0,0,0,.28) 45%,
+    rgba(0,0,0,.10) 70%,
+    rgba(0,0,0,0) 100%
+  );
+  pointer-events: none;
+}
+
+/* Caption más a la derecha (evita flecha izquierda) */
+.carousel-fade-caption{
+  position: absolute;
+  left: clamp(70px, 10vw, 140px); /* <- MÁS A LA DERECHA */
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: min(680px, 86%);
+  color: #fff;
+  z-index: 2;
+}
+
+.carousel-fade-caption h1{
+  margin: 0 0 10px;
+  font-size: clamp(28px, 4vw, 56px);
+  line-height: 1.05;
+}
+
+.carousel-fade-caption h2{
+  margin: 0 0 10px;
+  font-size: clamp(24px, 3.2vw, 44px);
+  line-height: 1.1;
+}
+
+.carousel-fade-caption h3{
+  margin: 0 0 14px;
+  font-weight: 500;
+  opacity: .95;
+  font-size: clamp(14px, 1.7vw, 20px);
+}
+
+.carousel-fade-caption p{
+  margin: 0 0 16px;
+  font-size: clamp(13px, 1.25vw, 16px);
+  line-height: 1.55;
+  opacity: .95;
+  max-width: 560px;
+}
+
+/* Botones: borde blanco, sin fondo. Hover -> blanco y texto #482922 */
+.btn-more,
+.carousel-fade-caption .btn,
+.carousel-fade-caption .btn.btn-primary{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 1px;
+  text-decoration: none;
+  font-size: 14px;
+  letter-spacing: .03em;
+
+  background: transparent !important;
+  color: #fff !important;
+  border: 1px solid #fff !important;
+
+  transition: background .15s ease, color .15s ease, transform .12s ease;
+}
+
+.btn-more:hover,
+.carousel-fade-caption .btn:hover,
+.carousel-fade-caption .btn.btn-primary:hover{
+  background: #fff !important;
+  color: #482922 !important;
+  transform: translateY(-1px);
+}
+
+/* Flechas */
+.carousel-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  line-height: 1;
+  opacity: .9;
+}
+
+.carousel-arrow:hover{ opacity: 1; }
+
+.left-arrow{ left: 18px; }
+.right-arrow{ right: 18px; }
+
+/* Dots */
+.carousel-dots{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 6;
+}
+
+.c-dot{
+  width: 8px;
+  height: 8px;
+  aspect-ratio: 1 / 1;     /* asegura círculo perfecto */
+  border-radius: 50%;      /* círculo 100% */
+  border: 0;
+  cursor: pointer;
+  padding: 0;              /* evita que el botón se “deforme” */
+  background: rgba(255,255,255,.55);
+}
+
+
+.c-dot.is-active{
+  background: rgba(255,255,255,.95);
+}
+
+/* Mobile */
+@media (max-width: 760px){
+  .carousel-fade-container{
+    height: 300px;
+  }
+
+  .carousel-fade-slide::after{
+    background: linear-gradient(
+      0deg,
+      rgba(0,0,0,.65) 0%,
+      rgba(0,0,0,.35) 55%,
+      rgba(0,0,0,.05) 100%
+    );
+  }
+
+  .carousel-fade-caption{
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 18px;
+    transform: none;
+    max-width: 100%;
+  }
+
+  .carousel-arrow{
+    width: 42px;
+    height: 42px;
+    font-size: 32px;
+  }
+
+  .left-arrow{ left: 10px; }
+  .right-arrow{ right: 10px; }
+}
+
+
+/* FIX: centrar texto del botón "Ver más" (btn-more) */
+.carousel-fade-caption .btn-more{
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+
+  width: 400px !important;        /* evita que se vuelva enorme */
+  min-width: 160px;              /* opcional: tamaño consistente */
+  padding: 10px 18px !important;
+
+  line-height: 1 !important;
+  white-space: nowrap;           /* evita salto de línea */
+}
+
+/* Por si algún CSS viejo le mete padding/indent al texto */
+.carousel-fade-caption .btn-more::before,
+.carousel-fade-caption .btn-more::after{
+  content: none !important;
+}
+
+
+/* =========================
+   BOOK GRID (como la referencia)
+========================= */
+.books-showcase{
+  background: #fff;
+  padding: 54px 0 40px;
+}
+
+.books-topline{
+  height: 1px;
+  background: rgba(0,0,0,.18);
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.books-title{
+  text-align: center;
+  letter-spacing: .08em;
+  font-weight: 500;
+  margin: 0 0 28px;
+  color: #2a3436;
+  font-size: 26px;
+}
+
+.books-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 34px 34px;
+  justify-items: center; /* centra cada columna como en la imagen */
+}
+
+.book-card{
+  width: 100%;
+  max-width: 240px;       /* look “editorial” y centrado */
+  text-align: center;
+}
+
+.book-meta{
+  font-size: 12px;
+  color: #2b3a3f;
+  margin-bottom: 12px;
+  letter-spacing: .02em;
+}
+
+.book-cover{
+  width: 190px;
+  height: 270px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 14px;
+  box-shadow: 0 14px 30px rgba(0,0,0,.14);
+}
+
+.book-name{
+  margin: 6px 0 10px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  font-size: 15px;
+  color: #2a3436;
+}
+
+.book-desc{
+  margin: 0 auto 18px;
+  max-width: 220px;
+  color: #3b4749;
+  font-size: 13px;
+  line-height: 1.7;
+
+  /* recorte suave para mantener altura pareja */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;     /* 3–4 líneas como la referencia */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-link{
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #2a3436;
+  padding: 10px 0;
+  border: 0;
+  background: transparent;
+  transition: opacity .15s ease;
+}
+
+.book-link:hover{
+  opacity: .65; /* minimalista como en la imagen */
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .books-grid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 820px){
+  .books-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .book-cover{ width: 170px; height: 245px; }
+}
+
+@media (max-width: 420px){
+  .books-grid{ grid-template-columns: 1fr; }
+}
+
+
+/* Clickable area: imagen + título + descripción */
+.book-hit{
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.book-hit:hover{
+  text-decoration: none;
+}
+
+/* Que se note que es clickeable sin cambiar diseño */
+.book-hit .book-cover,
+.book-hit .book-name,
+.book-hit .book-desc{
+  cursor: pointer;
+}
+
+/* Opcional minimalista: una micro reacción al hover (sin cambiar estructura) */
+.book-hit:hover .book-cover{
+  transform: translateY(-1px);
+}
+
+.book-cover{
+  transition: transform .15s ease;
+}
+
+
+/* Available At: mismo fondo que la página + ocultar "cajas" blancas de logos */
+#available{
+  background: var(--bg-page) !important; /* #efece4 */
+}
+
+#available .distributors-grid{
+  background: var(--bg-page);
+}
+
+#available .distributors-grid a{
+  background: var(--bg-page);
+  padding: 10px 14px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#available .distributors-grid img{
+  display: block;
+  background: transparent;
+  mix-blend-mode: darken; /* quita visualmente blancos en muchos PNG */
+}
+
+
+/* Botón centrado debajo de Libros Destacados */
+.all-books-wrap{
+  display: flex;
+  justify-content: center;
+  padding: 22px 0 10px;
+  background: #fff; /* mismo fondo de la sección de libros */
+}
+
+.all-books-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  margin-bottom: 3rem;
+  border-radius: 1px;
+  background-color: transparent;
+   color: #482922;
+   border: 5px solid #482922;
+  font-size: 14px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid #482922;
+    transition: all 0.3s ease;
+}
+
+.all-books-btn:hover{
+    background-color: #482922;
+    color: #f8fafc;
+    border: 1px solid #482922;
+}
+
+
+
+
+/* =========================
+   BOOK DETAILS (layout como la imagen)
+========================= */
+.bookdetails-page{
+  background: #f7f4ee;
+  padding: 36px 0 0;      /* <- sin padding-bottom */
+}
+
+.bookdetails-wrap{
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.bookdetails-grid{
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 34px;
+  align-items: start;
+}
+
+.bookdetails-left{
+  display: flex;
+  justify-content: center;
+}
+
+.bookdetails-cover{
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  display: block;
+  border-radius: 2px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.14);
+  background: #fff; /* para que no se vea “transparencia” rara */
+}
+
+.bookdetails-title{
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 1.08;
+  margin: 4px 0 10px;
+  font-weight: 500;
+  color: #482922;
+  letter-spacing: .2px;
+}
+
+.bookdetails-meta{
+  margin: 6px 0 12px;
+  color: #5d6a6c;
+  font-size: 14px;
+}
+
+.bookdetails-meta-line{
+  margin: 6px 0;
+}
+
+.bookdetails-meta-line .bdLabel{
+  color: #482922;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.bookdetails-divider{
+  height: 2px;
+  width: 100%;
+  background: #482922; /* línea teal como tu captura */
+  margin: 18px 0 18px;
+}
+
+.bookdetails-section{
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: .6px;
+  text-transform: none; /* en tu imagen se ve “Summary” normal */
+  color: #5d6a6c;
+  font-weight: 600;
+}
+
+.bookdetails-desc p{
+  margin: 0 0 14px;
+  color: #495556;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.bookdetails-back{
+  display: inline-block;
+  margin-top: 14px;
+  color: #0f6d72;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.bookdetails-back:hover{
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .bookdetails-grid{
+    grid-template-columns: 1fr;
+  }
+  .bookdetails-left{
+    justify-content: flex-start;
+  }
+  .bookdetails-cover{
+    max-width: 320px;
+  }
+}
+
+
+/* =========================
+   NAV - ESTADO ACTIVO CATÁLOGO
+   (solo cuando el LI tenga .is-current)
+========================= */
+
+/* 1) Mantener "Libros" como hover/activo */
+.nav-item.has-dropdown.is-current > .nav-link .nav-text{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.nav-item.has-dropdown.is-current > .nav-link{
+  color: #fff;
+  font-size: 16px; /* opcional, igual que tu active */
+}
+
+
+/* 3) Mantener "Catálogo" como si estuviera en hover */
+.dropdown-link.is-active,
+.nav-item.has-dropdown.is-current .dropdown-link[aria-current="page"]{
+  background: #482922;
+  color: #fff;
+}
+
+/* Por si quieres el mismo efecto exacto del hover */
+.dropdown-link.is-active:hover{
+  background: #482922;
+  color: #fff;
+}
+
+
+
+/* =========================
+   PAGE BAR – TÍTULO + BREADCRUMB
+========================= */
+
+.page-bar{
+  background: #f7f7f7;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+
+.page-bar-inner{
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Título izquierda */
+.page-bar-title{
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: #2a3436;
+  text-transform: uppercase;
+}
+
+/* Breadcrumb derecha */
+.breadcrumb{
+  font-size: 14px;
+  color: #5d6a6c;
+}
+
+.breadcrumb-link{
+  color: #482922;
+  text-decoration: none;
+}
+
+.breadcrumb-link:hover{
+  text-decoration: underline;
+}
+
+.breadcrumb-sep{
+  margin: 0 6px;
+  opacity: .6;
+}
+
+.breadcrumb-current{
+  color: #482922;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   PARCHE: LAPTOP = DESKTOP (mantener look de PC en laptop)
+   Coloca esto AL FINAL de styles.css
+========================================================= */
+
+/* 1) Evita que tus @media actuales se activen demasiado pronto.
+   Cambiamos el comportamiento: el layout de PC se mantiene hasta 1024px.
+*/
+
+/* A) Si tu CSS tiene reglas en @media (max-width: 980px),
+   aquí las "anulamos" para anchos típicos de laptop (1025px a 1536px).
+   Esto fuerza el look de PC en laptop.
+*/
+@media (min-width: 1025px) and (max-width: 1536px){
+
+  /* Mantén el header layout de PC */
+  .header-inner{
+    grid-template-columns: 1fr auto auto !important;
+    gap: 18px !important;
+    padding: 18px 0 !important;
+  }
+
+  /* Mantén el menú horizontal (no mobile) */
+  .nav-toggle{ display: none !important; }
+  .nav{
+    position: relative !important;
+    display: block !important;
+    background: transparent !important;
+    border-top: 0 !important;
+    padding: 0 !important;
+    left: auto !important; right: auto !important; top: auto !important;
+  }
+  .nav-list{
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 22px !important;
+  }
+  .nav-link{
+    width: auto !important;
+    padding: 10px 8px !important;
+    border-radius: 1px !important;
+    white-space: nowrap;
+  }
+
+  /* Mantén grillas como desktop */
+  .cards{ grid-template-columns: repeat(3, 1fr) !important; }
+  .contact-grid{ grid-template-columns: repeat(3, 1fr) !important; }
+
+  /* Catálogo/Libros: mantiene 4 columnas si cabe */
+  .books-grid{ grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+
+  /* Hero/card mantiene estructura desktop */
+  .hero-card{
+    grid-template-columns: 360px 1fr !important;
+    min-height: 420px !important;
+  }
+}
+
+/* B) Ajuste global anti “scroll horizontal” (muy típico en laptop) */
+html, body{ overflow-x: hidden; }
+img, video{ max-width: 100%; height: auto; }
+
+/* C) Contenedores: evita que algo se pase del ancho */
+.container,
+.header-inner,
+.page-bar-inner,
+.bookdetails-wrap{
+  max-width: 1120px;
+  width: min(1120px, calc(100% - 48px));
+}
+
+/* D) Si tu logo usa márgenes negativos grandes, en laptop puede romper.
+   Lo suavizamos SOLO si empieza a generar overflow.
+   (Si NO te da overflow, puedes borrar esta parte.)
+*/
+@media (max-width: 1400px){
+  .brand-name{ margin-left: 0 !important; }
+  .brand-sub{ margin-left: 0 !important; letter-spacing: .9rem !important; }
+}
+
+
+/* =========================
+   MOBILE FULLSCREEN MENU (SLIDE IN)
+========================= */
+
+@media (max-width: 760px){
+  /* Oculta nav normal en móvil */
+  .nav{ display: none !important; }
+
+  /* Deja toggle visible */
+  .nav-toggle{ display: inline-grid !important; place-items: center; }
+
+  /* Oculta redes del navbar SOLO en móvil */
+  .site-header .social{ display: none !important; }
+}
+
+/* Overlay (fondo oscuro) */
+.mobile-menu{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+
+  /* animación de aparición */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+
+.mobile-menu.is-open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Panel que entra desde la izquierda (FULL SCREEN) */
+.mobile-menu-panel{
+  position: fixed;            /* <- en vez de absolute */
+  top: 0;
+  left: 0;
+  width: 100vw;               /* <- ocupa todo el ancho */
+  height: 100vh;              /* <- ocupa toda la altura */
+  background: #482922;
+  color: #fff;
+  padding: 18px 18px 26px;
+  overflow-y: auto;
+
+  /* Estado cerrado: fuera de pantalla */
+  transform: translateX(-100%);
+  transition: transform .28s cubic-bezier(.2,.9,.2,1);
+  will-change: transform;
+}
+
+.mobile-menu.is-open .mobile-menu-panel{
+  transform: translateX(0);
+}
+
+
+/* Top bar */
+.mobile-menu-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.14);
+}
+
+.mobile-menu-title{
+  font-weight: 800;
+  letter-spacing: .06em;
+  font-size: 16px;
+  opacity: .95;
+}
+
+.mobile-menu-close{
+  width: 42px;
+  height: 42px;
+  border-radius: 1px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Lista */
+.mobile-menu-list{
+  list-style: none;
+  padding: 14px 0 0;
+  margin: 0;
+}
+
+.mobile-item{
+  border-bottom: 1px solid rgba(255,255,255,.12);
+}
+
+.mobile-link{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 10px;
+  text-decoration: none;
+  color: rgba(255,255,255,.96);
+  font-size: 16px;
+  letter-spacing: .03em;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Caret */
+.mobile-acc-caret{
+  opacity: .9;
+  transition: transform .18s ease;
+}
+
+.mobile-accordion.is-open .mobile-acc-caret{
+  transform: rotate(180deg);
+}
+
+/* Submenu */
+.mobile-submenu{
+  display: none;
+  padding: 0 0 10px;
+}
+
+.mobile-accordion.is-open .mobile-submenu{
+  display: block;
+}
+
+.mobile-sublink{
+  display: block;
+  padding: 12px 16px;
+  margin: 0 6px 6px;
+  border-radius: 1px;
+  text-decoration: none;
+  color: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.10);
+  font-size: 14px;
+}
+
+.mobile-sublink:active{
+  transform: scale(.99);
+}
+
+/* Redes abajo */
+.mobile-menu-social{
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.14);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.mobile-menu-social .social-btn{
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+}
+
+/* Lock scroll */
+body.menu-locked{
+  overflow: hidden;
+}
+
+/* Respeta usuarios con reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .mobile-menu{ transition: none !important; }
+  .mobile-menu-panel{ transition: none !important; }
+}
+
+/* =========================
+   ABOUT PAGE (RESPONSIVE)
+   Pegar al FINAL del styles.css
+========================= */
+
+.about-main{
+  background: #fff;
+}
+
+.about-wrap{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.about-grid{
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.about-img{
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 18px 45px rgba(0,0,0,.18);
+  border-radius: 6px;
+}
+
+.about-text{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #482922;
+}
+
+.about-text p{
+  margin: 0 0 18px;
+}
+
+/* ====== MOBILE FIXES ====== */
+@media (max-width: 760px){
+
+  /* Logo: evita que rompa el layout en móvil */
+  .brand-name{
+    margin-left: 0 !important;
+    font-size: 22px !important;
+    letter-spacing: .05em !important;
+  }
+  .brand-sub{
+    margin-left: 0 !important;
+    letter-spacing: .55rem !important;
+    font-size: 10px !important;
+  }
+
+  /* Breadcrumb / page bar: que no se descuadre */
+  .page-bar-inner{
+    padding: 12px 16px !important;
+    gap: 10px;
+  }
+  .page-bar-title{
+    font-size: 16px !important;
+  }
+  .breadcrumb{
+    font-size: 12px !important;
+    white-space: nowrap;
+  }
+
+  /* About: una sola columna */
+  .about-wrap{
+    padding: 22px 16px;
+  }
+  .about-grid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Imagen: que se vea bien y no “se coma” la página */
+  .about-photo{
+    display: flex;
+    justify-content: center;
+  }
+  .about-img{
+    max-width: 360px;     /* limita tamaño visual */
+    width: 100%;
+    height: auto;
+  }
+
+  /* Texto: tamaño cómodo */
+  .about-text{
+    font-size: 15px;
+    line-height: 1.75;
+  }
+}
+
+
+/* =========================
+   CAROUSEL MOBILE FIX (IMÁGENES PERFECTAS + TEXTO MÁS PEQUEÑO)
+   Pegar al FINAL
+========================= */
+
+@media (max-width: 760px){
+
+  /* 1) Menos alto para que no se vea “gigante” */
+  .carousel-fade-container{
+    height: 230px !important;     /* antes 300px */
+  }
+
+  /* 2) Imagen: evita zoom excesivo y recorte agresivo */
+  .carousel-fade-slide img{
+    object-fit: contain !important;     /* muestra la imagen completa */
+    object-position: center !important;
+    background: #fff;                  /* relleno elegante si sobran bordes */
+  }
+  
+
+  /* 3) Overlay más suave (no tapa tanto) */
+  .carousel-fade-slide::after{
+    background: linear-gradient(
+      0deg,
+      rgba(0,0,0,.62) 0%,
+      rgba(0,0,0,.28) 60%,
+      rgba(0,0,0,.06) 100%
+    ) !important;
+  }
+
+  /* 4) Caption más compacto y abajo */
+  .carousel-fade-caption{
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 12px !important;
+    top: auto !important;
+    transform: none !important;
+    max-width: 100% !important;
+  }
+
+  /* 5) Reduce títulos */
+  .carousel-fade-caption h1{
+    font-size: 22px !important;
+    margin: 0 0 6px !important;
+    line-height: 1.05 !important;
+  }
+
+  .carousel-fade-caption h2{
+    font-size: 18px !important;
+    margin: 0 0 6px !important;
+    line-height: 1.1 !important;
+  }
+
+  .carousel-fade-caption h3{
+    font-size: 12px !important;
+    margin: 0 0 8px !important;
+  }
+
+  /* 6) Reduce párrafo y limita líneas (para que no tape la imagen) */
+  .carousel-fade-caption p{
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    margin: 0 0 10px !important;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;        /* máximo 3 líneas en móvil */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* 7) Botones “Ver Más” más chicos (sin romper links) */
+  .btn-more,
+  .carousel-fade-caption .btn,
+  .carousel-fade-caption .btn.btn-primary{
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    border-radius: 1px !important;
+  }
+
+  /* Si tu btn-more tenía width: 400px, aquí lo anulamos en móvil */
+  .carousel-fade-caption .btn-more{
+    width: auto !important;
+    min-width: 120px !important;
+  }
+
+  /* 8) Flechas un poco más pequeñas */
+  .carousel-arrow{
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 28px !important;
+  }
+
+  .left-arrow{ left: 8px !important; }
+  .right-arrow{ right: 8px !important; }
+
+  /* 9) Dots más pequeños y cerca del borde */
+  .carousel-dots{
+    bottom: 8px !important;
+    gap: 8px !important;
+  }
+  .c-dot{
+    width: 6px !important;
+    height: 6px !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE: carrusel SOLO IMAGEN (sin títulos, descripciones ni botones)
+========================================================= */
+@media (max-width: 760px){
+  .carousel-fade-caption{
+    display: none !important;  /* <- mata todo el texto + botones */
+  }
+}
+
+/* =========================================================
+   MOBILE: quitar COMPLETAMENTE cualquier degradado/overlay del carrusel
+========================================================= */
+@media (max-width: 760px){
+
+  /* Mata el overlay oscuro (degradado) */
+  .carousel-fade-slide::after{
+    content: none !important;
+    background: none !important;
+    display: none !important;
+  }
+
+  /* (Opcional recomendado) evita fondo negro detrás del carrusel en móvil */
+  .carousel-fade-container{
+    background: #fff !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE: reducir espacio arriba y abajo del carrusel
+========================================================= */
+@media (max-width: 760px){
+
+  /* 1) Mucho menos espacio arriba del carrusel */
+  .carousel-fade-section{
+    margin-top: 0px !important;   /* antes 4rem */
+    padding-top: 0 !important;
+    padding-bottom: -2rem !important; /* reduce espacio “debajo” */
+  }
+
+  /* 2) Reduce espacio extra interno (si lo hubiera) */
+  .carousel-fade-container{
+    margin: 0 !important;
+  }
+
+  /* 3) Si los dots te crean “aire” abajo, súbelos un poco o escóndelos */
+  .carousel-dots{
+    bottom: 6px !important;  /* antes 14px/8px */
+  }
+
+  /* OPCIONAL (si quieres eliminar totalmente el espacio que generan los dots) */
+  /* .carousel-dots{ display: none !important; } */
+}
+
+
+/* =========================================================
+   MOBILE: "Disponible en" -> logos en 2 columnas (sin recortes)
+   Pegar al FINAL del styles.css
+========================================================= */
+@media (max-width: 760px){
+
+  /* 1) La grilla pasa a 2 columnas */
+  #available .distributors-grid{
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px 14px !important;
+    padding: 0 16px !important;
+    justify-items: center !important;
+    align-items: center !important;
+  }
+
+  /* 2) Cada link centra el logo y le da un "alto" uniforme */
+  #available .distributors-grid a{
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px 8px !important;
+    min-height: 62px !important;
+  }
+
+  /* 3) Logos: NO recortar, reducir para que quepan
+        (esto pisa tus height/margins inline) */
+  #available .distributors-grid img{
+    width: 100% !important;
+    max-width: 160px !important;     /* evita que se vuelvan gigantes */
+    height: auto !important;         /* pisa height: 100px, 140px, etc. */
+    max-height: 46px !important;     /* tamaño uniforme en móvil */
+    object-fit: contain !important;  /* nunca se corta */
+    object-position: center !important;
+
+    margin-top: 0 !important;        /* pisa margin-top negativo */
+    display: block !important;
+  }
+}
+
+/* Extra: en pantallas MUY pequeñas, baja un poco más el alto */
+@media (max-width: 380px){
+  #available .distributors-grid img{
+    max-width: 140px !important;
+    max-height: 42px !important;
+  }
+}
+
+
+/* =========================================================
+   FIX DEFINITIVO: LIBROS EN 2 COLUMNAS EN CELULAR
+   (pegar al FINAL del styles.css)
+========================================================= */
+@media (max-width: 760px){
+
+  /* Fuerza 2 columnas reales en móvil */
+  .books-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px 14px !important;
+    justify-items: stretch !important; /* que la celda se use completa */
+    align-items: start !important;
+  }
+
+  /* La tarjeta se adapta a la celda (no “rompe” a 1 columna) */
+  .book-card{
+    width: 100% !important;
+    max-width: none !important;
+    text-align: center;
+  }
+
+  /* Portadas más compactas para 2 columnas */
+  .book-cover{
+    width: 100% !important;
+    max-width: 150px !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3;          /* mantiene proporción libro */
+    object-fit: cover !important;
+    margin: 0 auto 10px !important;
+  }
+
+  /* Texto: un poco más compacto */
+  .book-name{
+    font-size: 13px !important;
+    letter-spacing: .06em !important;
+    margin: 6px 0 8px !important;
+  }
+
+  /* Importante: en móvil, recorta más para que no empuje la columna */
+  .book-desc{
+    max-width: 100% !important;
+    -webkit-line-clamp: 3 !important;
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* En pantallas MUY pequeñas, si realmente no cabe, ahí sí 1 columna */
+@media (max-width: 360px){
+  .books-grid{
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* =========================
+   BOOK DETAILS: selector idioma
+========================= */
+.bd-langbar{
+  display: flex;
+  gap: 10px;
+  margin: 6px 0 12px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.bd-lang-pill{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  border: 1px solid #482922;
+  background: transparent;
+  color: #482922;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.bd-lang-pill:hover{
+  border-color: #482922;
+}
+
+.bd-lang-pill.is-active{
+  background: #482922;
+  color: #fff;
+  border-color: #482922;
+}
+
+.bd-lang-pill:disabled{
+  opacity: .45;
+  cursor: default;
+}
+
+
+
+
+
+
+/* =========================
+   SEARCH / SIDEBAR (estilo NoraRoberts)
+========================= */
+
+.sr-only{
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);
+  white-space:nowrap;border:0;
+}
+
+.nr-two-col{
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 22px 16px 48px;
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 320px;
+  gap: 42px;
+}
+
+@media (max-width: 980px){
+  .nr-two-col{ grid-template-columns: 1fr; gap: 26px; }
+}
+
+.nr-sidebar{ align-self: start; }
+.nr-widget{
+  background: transparent;
+}
+
+.nr-search{
+  display: grid;
+  gap: 12px;
+}
+
+.nr-search-input{
+  width: 100%;
+  height: 42px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.18);
+  border-radius: 1px;
+  background: #fff;
+  font-size: 15px;
+}
+
+.nr-search-btn{
+  width: 118px;
+  height: 40px;
+  border: 0;
+  border-radius: 1px;
+  background: #482922; /* similar al verde-teal de la foto */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nr-rule{
+  margin: 18px 0 14px;
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,.12);
+}
+
+.nr-tabs{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.nr-tab{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-weight: 700;
+  color: #2a2f33;
+  cursor: pointer;
+}
+
+.nr-tab.is-active{
+  color: #482922;
+}
+
+.nr-tab-sep{
+  color: rgba(0,0,0,.35);
+  font-weight: 600;
+}
+
+.nr-pane{
+  padding-top: 12px;
+}
+
+.nr-mini-item{
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+  text-decoration: none;
+  color: inherit;
+}
+
+.nr-mini-cover{
+  width: 46px;
+  height: 64px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+}
+
+.nr-mini-title{
+  font-size: 14px;
+  line-height: 1.2;
+  color: #1d2327;
+}
+
+.nr-mini-date{
+  margin-top: 4px;
+  font-size: 12px;
+  color: #6a757c;
+}
+
+/* PAGE BAR subtitle en search */
+.page-bar-sub{
+  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(0,0,0,.55);
+  font-style: italic;
+}
+
+/* Search page content */
+.nr-search-page{ background: #fff; }
+
+/* Results list (lado izquierdo) */
+.nr-result{
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.nr-result-cover{
+  width: 78px;
+  height: 110px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff;
+}
+
+.nr-result-title{
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0 0 6px;
+}
+
+.nr-result-title a{
+  text-decoration: none;
+  color: #1d2327;
+}
+
+.nr-result-meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(0,0,0,.65);
+}
+
+.nr-dot{
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(0,0,0,.35);
+  display: inline-block;
+}
+
+.nr-no-results{
+  margin-top: 18px;
+  color: rgba(0,0,0,.65);
+}
+
+
+
+
+
+
+
+/* =========================
+   FIX ABOUT + SIDEBAR LAYOUT (texto ancho y legible)
+   Pegar AL FINAL
+========================= */
+
+/* El grid principal: izquierda grande + sidebar */
+.nr-two-col{
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 22px 16px 48px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 42px;
+}
+
+/* La columna izquierda no debe tener "máximo" angosto */
+.nr-left{
+  min-width: 0;
+}
+
+/* Quitamos el max-width que te estaba angostando el texto */
+.about-wrap{
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 40px 0 !important;
+}
+
+/* Foto más pegada a la izquierda y texto más respirable */
+.about-grid{
+  display: grid;
+  grid-template-columns: 420px 1fr;   /* antes 460px -> lo bajo un poco para dar más texto */
+  gap: 48px;
+  align-items: start;
+}
+
+/* La imagen NO se encoge raro */
+.about-photo{
+  justify-self: start;
+}
+
+.about-img{
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+
+/* Texto más ancho y cómodo */
+.about-text{
+  max-width: 720px;
+}
+
+/* Responsive */
+@media (max-width: 980px){
+  .nr-two-col{ grid-template-columns: 1fr; }
+  .about-grid{ grid-template-columns: 1fr; }
+  .about-wrap{ padding: 22px 0 !important; }
+  .about-img{ max-width: 360px; }
+}
+
+
+/* =========================================================
+   ABOUT (desktop): foto más a la izquierda + texto más ancho
+   Pegar AL FINAL de styles.css
+========================================================= */
+
+/* 1) Haz el layout principal más ancho (aprovecha pantalla) */
+.nr-two-col{
+  max-width: 1320px !important;                 /* más ancho que 1120 */
+  width: min(1320px, calc(100% - 48px)) !important;
+  margin: 0 auto !important;
+  grid-template-columns: minmax(0, 1fr) 300px !important; /* sidebar un pelín más angosta */
+  gap: 36px !important;
+}
+
+/* 2) Quita restricciones que te vuelven el texto “delgado” */
+.about-wrap{
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 32px 0 !important;
+}
+
+.about-text{
+  max-width: none !important;  /* <- CLAVE: que el texto use todo el ancho disponible */
+}
+
+/* 3) Mueve la foto más a la izquierda (sin “aire”) */
+.about-grid{
+  grid-template-columns: 480px 1fr !important;  /* foto grande pero deja buen ancho de texto */
+  gap: 34px !important;
+}
+
+.about-photo{
+  justify-self: start !important;
+  margin-left: -22px !important;               /* empuja hacia la izquierda */
+}
+
+.about-img{
+  max-width: 480px !important;
+  width: 100% !important;
+}
+
+/* 4) Bio más legible */
+.about-text{
+  font-size: 18px !important;
+  line-height: 1.85 !important;
+}
+
+/* 5) En pantallas medianas, quita el empuje negativo */
+@media (max-width: 1200px){
+  .nr-two-col{
+    max-width: 1120px !important;
+    grid-template-columns: minmax(0, 1fr) 320px !important;
+  }
+  .about-photo{
+    margin-left: 0 !important;
+  }
+  .about-grid{
+    grid-template-columns: 420px 1fr !important;
+  }
+}
+/* =========================================================
+   FIX MOBILE: devuelve About/Search al look anterior en celular
+   (no afecta desktop)
+========================================================= */
+@media (max-width: 760px){
+
+  /* Layout principal: 1 columna y ancho normal */
+  .nr-two-col{
+    max-width: var(--container) !important;
+    width: min(var(--container), calc(100% - 32px)) !important;
+    grid-template-columns: 1fr !important;
+    gap: 26px !important;
+    padding: 22px 16px 36px !important;
+  }
+
+  /* About: 1 columna */
+  .about-wrap{
+    padding: 22px 16px !important;
+  }
+
+  .about-grid{
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  /* Imagen: centrada y sin empujes */
+  .about-photo{
+    margin-left: 0 !important;          /* quita el -22px */
+    justify-self: stretch !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .about-img{
+    max-width: 360px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Texto: como antes en móvil */
+  .about-text{
+    max-width: none !important;
+    font-size: 15px !important;
+    line-height: 1.75 !important;
+  }
+}
+
+
+/* =========================================================
+   SOLO LAPTOP: reducir un poco la imagen de About
+   (NO afecta celular, NO afecta desktop grande)
+   Pegar AL FINAL del styles.css
+========================================================= */
+@media (min-width: 1025px) and (max-width: 1536px){
+
+  /* Reduce la columna de la foto para darle más ancho al texto */
+  .about-grid{
+    grid-template-columns: 380px 1fr !important; /* antes 480/420 */
+    gap: 34px !important;
+  }
+
+  /* Limita el tamaño de la imagen */
+  .about-img{
+    max-width: 360px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+}

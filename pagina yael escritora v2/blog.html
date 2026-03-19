@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog - Yael Goldmann</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f6f1eb;
+    color: #222;
+  }
+
+  .blog-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  h1 {
+    font-size: 42px;
+    margin-bottom: 10px;
+    color: #1a2a3a;
+  }
+
+  .intro {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 35px;
+  }
+
+  .post-card {
+    background: #faf7f3;
+    border: 1px solid #eadfce;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+  }
+
+  .post-card h2 {
+    margin-top: 0;
+    color: #1a2a3a;
+  }
+
+  .contact-box {
+    margin-top: 40px;
+    background: #fffaf5;
+    border: 1px solid #eadfce;
+    border-radius: 16px;
+    padding: 25px;
+  }
+
+  .contact-box h2 {
+    margin-top: 0;
+    color: #1a2a3a;
+  }
+
+  input, textarea {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    min-height: 130px;
+    resize: vertical;
+  }
+
+  button {
+    background: #1a2a3a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    opacity: 0.9;
+  }
+</style>
+</head>
+
+<body>
+
+ <div class="blog-container">
+
+  <h1>Mi Blog</h1>
+  <p class="intro">
+    Un espacio para compartir pensamientos, historias, reflexiones y conectar con mis lectores.
+  </p>
+
+  <div class="post-card">
+    <h2>Bienvenida</h2>
+    <p>Este es mi espacio para compartir pensamientos, historias y reflexiones.</p>
+  </div>
+
+  <div class="post-card">
+    <h2>Mi primer post</h2>
+    <p>Hoy comienzo este blog para conectar con ustedes, abrir un espacio más cercano y compartir parte de mi camino como escritora.</p>
+  </div>
+
+  <div class="contact-box">
+    <h2>Escríbeme 💌</h2>
+
+    <form action="https://formspree.io/f/xpqybpak" method="POST">
+      <input type="text" name="name" placeholder="Tu nombre" required>
+      <input type="email" name="email" placeholder="Tu email" required>
+      <textarea name="message" placeholder="Tu mensaje" required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+
+  </div>
+
+</body>
+</html>
