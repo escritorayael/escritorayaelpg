@@ -2487,4 +2487,25 @@ body.menu-locked{
     background: rgba(255,255,255,0.1);
     border-radius: 4px;
   }
- 
+ /* FIX MENU MOBILE */
+.mobile-menu-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.mobile-menu-list {
+  display: block;
+  width: 100%;
+}
+
+.mobile-item {
+  width: 100%;
+}
+
+.mobile-link {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  color: #fff;
+}
