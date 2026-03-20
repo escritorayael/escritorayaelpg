@@ -2454,3 +2454,25 @@ body.menu-locked{
 .contact-box button:hover {
   opacity: 0.9;
 }
+/* ===== BLOG ===== */
+
+.blog-card{
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  margin: 25px auto;
+  max-width: 900px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.blog-card-title{
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  color: #122b46;
+}
+
+.blog-card-text{
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #333;
+}
