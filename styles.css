@@ -1562,27 +1562,38 @@ img, video{ max-width: 100%; height: auto; }
 /* Submenu */
 .mobile-submenu{
   display: none;
-  padding: 0 0 10px;
+  padding: 0;
+}
+.mobile-submenu a{
+  border-left: 2px solid rgba(255,255,255,0.2);
 }
 
 .mobile-accordion.is-open .mobile-submenu{
   display: block;
 }
+.mobile-item{
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
 
 .mobile-sublink{
   display: block;
   padding: 12px 16px;
-  margin: 0 6px 6px;
+  padding-left: 32px;
+  margin: 0;
   border-radius: 1px;
   text-decoration: none;
   color: rgba(255,255,255,.92);
   background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.10);
   font-size: 14px;
+transition: background .2s ease, transform .15s ease;
 }
 
 .mobile-sublink:active{
   transform: scale(.99);
+}
+.mobile-sublink:hover{
+  background: rgba(255,255,255,.12);
 }
 
 /* Redes abajo */
