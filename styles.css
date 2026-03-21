@@ -2545,4 +2545,27 @@ body.menu-locked{
   color: #fff;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+.book-sample-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 0;
+  font-size: 14px;
+  color: #007185;
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
 
+.book-sample-btn:hover {
+  border-bottom: 1px solid #007185;
+}
+.book-link {
+  font-size: 13px;
+  color: #666;
+  text-decoration: none;
+}
+
+.book-link:hover {
+  text-decoration: underline;
+}
