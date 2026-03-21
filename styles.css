@@ -2597,3 +2597,22 @@ body.menu-locked{
 .book-sample-btn:hover {
   text-decoration: underline;
 }
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.book-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.book-desc {
+  flex-grow: 1;
+}
+.book-actions {
+  margin-top: auto;
+  text-align: center;
+}
